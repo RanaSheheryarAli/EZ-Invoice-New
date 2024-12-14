@@ -1,0 +1,88 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!-- Add binding variables here if needed -->
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="1dp"
+        android:background="@drawable/rounded_box_outline_edt"
+
+        >
+
+        <RelativeLayout
+            android:id="@+id/maincon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:backgroundTint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/rounded_box_outline_edt"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Close Button FloatingActionButton -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/closebtn"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="-45dp"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Close Button"
+                android:elevation="4dp"
+                android:src="@drawable/arrow_down"
+                app:shapeAppearanceOverlay="@style/FABShape"
+                app:tint="@color/buttoncolor" />
+
+
+
+
+                <SurfaceView
+                    android:id="@+id/surfaceview"
+                    android:layout_width="match_parent"
+                    android:layout_height="600dp"
+                    android:layout_below="@id/closebtn"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="Camera Feed" />
+
+            <!-- SurfaceView for Camera Feed -->
+
+
+
+            <!-- Done Button FloatingActionButton -->
+
+
+        </RelativeLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/torchbtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/white"
+            android:elevation="6dp"
+            android:layout_marginBottom="120dp"
+            android:layout_marginEnd="30dp"
+            android:src="@drawable/flashlight_on_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearanceOverlay="@style/FABShape"
+            app:tint="@color/buttoncolor"
+            android:scaleType="center" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+</layout>

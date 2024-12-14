@@ -1,0 +1,96 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginBottom="10dp"
+    android:gravity="center_vertical">
+
+    <!-- Text Section -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item Name"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/itemCodetxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item Code"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/itemCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="xxxxxxxxxxxx"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Quantity Section -->
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:background="@drawable/outline_background"
+        android:padding="1dp"
+        android:gravity="center">
+
+        <!-- Minus Button -->
+        <TextView
+            android:id="@+id/minusButton"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:background="@drawable/box_background"
+            android:text="-"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <!-- Value Text -->
+        <TextView
+            android:id="@+id/valueText"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:background="@drawable/box_background"
+            android:text="0.0"
+            android:textColor="@color/primery_input_text"
+            android:textSize="12sp" />
+
+        <!-- Plus Button -->
+        <TextView
+            android:id="@+id/plusButton"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:background="@drawable/box_background"
+            android:text="+"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Delete Icon -->
+    <ImageView
+        android:id="@+id/deleteIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:padding="30dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/delete_circle_background"
+        android:src="@drawable/close_24"
+        android:scaleType="center"
+        android:contentDescription="Delete Item" />
+</LinearLayout>

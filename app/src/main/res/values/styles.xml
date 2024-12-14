@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Custom shape for FloatingActionButton with larger corner radius -->
+    <style name="FABShape" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">40dp</item> <!-- Adjust this value for larger or smaller corner radius -->
+    </style>
+
+    <!-- Custom style for BottomNavigationView to disable ripple effect -->
+    <style name="BottomNavViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemRippleColor">@android:color/transparent</item>
+        <item name="itemIconTint">@color/white</item>
+        <item name="itemTextColor">@color/white</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Set status bar color -->
+        <item name="android:statusBarColor">@color/buttoncolor</item>
+    </style>
+
+</resources>

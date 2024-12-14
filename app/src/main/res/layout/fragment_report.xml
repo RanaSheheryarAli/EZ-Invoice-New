@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!-- Add binding variables here if needed -->
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        >
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ReportFragment"
+        android:padding="15dp"
+        android:background="@color/white">
+
+        <!-- Currency and Date Filter -->
+        <LinearLayout
+            android:id="@+id/filterSection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="65dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:elevation="4dp"
+                android:background="@drawable/rounded_box_outline_edt"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/datePriceSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:elevation="4dp"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="5dp"
+                android:elevation="4dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_box_outline_edt"
+                android:orientation="vertical">
+
+
+                <Spinner
+                    android:id="@+id/dateFilterSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:elevation="4dp"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <!-- Total Invoices and Total Sales Section -->
+        <LinearLayout
+            android:layout_margin="4dp"
+            android:id="@+id/salesSummarySection"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:elevation="4dp"
+            android:background="@drawable/rounded_box_outline_edt"
+            app:layout_constraintTop_toBottomOf="@id/filterSection"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:weightSum="2"
+            android:gravity="center">
+
+            <!-- Total Invoices -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Invoices"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="331"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/imp_text_color" />
+            </LinearLayout>
+            <View
+                android:layout_width="2dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="5dp"
+                android:background="#75757373" />
+
+            <!-- Total Sales -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Sales"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs 25,488"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/imp_text_color" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Sales Trending Graph -->
+        <androidx.cardview.widget.CardView
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:id="@+id/salesTrendingCard"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@id/salesSummarySection"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="15dp">
+
+
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Sales by Client Section -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/salesByClientCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toBottomOf="@id/salesTrendingCard"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="4dp"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sales by Client (Top 5)"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client 05 - Rs 12,260" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client 08 - Rs 10,000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client 02 - Rs 6,240" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client 15 - Rs 4,390" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client 09 - Rs 2,260" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Sales by Items Section -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/salesByItemsCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintTop_toBottomOf="@id/salesByClientCard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="4dp"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sales by Client (Top 5)"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client 05 - Rs 12,260" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client 08 - Rs 10,000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client 02 - Rs 6,240" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client 15 - Rs 4,390" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client 09 - Rs 2,260" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Print, Export, Share Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/rounded_box_outline_edt"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:weightSum="4"
+            app:layout_constraintTop_toBottomOf="@+id/salesByItemsCard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_white"
+                android:drawableTop="@drawable/baseline_eye_24"
+                android:drawablePadding="2dp"
+                android:text="Preview"
+                android:textColor="@color/primery_input_text"
+                android:textSize="9sp" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_white"
+                android:drawableTop="@drawable/outline_print_24"
+                android:text="Print"
+                android:textColor="@color/primery_input_text"
+                android:textSize="9sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_white"
+                android:drawableTop="@drawable/outline_pdf_24"
+                android:text="Export"
+                android:textColor="@color/primery_input_text"
+                android:textSize="9sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_white"
+                android:drawableTop="@drawable/outline_share_24"
+                android:text="Share"
+                android:textColor="@color/imp_text_color"
+                android:textSize="9sp" />
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
+

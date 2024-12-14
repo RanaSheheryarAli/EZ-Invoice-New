@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Business_Info">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:minHeight="88dp"
+                android:background="#008E8C">
+
+                <!-- Back Arrow -->
+                <ImageView
+                    android:id="@+id/img_back_arrow"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/backarrow"
+                    android:contentDescription="Back Arrow" />
+
+                <!-- Header Text -->
+                <TextView
+                    android:id="@+id/tv_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Business Info"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+
+            <!-- Logo Section -->
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="144dp"
+                android:background="#B3D9D9">
+
+                <!-- ImageView for the logo -->
+                <ImageView
+                    android:id="@+id/img_add_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:contentDescription="Add Business Logo"
+                    android:gravity="bottom"
+                    android:scaleType="centerInside"
+                    android:background="@android:color/transparent" />
+
+                <!-- TextView for the label -->
+                <TextView
+                    android:id="@+id/tv_add_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Add Business Logo"
+                    android:textColor="#1A2E5E"
+                    android:textSize="24sp" />
+
+                <!-- Icon for the add button -->
+                <ImageView
+                    android:id="@+id/ic_add_icon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="end|bottom"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/camera"
+                    android:contentDescription="Add Icon" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+
+                <!-- Company Details -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Company Details"
+                    android:textColor="#008E8C"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Business Name"
+                    android:background="@drawable/rounded_box_outline_edt"
+                    android:padding="10dp"
+                    android:layout_marginTop="8dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Owner Name"
+                    android:background="@drawable/rounded_box_outline_edt"
+                    android:padding="10dp"
+                    android:layout_marginTop="8dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="GSTIN"
+                    android:background="@drawable/rounded_box_outline_edt"
+                    android:padding="10dp"
+                    android:layout_marginTop="8dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Address"
+                    android:background="@drawable/rounded_box_outline_edt"
+                    android:padding="10dp"
+                    android:layout_marginTop="8dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email Address"
+                    android:background="@drawable/rounded_box_outline_edt"
+                    android:padding="10dp"
+                    android:layout_marginTop="8dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone Number"
+                    android:background="@drawable/rounded_box_outline_edt"
+                    android:padding="10dp"
+                    android:layout_marginTop="8dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Website"
+                    android:background="@drawable/rounded_box_outline_edt"
+                    android:padding="10dp"
+                    android:layout_marginTop="8dp" />
+
+                <!-- General Settings -->
+
+                <TextView
+                    android:id="@+id/tv_additional_stting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="General Setting"
+                    android:textColor="#008E8C"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/tv_general_container"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Currency Major Unit"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Currency Minor Unit"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Number Format"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Signature"
+                        android:textColor="#008E8C"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:padding="10dp"
+                        android:layout_marginTop="8dp" />
+
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/btn_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="#008E8C"
+                    android:text="UPDATE"
+                    android:textColor="#FFFFFF" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</layout>
+
