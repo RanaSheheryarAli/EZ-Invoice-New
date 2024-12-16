@@ -27,44 +27,62 @@
             android:id="@+id/filterSection"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
             android:orientation="horizontal"
             android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="65dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginBottom="10dp"
+                android:layout_weight="1"
                 android:elevation="4dp"
                 android:background="@drawable/rounded_box_outline_edt"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
+                <!-- ImageView with corrected height -->
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/cash"
+                    android:layout_marginStart="6dp"
+                    android:layout_gravity="center"/>
+
+                <!-- Spinner with proper layout -->
                 <Spinner
                     android:id="@+id/datePriceSpinner"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="6dp"
                     android:elevation="4dp"
-                    android:spinnerMode="dialog" />
+                    android:layout_gravity="center"
+                    android:spinnerMode="dropdown" />
+
             </LinearLayout>
+
 
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="65dp"
-                android:layout_marginStart="5dp"
                 android:elevation="4dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_box_outline_edt"
-                android:orientation="vertical">
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="3dp"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/calendarimg"
+                    android:layout_marginStart="5dp"
+                    android:layout_gravity="center"/>
 
                 <Spinner
                     android:id="@+id/dateFilterSpinner"
@@ -72,7 +90,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="6dp"
                     android:elevation="4dp"
-                    android:spinnerMode="dialog" />
+                    android:spinnerMode="dropdown" />
             </LinearLayout>
 
 
@@ -83,7 +101,7 @@
             android:layout_margin="4dp"
             android:id="@+id/salesSummarySection"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="90dp"
             android:orientation="horizontal"
             android:elevation="4dp"
             android:background="@drawable/rounded_box_outline_edt"
@@ -112,13 +130,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="331"
-                    android:textSize="26sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/imp_text_color" />
             </LinearLayout>
             <View
                 android:layout_width="2dp"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:layout_marginEnd="5dp"
                 android:background="#75757373" />
 
@@ -141,7 +159,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Rs 25,488"
-                    android:textSize="26sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/imp_text_color" />
             </LinearLayout>
@@ -153,7 +171,7 @@
             android:layout_marginEnd="4dp"
             android:id="@+id/salesTrendingCard"
             android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_height="300dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
             android:padding="10dp"
@@ -161,6 +179,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="15dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sales Trending"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                />
+
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_marginTop="45dp"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+               />
 
 
 
@@ -192,32 +227,26 @@
                     android:layout_height="wrap_content"
                     android:text="Sales by Client (Top 5)"
                     android:textStyle="bold"
+                    android:textSize="18sp"
                     android:textColor="@color/black" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="9dp"
+                    android:layout_height="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="#75757373" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Client 05 - Rs 12,260" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/clientrecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/report_items_layout"
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Client 08 - Rs 10,000" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Client 02 - Rs 6,240" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Client 15 - Rs 4,390" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Client 09 - Rs 2,260" />
+                    />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -246,34 +275,27 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sales by Client (Top 5)"
+                    android:text="Sales by Items (Top 5)"
                     android:textStyle="bold"
+                    android:textSize="18sp"
                     android:textColor="@color/black" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Client 05 - Rs 12,260" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="9dp"
+                    android:layout_height="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="#75757373" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Client 08 - Rs 10,000" />
+               <androidx.recyclerview.widget.RecyclerView
+                   android:id="@+id/iterecyclerView"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   tools:listitem="@layout/report_items_layout"
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Client 02 - Rs 6,240" />
+                   />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Client 15 - Rs 4,390" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Client 09 - Rs 2,260" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

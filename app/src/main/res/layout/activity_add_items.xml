@@ -458,7 +458,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="As of Date"
-                            app:endIconDrawable="@drawable/calendar"
+                            app:endIconDrawable="@drawable/calendarimg"
                             app:endIconMode="custom"
                             app:helperText="12/11/2024">
 
