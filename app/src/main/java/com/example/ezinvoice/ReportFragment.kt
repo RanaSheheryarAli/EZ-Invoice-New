@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -139,13 +140,16 @@ class ReportFragment : Fragment() {
         entries.add(Entry(5f, 2500f)) // Day 5, Value 2500
 
         // Create a dataset for the line chart
+
+        val btncolor:Color=
+
         val dataSet = LineDataSet(entries, "Invoice Billing Stats")
-        dataSet.color = Color.BLUE
+        dataSet.color = ContextCompat.getColor(requireContext(), R.color.buttoncolor)
         dataSet.valueTextColor = Color.BLACK
         dataSet.lineWidth = 2f
         dataSet.circleRadius = 4f
         dataSet.setDrawFilled(true) // Optional: fills the area under the line
-        dataSet.fillColor = Color.parseColor("#EC8305") // Set fill color
+        dataSet.fillColor = ContextCompat.getColor(requireContext(),R.color.buttoncolor) // Set fill color
         dataSet.fillAlpha = 50
 
         // Style the X-axis and Y-axis
