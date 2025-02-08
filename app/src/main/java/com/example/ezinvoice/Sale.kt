@@ -2,6 +2,7 @@ package com.example.ezinvoice
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -25,6 +26,15 @@ class Sale : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        databinding.headerLayout.tvTitle.text="New Invoice"
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = getColor(R.color.status_bar_color)
+            Toast.makeText(this,"Build Version is compactable",Toast.LENGTH_SHORT).show()
+        }
+        else{
+            Toast.makeText(this,"Build Version is not compactable",Toast.LENGTH_SHORT).show()
         }
 
         requestcamear = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->

@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -14,6 +15,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ezinvoice.databinding.ActivityMainBinding
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var dataBinding: ActivityMainBinding
@@ -21,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        window.statusBarColor = getColor(R.color.status_bar_color)
+        Toast.makeText(this,"Build Version is compactable",Toast.LENGTH_SHORT).show()
 
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         enableEdgeToEdge()
@@ -34,6 +38,9 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.fragmentContainerView2)
 
         dataBinding.bottomnavigation.setupWithNavController(navController)
+
+
+
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {

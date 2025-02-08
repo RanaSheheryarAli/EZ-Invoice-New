@@ -1,11 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
 
-    <style name="Base.Theme.EZInvoice" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.EZInvoice" parent="Theme.Material3.Light.NoActionBar">
         <!-- Focused color (when user clicks the field) -->
         <item name="colorPrimary">#777777</item>
         <!-- Unfocused color (when field is idle) -->
         <item name="colorOutline">#BCBABA</item> <!-- Customize this -->
+        <item name="android:statusBarColor">@color/status_bar_color</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
 

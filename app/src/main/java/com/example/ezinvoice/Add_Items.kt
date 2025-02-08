@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.SurfaceHolder
 import android.view.View
 import android.widget.Toast
@@ -17,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import com.example.ezinvoice.databinding.ActivityAddItemsBinding
 import com.example.ezinvoice.databinding.CameraBottomSheetBinding
+import com.example.ezinvoice.databinding.CatagoryBottomSheetBinding
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
@@ -29,8 +31,14 @@ class Add_Items : AppCompatActivity() {
     private lateinit var requestCamera: ActivityResultLauncher<String>
     private lateinit var databinding: ActivityAddItemsBinding
 
-    private lateinit var bottomSheetBinding: CameraBottomSheetBinding
-    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var bottomSheetBindingforCamera: CameraBottomSheetBinding
+    private lateinit var bottomSheetDialogforCamera: BottomSheetDialog
+
+
+    private lateinit var bottomSheetBindingforCatagory: CatagoryBottomSheetBinding
+    private lateinit var bottomSheetDialogforCatagory: BottomSheetDialog
+
+
     private lateinit var barcodeDetector: BarcodeDetector
     private lateinit var cameraSource: CameraSource
     private lateinit var mediaPlayer: MediaPlayer
@@ -53,6 +61,16 @@ class Add_Items : AppCompatActivity() {
 
         setupBottomSheet()
 
+        setupBottomSheetforCatagory()
+
+
+
+            databinding.addcatagoryspinner .setOnClickListener {
+               bottomSheetDialogforCatagory.show()
+            }
+
+
+
         // Register camera permission request callback
         requestCamera = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
@@ -73,6 +91,9 @@ class Add_Items : AppCompatActivity() {
                 requestCamera.launch(android.Manifest.permission.CAMERA)
             }
         }
+
+
+
 
         // Pricing button click logic
         databinding.btnPricing.setOnClickListener {
@@ -125,16 +146,16 @@ class Add_Items : AppCompatActivity() {
 
     // Setup the bottom sheet for the scanner
     private fun setupBottomSheet() {
-        bottomSheetBinding = CameraBottomSheetBinding.inflate(layoutInflater)
-        bottomSheetDialog = BottomSheetDialog(this)
-        bottomSheetDialog.setContentView(bottomSheetBinding.root)
+        bottomSheetBindingforCamera = CameraBottomSheetBinding.inflate(layoutInflater)
+        bottomSheetDialogforCamera = BottomSheetDialog(this)
+        bottomSheetDialogforCamera.setContentView(bottomSheetBindingforCamera.root)
     }
 
     // Show the barcode scanner dialog
     private fun showBottomSheetDialog() {
         initializeBarcodeScanner()
         initializeCameraSource()
-        bottomSheetDialog.show()
+        bottomSheetDialogforCamera.show()
     }
 
     // Initialize the barcode detector
@@ -161,7 +182,7 @@ class Add_Items : AppCompatActivity() {
                         intentData = scannedData
                         databinding.edtBarcode.setText(intentData) // Update main layout
 //                        bottomSheetBinding.barcodeVale.text = intentData // Update bottom sheet
-                        bottomSheetDialog.dismiss() // Close the dialog
+                        bottomSheetDialogforCamera.dismiss() // Close the dialog
                     }
                 }
             }
@@ -175,11 +196,11 @@ class Add_Items : AppCompatActivity() {
             .setAutoFocusEnabled(true)
             .build()
 
-        bottomSheetBinding.surfaceview.holder.addCallback(object : SurfaceHolder.Callback {
+        bottomSheetBindingforCamera.surfaceview.holder.addCallback(object : SurfaceHolder.Callback {
             @SuppressLint("MissingPermission")
             override fun surfaceCreated(holder: SurfaceHolder) {
                 try {
-                    cameraSource.start(bottomSheetBinding.surfaceview.holder)
+                    cameraSource.start(bottomSheetBindingforCamera.surfaceview.holder)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
@@ -191,4 +212,18 @@ class Add_Items : AppCompatActivity() {
             }
         })
     }
+
+    private fun setupBottomSheetforCatagory() {
+        bottomSheetBindingforCatagory = CatagoryBottomSheetBinding.inflate(layoutInflater)
+        bottomSheetDialogforCatagory = BottomSheetDialog(this)
+        bottomSheetDialogforCatagory.setContentView(bottomSheetBindingforCatagory.root)
+
+
+
+        bottomSheetBindingforCatagory.btncross.setOnClickListener{
+            bottomSheetDialogforCatagory.dismiss()
+        }
+    }
+
+
 }

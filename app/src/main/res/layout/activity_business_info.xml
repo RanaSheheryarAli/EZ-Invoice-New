@@ -139,7 +139,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email Address"
+                    android:hint="Email Address( use for sign up)"
                     android:background="@drawable/rounded_box_outline_edt"
                     android:padding="10dp"
                     android:layout_marginTop="8dp" />

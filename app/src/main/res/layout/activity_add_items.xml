@@ -64,11 +64,10 @@
                             android:id="@+id/btv_select_unit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
                             android:backgroundTint="#DCEDEF"
                             android:text="Select Unit"
                             android:textColor="@color/imp_text_color"
-                            android:textSize="8sp" />
+                            android:textSize="6sp" />
 
 
                     </LinearLayout>
@@ -91,17 +90,16 @@
                             android:hint="Item Code / Barcode"
                             android:textColor="@color/primery_input_text"
                             android:textColorHint="@color/scendory_input_text"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
 
                         <Button
                             android:id="@+id/btn_assign_barcode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
                             android:backgroundTint="#DCEDEF"
                             android:text="Assign Code"
                             android:textColor="@color/imp_text_color"
-                            android:textSize="8sp" />
+                            android:textSize="6sp" />
 
 
                     </LinearLayout>
@@ -135,23 +133,44 @@
 
 
                     <LinearLayout
-                        android:id="@+id/btn_select_catagory"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/rounded_box_outline_edt"
-                        android:gravity="end"
-                        android:orientation="horizontal"
-                        android:padding="5dp">
+                        android:padding="3dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                        <Spinner
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:hint="Item Category"
-                            android:textSize="11sp"
-                            android:padding="10dp"
-                            android:spinnerMode="dropdown" />
+                        <EditText
+                            android:id="@+id/edt_add_catagory"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_box"
+                            android:hint="Add Catagory"
+                            android:textColor="@color/primery_input_text"
+                            android:textColorHint="@color/scendory_input_text"
+                            android:textSize="14sp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_box_outline_edt"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:src="@drawable/arrow_down"
+                                android:id="@+id/addcatagoryspinner"
+                                android:layout_width="45dp"
+                                android:layout_height="25dp"
+                                android:hint="Item Category"
+                                android:padding="8dp"
+                                android:spinnerMode="dropdown" />
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
@@ -256,25 +275,11 @@
                             android:background="@drawable/rounded_box"
                             android:hint="Sale Price"
                             android:padding="12dp"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:textColor="#333333"
                             android:textColorHint="#B0B0B0" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_box_outline_edt"
-                            android:gravity="end"
-                            android:orientation="horizontal">
 
-                            <Spinner
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Item Category"
-                                android:padding="8dp"
-                                android:spinnerMode="dropdown" />
-
-                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -294,25 +299,11 @@
                             android:background="@drawable/rounded_box"
                             android:hint="Disc. On Sale Price"
                             android:padding="12dp"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:textColor="#333333"
                             android:textColorHint="#B0B0B0" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_box_outline_edt"
-                            android:gravity="end"
-                            android:orientation="horizontal">
 
-                            <Spinner
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Item Category"
-                                android:padding="8dp"
-                                android:spinnerMode="dropdown" />
-
-                        </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -355,25 +346,11 @@
                             android:background="@drawable/rounded_box"
                             android:hint="Purchase Price"
                             android:padding="12dp"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:textColor="#333333"
                             android:textColorHint="#B0B0B0" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_box_outline_edt"
-                            android:gravity="end"
-                            android:orientation="horizontal">
 
-                            <Spinner
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Item Category"
-                                android:padding="8dp"
-                                android:spinnerMode="dropdown" />
-
-                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -403,18 +380,24 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
                         android:background="@drawable/rounded_box_outline_edt"
-                        android:gravity="end"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:padding="5dp">
 
-                        <Spinner
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:hint="Item Category"
-                            android:padding="10dp"
-                            android:spinnerMode="dropdown" />
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_box"
+                            android:hint="Taxe"
+                            android:padding="12dp"
+                            android:textSize="12sp"
+                            android:textColor="#333333"
+                            android:textColorHint="#B0B0B0" />
+
+
 
                     </LinearLayout>
 
@@ -458,7 +441,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="As of Date"
-                            app:endIconDrawable="@drawable/calendarimg"
+                            app:endIconDrawable="@drawable/calendar_24"
                             app:endIconMode="custom"
                             app:helperText="12/11/2024">
 

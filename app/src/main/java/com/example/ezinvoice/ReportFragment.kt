@@ -141,7 +141,7 @@ class ReportFragment : Fragment() {
 
         // Create a dataset for the line chart
 
-        val btncolor:Color=
+
 
         val dataSet = LineDataSet(entries, "Invoice Billing Stats")
         dataSet.color = ContextCompat.getColor(requireContext(), R.color.buttoncolor)

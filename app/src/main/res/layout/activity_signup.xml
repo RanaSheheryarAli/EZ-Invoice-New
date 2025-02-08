@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="signupviewmodel"
+            type="com.example.ezinvoice.viewmodels.SignupViewmodel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="4dp"
+                android:text="@={signupviewmodel.UsernameLD}"
                 android:layout_marginEnd="24dp"
                 android:textColor="@color/black"
                 android:background="@drawable/rounded_box_outline_edt"
@@ -83,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:layout_marginStart="24dp"
+                android:text="@={signupviewmodel.EmailLD}"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/rounded_box_outline_edt"
@@ -111,6 +116,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="24dp"
                 android:textColor="@color/black"
+                android:text="@={signupviewmodel.passwordLD}"
                 android:background="@drawable/rounded_box_outline_edt"
                 android:hint="••••••••••"
                 android:inputType="textPassword"
@@ -139,6 +145,7 @@
                 android:letterSpacing="0.1"
                 android:padding="12dp"
                 android:text="SIGN UP"
+                android:onClick="@{()-> signupviewmodel.onSignupClick()}"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 app:cornerRadius="8dp" />
