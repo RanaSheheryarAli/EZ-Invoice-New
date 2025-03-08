@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.ezinvoice.apis.SignupApi
 import com.example.ezinvoice.models.AppUser
+import com.example.ezinvoice.models.LoginModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,21 +15,20 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.regex.Pattern
 
-class SignupViewmodel : ViewModel() {
+class SigninViewmodel:ViewModel() {
 
-    // Two-way binding using MutableLiveData
-    val UsernameLD = MutableLiveData<String>("")
+
     val EmailLD = MutableLiveData<String>("")
     val passwordLD = MutableLiveData<String>("")
-
     var attemptedSignup = false
+    private val _issuccessfull = MutableLiveData(false)
+    val issuccessfull: LiveData<Boolean> get() = _issuccessfull
+
 
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
 
-    private val _issuccessfull = MutableLiveData(false)
-    val issuccessfull: LiveData<Boolean> get() = _issuccessfull
 
     // Retrofit setup
     private val retrofit = Retrofit.Builder()
@@ -48,17 +48,17 @@ class SignupViewmodel : ViewModel() {
 
     private val api = retrofit.create(SignupApi::class.java)
 
-    // Signup button click handler
-    fun onSignupClick() {
-        val username = UsernameLD.value?.trim() ?: ""
+
+    fun onSigninClick() {
         val email = EmailLD.value?.trim() ?: ""
         val password = passwordLD.value?.trim() ?: ""
 
         attemptedSignup = true
-        Log.d("Signup", "Username: $username, Email: $email, Password: $password")
+        Log.d("Signup", "Email: $email, Password: $password")
 
-        if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
-            // Validate email format
+
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+
             if (!isValidEmail(email)) {
                 _errorMessage.value = "Invalid email format!"
                 Log.d("Signup", "Invalid Email: $email")
@@ -73,43 +73,39 @@ class SignupViewmodel : ViewModel() {
                 _issuccessfull.value = false
                 return
             }
-
-
-            val request = AppUser(username, email, password)
+            val request = LoginModel( email, password)
 
             // Convert request to JSON and log it
             val gson = com.google.gson.Gson()
             Log.d("Signup", "JSON Sent: ${gson.toJson(request)}")
 
-            val call = api.signup(request)
+            val call = api.signin(request)
             call.enqueue(object : Callback<ResponseBody?> {
-                override fun onResponse(
-                    call: Call<ResponseBody?>,
-                    response: Response<ResponseBody?>
-                ) {
+                override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                     if (response.isSuccessful) {
-                        _errorMessage.value="User Created"
-                        Log.d("Signup", "Signup Successful")
+                        Log.d("Signin", "Signin Successful")
+                        _errorMessage.value="Signin Successful"
                         _issuccessfull.value = true
                     } else {
                         _errorMessage.value=response.errorBody()?.string()
-                        Log.d("Signup", "Signup Failed: ${response.errorBody()?.string()}")
+                        Log.d("Signin", "Signin Failed: ${response.errorBody()?.string()}")
                         _issuccessfull.value = false
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                    Log.d("Signup", "Network Error: ${t.message}")
+                    Log.d("Signin", "Network Error: ${t.message}")
                     _issuccessfull.value = false
                 }
             })
-        } else {
+        }
+        else {
             _errorMessage.value = "All fields are Required"
             _issuccessfull.value = false
         }
+
     }
     fun clearError() {
         _errorMessage.value = null
     }
-
 }

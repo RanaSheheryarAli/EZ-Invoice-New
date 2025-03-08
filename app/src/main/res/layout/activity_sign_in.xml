@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="signinviewmodel"
+            type="com.example.ezinvoice.viewmodels.SigninViewmodel" />
     </data>
 
     <ScrollView
@@ -122,7 +125,8 @@
                 android:visibility="gone"
                 android:background="@drawable/rounded_box_outline_edt"
                 android:hint="hello@example.com"
-                android:inputType="textPassword"
+                android:text="@={signinviewmodel.emailLD}"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/primery_input_text"
                 android:padding="18dp" />
 
@@ -191,6 +195,7 @@
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/rounded_box_outline_edt"
                 android:hint="••••••••••"
+                android:text="@={signinviewmodel.passwordLD}"
                 android:inputType="textPassword"
                 android:padding="12dp"
                 android:textColor="@color/primery_input_text" />
@@ -229,6 +234,7 @@
                 android:layout_marginTop="32dp"
                 android:backgroundTint="@color/buttoncolor"
                 android:elevation="4dp"
+                android:onClick="@{()->signinviewmodel.onSigninClick()}"
                 android:letterSpacing="0.1"
                 android:padding="12dp"
                 android:background="@drawable/rounded_box"

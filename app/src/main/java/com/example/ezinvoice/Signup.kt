@@ -36,27 +36,27 @@ class Signup : AppCompatActivity() {
 
 
 
+        // ✅ Observe success or failure
+        signupviewmodel.issuccessfull.observe(this) { isSuccess ->
+            if (isSuccess) {
+                val intent = Intent(this@Signup, SignIn::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
 
-            // Observe success or failure
-            signupviewmodel.issuccessfull.observe(this, { isSuccess ->
-                if (isSuccess) {
-                    val intent = Intent(this@Signup, SignIn::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-                // Only show toast if a signup attempt was made
-                else if (signupviewmodel.attemptedSignup) {
-                    Toast.makeText(this, "Signup Failed", Toast.LENGTH_SHORT).show()
-                }
-            })
-
-
-
-
+        // ✅ Observe error messages separately to prevent multiple Toasts
+        signupviewmodel.errorMessage.observe(this) { errorMsg ->
+            errorMsg?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                signupviewmodel.clearError()  // Clear error after showing
+            }
+        }
 
         databinding.tvSignIn.setOnClickListener {
             val intent = Intent(this@Signup, SignIn::class.java)
             startActivity(intent)
         }
+
     }
 }

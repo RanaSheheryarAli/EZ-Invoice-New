@@ -1,6 +1,9 @@
+import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -17,7 +20,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
     }
     buildTypes {
@@ -40,9 +43,11 @@ android {
     }
 }
 
+
+val room_version = "2.6.1"
 dependencies {
 
-    implementation (libs.material.v190)
+    implementation(libs.material.v190)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -56,20 +61,25 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.play.services.vision)
-    implementation (libs.androidx.camera.core)
-    implementation( libs.androidx.camera.camera2 )
-    implementation (libs.androidx.camera.lifecycle.v110)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle.v110)
 
     //graph dep
 
-    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation(libs.mpandroidchart)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
 
 
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
+    // Room runtime
+    implementation(libs.androidx.room.runtime)
 
+    // Annotation processor (kapt)
+    kapt(libs.room.compiler)
 
-
+    // Optional - Kotlin Extensions and Coroutines support
+    implementation(libs.androidx.room.ktx)
 
 }

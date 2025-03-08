@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.ezinvoice.adaptors.InvoiceAdapter
 import com.example.ezinvoice.databinding.FragmentHomeBinding
 import com.example.ezinvoice.databinding.FragmentItemsBinding
+import com.example.ezinvoice.models.Invoice
 
 
 class HomeFragment : Fragment() {
@@ -55,6 +59,21 @@ class HomeFragment : Fragment() {
         }
 
 
+
+        val recyclerView: RecyclerView = databinding.recentinvoiceRCV  // your RecyclerView ID
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        val invoices = listOf(
+            Invoice("001", "2025-03-01", "$200"),
+            Invoice("002", "2025-04-02", "$150"),
+            Invoice("003", "2025-04-03", "$2500"),
+            Invoice("004", "2025-04-02", "$150"),
+            Invoice("005", "2025-04-03", "$2500"),
+            Invoice("006", "2025-05-03", "$5500")
+        )
+
+        val adapter = InvoiceAdapter(invoices)
+        recyclerView.adapter = adapter
     }
 
 }
