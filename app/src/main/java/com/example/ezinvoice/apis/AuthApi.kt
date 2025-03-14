@@ -8,7 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface SignupApi {
+interface AuthApi {
     @Headers("Content-Type: application/json") // Ensure JSON format
     @POST("signup")
     fun signup(@Body user: AppUser): Call<ResponseBody>

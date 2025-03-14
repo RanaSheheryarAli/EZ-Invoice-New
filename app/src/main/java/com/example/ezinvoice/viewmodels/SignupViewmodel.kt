@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.ezinvoice.apis.SignupApi
+import com.example.ezinvoice.apis.AuthApi
 import com.example.ezinvoice.models.AppUser
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -46,7 +46,7 @@ class SignupViewmodel : ViewModel() {
         return emailPattern.matcher(email).matches()
     }
 
-    private val api = retrofit.create(SignupApi::class.java)
+    private val api = retrofit.create(AuthApi::class.java)
 
     // Signup button click handler
     fun onSignupClick() {
@@ -99,6 +99,7 @@ class SignupViewmodel : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                    _errorMessage.value=t.message
                     Log.d("Signup", "Network Error: ${t.message}")
                     _issuccessfull.value = false
                 }

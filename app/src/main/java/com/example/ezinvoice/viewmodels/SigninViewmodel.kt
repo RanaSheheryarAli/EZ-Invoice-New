@@ -4,8 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.ezinvoice.apis.SignupApi
-import com.example.ezinvoice.models.AppUser
+import com.example.ezinvoice.apis.AuthApi
 import com.example.ezinvoice.models.LoginModel
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -46,7 +45,7 @@ class SigninViewmodel:ViewModel() {
         return emailPattern.matcher(email).matches()
     }
 
-    private val api = retrofit.create(SignupApi::class.java)
+    private val api = retrofit.create(AuthApi::class.java)
 
 
     fun onSigninClick() {
