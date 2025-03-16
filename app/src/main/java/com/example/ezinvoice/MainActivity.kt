@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.statusBarColor = getColor(R.color.status_bar_color)
-        Toast.makeText(this,"Build Version is compactable",Toast.LENGTH_SHORT).show()
+
+
 
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         enableEdgeToEdge()
@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        window.statusBarColor = getColor(R.color.status_bar_color)
         val navController = findNavController(R.id.fragmentContainerView2)
 
         dataBinding.bottomnavigation.setupWithNavController(navController)

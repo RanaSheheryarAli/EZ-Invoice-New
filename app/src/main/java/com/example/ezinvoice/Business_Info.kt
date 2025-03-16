@@ -1,6 +1,7 @@
 package com.example.ezinvoice
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -30,6 +31,13 @@ class Business_Info : AppCompatActivity() {
             insets
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = getColor(R.color.status_bar_color)
+
+        }
+        else{
+            Toast.makeText(this,"Build Version is not compactable",Toast.LENGTH_SHORT).show()
+        }
         signatureView = databinding.signatureView
 
 

@@ -6,11 +6,17 @@
 
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Business_Info">
+        tools:context=".Business_Info"
+        >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -268,5 +274,6 @@
 
         </LinearLayout>
     </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

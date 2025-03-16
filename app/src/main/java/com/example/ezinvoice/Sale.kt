@@ -31,10 +31,6 @@ class Sale : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = getColor(R.color.status_bar_color)
-            Toast.makeText(this,"Build Version is compactable",Toast.LENGTH_SHORT).show()
-        }
-        else{
-            Toast.makeText(this,"Build Version is not compactable",Toast.LENGTH_SHORT).show()
         }
 
         requestcamear = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
