@@ -175,30 +175,24 @@
                 <LinearLayout
                     android:id="@+id/tv_general_container"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
+
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Currency Major Unit"
+                        android:hint="Currency (Rs)"
                         android:background="@drawable/rounded_box_outline_edt"
                         android:padding="10dp"
                         android:layout_marginTop="8dp" />
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Currency Minor Unit"
-                        android:background="@drawable/rounded_box_outline_edt"
-                        android:padding="10dp"
-                        android:layout_marginTop="8dp" />
+
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Number Format"
+                        android:hint="Number Format (1,000,000)"
                         android:background="@drawable/rounded_box_outline_edt"
                         android:padding="10dp"
                         android:layout_marginTop="8dp" />
@@ -208,6 +202,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/rounded_box_outline_edt"
                         android:padding="10dp"
+                        android:hint="Date Formate (25,May,2025)"
                         android:layout_marginTop="8dp" />
 
 
@@ -220,12 +215,41 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <View
+
+                    <com.example.ezinvoice.SignatureView
+                        android:id="@+id/signatureView"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:background="@drawable/rounded_box_outline_edt"
-                        android:padding="10dp"
-                        android:layout_marginTop="8dp" />
+                        android:layout_height="200dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/transparent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        >
+
+
+                    <Button
+                        android:id="@+id/btn_clear_signature"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Clear"
+                        android:layout_margin="10dp"
+                        android:backgroundTint="#008E8C"
+                        android:textColor="#FFFFFF" />
+                    <Button
+                        android:id="@+id/btn_save_signature"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Done"
+                        android:layout_weight="1"
+                        android:layout_margin="10dp"
+                        android:backgroundTint="#008E8C"
+                        android:textColor="#FFFFFF"/>
+                    </LinearLayout>
 
                 </LinearLayout>
 

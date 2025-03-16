@@ -19,13 +19,13 @@ app.use('/', userRoutes); // All user routes (signup, signin)
 async function startServer() {
   try {
     await mongoose.connect(mongoURI);
-    console.log("✅ MongoDB connected successfully");
+    console.log("MongoDB connected successfully");
 
     app.listen(port, () => {
-      console.log(`🚀 Server running on port ${port}`);
+      console.log(`Server running on port ${port}`);
     });
   } catch (err) {
-    console.error("❌ Failed to connect to MongoDB:", err);
+    console.error("Failed to connect to MongoDB:", err);
   }
 }
 

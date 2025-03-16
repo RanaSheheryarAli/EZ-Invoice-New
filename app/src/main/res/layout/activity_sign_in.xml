@@ -119,16 +119,16 @@
                 android:id="@+id/etemail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="22dp"
                 android:visibility="gone"
                 android:background="@drawable/rounded_box_outline_edt"
                 android:hint="hello@example.com"
                 android:text="@={signinviewmodel.emailLD}"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/primery_input_text"
-                android:padding="18dp" />
+                android:padding="12dp" />
 
             <LinearLayout
                 android:id="@+id/phoneContainer"

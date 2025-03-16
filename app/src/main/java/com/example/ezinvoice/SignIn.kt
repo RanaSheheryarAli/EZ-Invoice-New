@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.ezinvoice.databinding.ActivitySignInBinding
+import com.example.ezinvoice.models.AppUser
 import com.example.ezinvoice.viewmodels.SigninViewmodel
 import com.example.ezinvoice.viewmodels.SignupViewmodel
 
@@ -20,6 +21,7 @@ class SignIn : AppCompatActivity() {
 
     lateinit var databinding:ActivitySignInBinding
     private lateinit var signinviewmodel: SigninViewmodel
+    private lateinit var appuser:AppUser
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,10 +42,10 @@ class SignIn : AppCompatActivity() {
 
 
 
-
         // ✅ Observe success or failure
         signinviewmodel.issuccessfull.observe(this) { isSuccess ->
             if (isSuccess) {
+
                 val intent = Intent(this@SignIn, Business_Info::class.java)
                 startActivity(intent)
                 finish()
@@ -54,6 +56,7 @@ class SignIn : AppCompatActivity() {
         signinviewmodel.errorMessage.observe(this) { errorMsg ->
             errorMsg?.let {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+
                 signinviewmodel.clearError()  // Clear error after showing
             }
         }

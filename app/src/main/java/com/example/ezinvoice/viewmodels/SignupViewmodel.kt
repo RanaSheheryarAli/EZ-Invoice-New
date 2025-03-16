@@ -34,7 +34,6 @@ class SignupViewmodel : ViewModel() {
     private val retrofit = Retrofit.Builder()
         .baseUrl("http://localhost:5000/")
 //        .baseUrl("http://192.168.100.45:5000/")
-        // ✅ Use 10.0.2.2 for Emulator
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -75,18 +74,14 @@ class SignupViewmodel : ViewModel() {
             }
 
 
-            val request = AppUser(username, email, password)
+            val request = AppUser(0,username, email, password)
 
             // Convert request to JSON and log it
             val gson = com.google.gson.Gson()
             Log.d("Signup", "JSON Sent: ${gson.toJson(request)}")
 
             val call = api.signup(request)
-            call.enqueue(object : Callback<ResponseBody?> {
-                override fun onResponse(
-                    call: Call<ResponseBody?>,
-                    response: Response<ResponseBody?>
-                ) {
+            call.enqueue(object : Callback<ResponseBody?> { override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                     if (response.isSuccessful) {
                         _errorMessage.value="User Created"
                         Log.d("Signup", "Signup Successful")

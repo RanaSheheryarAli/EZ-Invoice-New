@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 // Signup Controller
 const signup = async (req, res) => {
@@ -26,7 +27,6 @@ const signup = async (req, res) => {
   }
 };
 
-// Signin (Login) Controller
 const signin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -47,11 +47,26 @@ const signin = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    res.status(200).json({ message: 'Signin successful', user });
+    // ✅ Generate JWT Token
+    const token = jwt.sign({ id: user._id, email: user.email }, 'your_secret_key', {
+      expiresIn: '7d',
+    });
+
+    // ✅ Send Safe User Data (Exclude Password)
+    res.status(200).json({success: 'Signin successful',
+      user: {
+        id: user._id,
+        sussess:true,
+        username: user.username,
+        email: user.email,
+      },
+      token,
+    });
   } catch (error) {
-    res.status(500).send({ message: 'Error signing in', error });
+    res.status(500).json({ message: 'Error signing in', error });
   }
 };
+
 
 module.exports = {
   signup,
