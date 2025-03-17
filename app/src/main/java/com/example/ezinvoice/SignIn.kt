@@ -3,6 +3,7 @@ package com.example.ezinvoice
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -19,15 +20,15 @@ import com.example.ezinvoice.viewmodels.SignupViewmodel
 
 class SignIn : AppCompatActivity() {
 
-    lateinit var databinding:ActivitySignInBinding
+    lateinit var databinding: ActivitySignInBinding
     private lateinit var signinviewmodel: SigninViewmodel
-    private lateinit var appuser:AppUser
+    private lateinit var appuser: AppUser
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-   databinding=DataBindingUtil.setContentView(this,R.layout.activity_sign_in)
+        databinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -36,10 +37,10 @@ class SignIn : AppCompatActivity() {
 
 
 
+
         signinviewmodel = ViewModelProvider(this)[SigninViewmodel::class.java]
         databinding.lifecycleOwner = this
         databinding.signinviewmodel = signinviewmodel
-
 
 
         // ✅ Observe success or failure
@@ -62,32 +63,41 @@ class SignIn : AppCompatActivity() {
         }
 
 
-        databinding.tvEmail.setOnClickListener{
+        databinding.tvEmail.setOnClickListener {
             databinding.tvEmail.setTextColor(ContextCompat.getColor(this, R.color.buttoncolor))
-            databinding.tvphonenumber.setTextColor(ContextCompat.getColor(this, R.color.light_black))
-            databinding.phoneContainer.visibility= View.GONE
-            databinding.tvphone.visibility=View.GONE
-            databinding.etemail.visibility=View.VISIBLE
-            databinding.tvemail.visibility=View.VISIBLE
+            databinding.tvphonenumber.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.light_black
+                )
+            )
+            databinding.phoneContainer.visibility = View.GONE
+            databinding.tvphone.visibility = View.GONE
+            databinding.etemail.visibility = View.VISIBLE
+            databinding.tvemail.visibility = View.VISIBLE
         }
 
-        databinding.tvphonenumber.setOnClickListener{
-            databinding.tvphonenumber.setTextColor(ContextCompat.getColor(this, R.color.buttoncolor))
+        databinding.tvphonenumber.setOnClickListener {
+            databinding.tvphonenumber.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.buttoncolor
+                )
+            )
             databinding.tvEmail.setTextColor(ContextCompat.getColor(this, R.color.light_black))
-            databinding.phoneContainer.visibility= View.VISIBLE
-            databinding.tvphone.visibility=View.VISIBLE
-            databinding.etemail.visibility=View.GONE
-            databinding.tvemail.visibility=View.GONE
+            databinding.phoneContainer.visibility = View.VISIBLE
+            databinding.tvphone.visibility = View.VISIBLE
+            databinding.etemail.visibility = View.GONE
+            databinding.tvemail.visibility = View.GONE
         }
-        databinding.tvForgotPassword.setOnClickListener{
-            val intent=Intent(this@SignIn,ForgotPassword::class.java)
+        databinding.tvForgotPassword.setOnClickListener {
+            val intent = Intent(this@SignIn, ForgotPassword::class.java)
             startActivity(intent)
         }
-        databinding.tvSignup.setOnClickListener{
-            val intent=Intent(this@SignIn,Signup::class.java)
+        databinding.tvSignup.setOnClickListener {
+            val intent = Intent(this@SignIn, Signup::class.java)
             startActivity(intent)
         }
-
 
 
     }
