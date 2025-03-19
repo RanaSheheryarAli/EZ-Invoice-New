@@ -1,6 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
+const businessRoutes = require('./routes/businessRoutes');
+const CategoryRoutes = require('./routes/categoryRoutes');
+const SubCategoryRoutes = require('./routes/subcategoryRoutes');
+const ProductsRoutes = require('./routes/productRoutes');
 
 // Initialize Express app
 const app = express();
@@ -13,7 +17,11 @@ const mongoURI = "mongodb://localhost:27017/ezinvoice";
 app.use(express.json());
 
 // Use user routes
-app.use('/', userRoutes); // All user routes (signup, signin)
+app.use('/api/auth', userRoutes); // All user routes (signup, signin)
+app.use('/api/businesses', businessRoutes);
+app.use('/api/categories', CategoryRoutes);
+app.use('/api/subcategories', SubCategoryRoutes);
+app.use('/api/products', ProductsRoutes);
 
 // MongoDB connection and server start
 async function startServer() {

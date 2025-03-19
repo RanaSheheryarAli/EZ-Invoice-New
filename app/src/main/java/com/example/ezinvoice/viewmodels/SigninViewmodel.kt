@@ -39,7 +39,7 @@ class SigninViewmodel(application: Application) : AndroidViewModel(application) 
 
     // Retrofit setup
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://localhost:5000/")// ✅ Emulator use 10.0.2.2
+        .baseUrl("http://localhost:5000/api/auth/")// ✅ Emulator use 10.0.2.2
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

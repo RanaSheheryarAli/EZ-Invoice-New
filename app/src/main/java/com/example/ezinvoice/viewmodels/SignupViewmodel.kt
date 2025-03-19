@@ -32,7 +32,7 @@ class SignupViewmodel : ViewModel() {
 
     // Retrofit setup
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://localhost:5000/")
+        .baseUrl("http://localhost:5000/api/auth")
 //        .baseUrl("http://192.168.100.45:5000/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()

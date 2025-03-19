@@ -35,6 +35,8 @@ class SignIn : AppCompatActivity() {
             insets
         }
 
+        Log.e("TAG", "onCreate:  testing by sherirririr", )
+
 
 
 
