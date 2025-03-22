@@ -9,6 +9,7 @@ const BusinessSchema = new mongoose.Schema({
     address: { type: String, required: true },
     email: { type: String, required: true },
     contact: { type: String, required: true },
+    website: { type: String, required: true },
     country: { type: String, required: true },
     currency: { type: String, required: true },
     numberformate: { type: String, required: true },

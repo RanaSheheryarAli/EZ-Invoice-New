@@ -6,16 +6,53 @@ const createBusiness = async (req, res) => {
     try {
         const {
             userId, name, ownername, gstin, address, email,
-            contact, country, currency, numberformate, dateformate, signature,categoryIds
+            contact,website, country, currency, numberformate, dateformate, signature,categoryIds
         } = req.body;
 
-        if (!userId || !name || !ownername || !address || !email || !contact || !country || !currency || !numberformate || !dateformate || !signature) {
-            return res.status(400).json({ error: "All fields are required!" });
+        if (!userId) {
+            return res.status(400).json({ error: "User ID is required!" });
         }
+
+        if (!website) {
+            return res.status(400).json({ error: "website link is required!" });
+        }
+
+
+        if (!name) {
+            return res.status(400).json({ error: "Business name is required!" });
+        }
+        if (!ownername) {
+            return res.status(400).json({ error: "Owner name is required!" });
+        }
+        if (!address) {
+            return res.status(400).json({ error: "Address is required!" });
+        }
+        if (!email) {
+            return res.status(400).json({ error: "Email is required!" });
+        }
+        if (!contact) {
+            return res.status(400).json({ error: "Contact is required!" });
+        }
+        if (!country) {
+            return res.status(400).json({ error: "Country is required!" });
+        }
+        if (!currency) {
+            return res.status(400).json({ error: "Currency is required!" });
+        }
+        if (!numberformate) {
+            return res.status(400).json({ error: "Number format is required!" });
+        }
+        if (!dateformate) {
+            return res.status(400).json({ error: "Date format is required!" });
+        }
+        if (!signature) {
+            return res.status(400).json({ error: "Signature is required!" });
+        }
+        
 
         const business = new Business({
             userId, name, ownername, gstin, address, email,
-            contact, country, currency, numberformate, dateformate, signature,categoryIds
+            contact,website, country, currency, numberformate, dateformate, signature,categoryIds
         });
 
         await business.save();

@@ -73,10 +73,14 @@ class SigninViewmodel(application: Application) : AndroidViewModel(application) 
             }
 
             val request = LoginModel(email, password)
-            val call = api.signin(request)
+            val call = api.signin1(request)
 
             call.enqueue(object : Callback<ResponseBody?> {
-                override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+
+                override fun onResponse(
+                    call: Call<ResponseBody?>,
+                    response: Response<ResponseBody?>
+                ) {
                     if (response.isSuccessful) {
                         val jsonResponse = response.body()?.string()
                         jsonResponse?.let {
@@ -104,12 +108,15 @@ class SigninViewmodel(application: Application) : AndroidViewModel(application) 
                         _errorMessage.value = "Signin Failed"
                         _issuccessfull.value = false
                     }
+
                 }
 
                 override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
                     _errorMessage.value = "Network Error: ${t.message}"
                     _issuccessfull.value = false
                 }
+
+
             })
         } else {
             _errorMessage.value = "All fields are required!"

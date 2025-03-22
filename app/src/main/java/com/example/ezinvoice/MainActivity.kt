@@ -8,6 +8,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
@@ -41,7 +42,14 @@ class MainActivity : AppCompatActivity() {
         dataBinding.bottomnavigation.setupWithNavController(navController)
 
 
-
+        // Open Navigation Drawer when menu button is clicked
+        dataBinding.headerLayout.menuButton.setOnClickListener {
+            if (dataBinding.main.isDrawerOpen(GravityCompat.END)) {
+                dataBinding.main.closeDrawer(GravityCompat.END)
+            } else {
+                dataBinding.main.openDrawer(GravityCompat.END)
+            }
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {

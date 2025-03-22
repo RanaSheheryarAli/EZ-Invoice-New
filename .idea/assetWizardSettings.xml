@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/C:/Users/Rana%20Sheheryar%20Ali/AppData/Local/Android/Sdk/icons/material/materialicons/calendar_month/baseline_calendar_month_24.xml" />
+                                      <entry key="url" value="file:/C:/Users/Rana%20Sheheryar%20Ali/AppData/Local/Android/Sdk/icons/material/materialicons/business/baseline_business_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,7 +33,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="calendar_24" />
+                            <entry key="outputName" value="business_24" />
                             <entry key="sourceFile" value="D:\Sheheryar Ali\FA21-BSE-079\7 semester\Final Year Project\EZ-Invoice" />
                           </map>
                         </option>

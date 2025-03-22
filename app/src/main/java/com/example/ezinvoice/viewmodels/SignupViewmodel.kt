@@ -32,7 +32,7 @@ class SignupViewmodel : ViewModel() {
 
     // Retrofit setup
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://localhost:5000/api/auth")
+        .baseUrl("http://localhost:5000/api/auth/")
 //        .baseUrl("http://192.168.100.45:5000/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -74,27 +74,31 @@ class SignupViewmodel : ViewModel() {
             }
 
 
-            val request = AppUser(0,username, email, password)
+            val request = AppUser("", username, email, password)
 
             // Convert request to JSON and log it
             val gson = com.google.gson.Gson()
             Log.d("Signup", "JSON Sent: ${gson.toJson(request)}")
 
-            val call = api.signup(request)
-            call.enqueue(object : Callback<ResponseBody?> { override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+            val call = api.signup1(request)
+            call.enqueue(object : Callback<ResponseBody?> {
+                override fun onResponse(
+                    call: Call<ResponseBody?>,
+                    response: Response<ResponseBody?>
+                ) {
                     if (response.isSuccessful) {
-                        _errorMessage.value="User Created"
+                        _errorMessage.value = "User Created"
                         Log.d("Signup", "Signup Successful")
                         _issuccessfull.value = true
                     } else {
-                        _errorMessage.value=response.errorBody()?.string()
+                        _errorMessage.value = response.errorBody()?.string()
                         Log.d("Signup", "Signup Failed: ${response.errorBody()?.string()}")
                         _issuccessfull.value = false
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                    _errorMessage.value=t.message
+                    _errorMessage.value = t.message
                     Log.d("Signup", "Network Error: ${t.message}")
                     _issuccessfull.value = false
                 }
@@ -104,6 +108,7 @@ class SignupViewmodel : ViewModel() {
             _issuccessfull.value = false
         }
     }
+
     fun clearError() {
         _errorMessage.value = null
     }
