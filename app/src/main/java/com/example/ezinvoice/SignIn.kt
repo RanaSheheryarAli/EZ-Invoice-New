@@ -17,12 +17,12 @@ import com.example.ezinvoice.databinding.ActivitySignInBinding
 import com.example.ezinvoice.models.AppUser
 import com.example.ezinvoice.viewmodels.SigninViewmodel
 import com.example.ezinvoice.viewmodels.SignupViewmodel
+import kotlin.math.sign
 
 class SignIn : AppCompatActivity() {
 
     lateinit var databinding: ActivitySignInBinding
     private lateinit var signinviewmodel: SigninViewmodel
-    private lateinit var appuser: AppUser
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,7 @@ class SignIn : AppCompatActivity() {
             insets
         }
 
-     val TAG="sign.kt"
+        val TAG = "sign.kt"
 
 
 
@@ -44,20 +44,24 @@ class SignIn : AppCompatActivity() {
         databinding.signinviewmodel = signinviewmodel
 
 
+
         // ✅ Observe success or failure
         signinviewmodel.issuccessfull.observe(this) { isSuccess ->
             if (isSuccess) {
-                try {
-                    Log.d(TAG, "Sign-in successful, navigating to Business_Info Activity")
+                signinviewmodel.loginresponce.value?.user?.let { user ->
+                    try {
+                        Log.d(TAG, "Sign-in successful, navigating to Business_Info Activity")
 
-                    val intent = Intent(this@SignIn, Business_Info::class.java)
-                    startActivity(intent)
-                    finish()
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error while navigating to Business_Info: ${e.localizedMessage}")
-                }
+                        val intent = Intent(this@SignIn, Business_Info::class.java)
+                        startActivity(intent)
+                        finish()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error while navigating to Business_Info: ${e.localizedMessage}")
+                    }
+                } ?: Log.e(TAG, "User data is null")
             }
         }
+
 
         // ✅ Observe error messages separately to prevent multiple Toasts
         signinviewmodel.errorMessage.observe(this) { errorMsg ->

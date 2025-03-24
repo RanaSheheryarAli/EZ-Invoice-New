@@ -30,6 +30,8 @@ class SigninViewmodel(application: Application) : AndroidViewModel(application) 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
 
+    private val _loginresponce = MutableLiveData<LoginResponse?>()
+    val loginresponce: LiveData<LoginResponse?> get() = _loginresponce
 
 
 
@@ -72,7 +74,7 @@ class SigninViewmodel(application: Application) : AndroidViewModel(application) 
                 return
             }
 
-            val request = LoginModel(email, password)
+            val request = LoginModel(email, password,)
             val call = api.signin1(request)
 
             call.enqueue(object : Callback<ResponseBody?> {
@@ -93,8 +95,11 @@ class SigninViewmodel(application: Application) : AndroidViewModel(application) 
                             if (loginResponse.success == "Signin successful") {
                                 // ✅ Save Token to SharedPreferences
 
+                                _loginresponce.value=loginResponse
 
                                 sharedPreferences.edit().putString("auth_token", loginResponse.token).apply()
+
+                                sharedPreferences.edit().putString("user_id", loginResponse.user.id).apply()
 
                                 Log.d("Signin", "Signin Successful")
                                 _errorMessage.value = "Signin Successful"

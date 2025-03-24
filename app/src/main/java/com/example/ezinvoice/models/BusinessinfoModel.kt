@@ -14,6 +14,7 @@ package com.example.ezinvoice.models
 //    indices = [Index(value = ["userId"])]
 //)
 data class BusinessInfo(
+    val _id: String,
     val userId: String, // Foreign key reference to User table
     val name: String,
     val ownername: String,
@@ -27,5 +28,11 @@ data class BusinessInfo(
     val numberformate: String,
     val dateformate: String,
     val signature: String?,
-    val categoryIds:List<String>?
+    val categoryIds:List<String>?,
+    val createdAt: String
+)
+
+data class BusinessResponse(
+    val message: String,
+    val business: BusinessInfo,
 )

@@ -1,10 +1,14 @@
 package com.example.ezinvoice
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,9 +28,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
-
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         enableEdgeToEdge()
 
@@ -41,8 +42,23 @@ class MainActivity : AppCompatActivity() {
 
         dataBinding.bottomnavigation.setupWithNavController(navController)
 
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        val businessname = sharedPreferences.getString("business_name", null)
+        val email = sharedPreferences.getString("business_email", null)
 
+
+
+        val navHeaderView: View = dataBinding.navigationView.getHeaderView(0)
+
+        val compnayname:TextView=navHeaderView.findViewById(R.id.textViewCompanyName)
+        val compnayemail:TextView=navHeaderView.findViewById(R.id.textViewEmail)
+
+
+        compnayname.text=businessname
+        compnayemail.text=email
         // Open Navigation Drawer when menu button is clicked
+
         dataBinding.headerLayout.menuButton.setOnClickListener {
             if (dataBinding.main.isDrawerOpen(GravityCompat.END)) {
                 dataBinding.main.closeDrawer(GravityCompat.END)

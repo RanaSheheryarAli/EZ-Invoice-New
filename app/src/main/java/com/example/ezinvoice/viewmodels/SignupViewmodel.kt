@@ -53,6 +53,7 @@ class SignupViewmodel : ViewModel() {
         val email = EmailLD.value?.trim() ?: ""
         val password = passwordLD.value?.trim() ?: ""
 
+
         attemptedSignup = true
         Log.d("Signup", "Username: $username, Email: $email, Password: $password")
 
@@ -74,7 +75,7 @@ class SignupViewmodel : ViewModel() {
             }
 
 
-            val request = AppUser("", username, email, password)
+            val request = AppUser("", username, email, password,"")
 
             // Convert request to JSON and log it
             val gson = com.google.gson.Gson()

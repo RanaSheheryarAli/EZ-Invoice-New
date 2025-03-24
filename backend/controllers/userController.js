@@ -4,9 +4,9 @@ const jwt = require('jsonwebtoken');
 
 // Signup Controller
 const signup = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password,businessID } = req.body;
 
-  if (!username || !email || !password) {
+  if (!username || !email || !password ) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
@@ -18,10 +18,10 @@ const signup = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password: hashedPassword });
+    const newUser = new User({ username, email, password: hashedPassword,businessID:businessID });
     await newUser.save();
 
-    res.status(201).send({ message: 'User created successfully' });
+    res.status(201).send({ message: 'User created successfully' ,newUser});
   } catch (error) {
     res.status(500).send({ message: 'Error creating user', error });
   }
@@ -59,6 +59,7 @@ const signin = async (req, res) => {
         sussess:true,
         username: user.username,
         email: user.email,
+        businessID:user.businessID
       },
       token,
     });
