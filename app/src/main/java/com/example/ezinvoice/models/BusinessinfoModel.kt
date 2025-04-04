@@ -1,18 +1,6 @@
 package com.example.ezinvoice.models
 
 
-//@Entity(
-//    tableName = "business_info",
-//    foreignKeys = [
-//        ForeignKey(
-//            entity = AppUser::class,
-//            parentColumns = ["userId"],
-//            childColumns = ["userId"],
-//            onDelete = ForeignKey.CASCADE // Deletes business info if the user is deleted
-//        )
-//    ],
-//    indices = [Index(value = ["userId"])]
-//)
 data class BusinessInfo(
     val _id: String,
     val userId: String, // Foreign key reference to User table

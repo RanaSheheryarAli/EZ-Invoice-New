@@ -6,6 +6,7 @@ import com.example.ezinvoice.models.LoginModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
@@ -15,6 +16,7 @@ interface BusinessinfoApi {
     fun createbusiness(@Body user: BusinessInfo): Call<ResponseBody>
 
 
-//    @POST("get-business/:userId")
-//    fun getbusiness()
+    @GET("get-business/{userId}")
+    fun getbusiness(@retrofit2.http.Path("userId") userId: String?): Call<BusinessInfo>
+
 }

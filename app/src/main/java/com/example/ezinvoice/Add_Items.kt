@@ -1,7 +1,9 @@
 package com.example.ezinvoice
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Build
@@ -14,17 +16,28 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ezinvoice.adapters.CategoryAdapter
+import com.example.ezinvoice.apis.addcatageoryapi
 import com.example.ezinvoice.databinding.ActivityAddItemsBinding
 import com.example.ezinvoice.databinding.CameraBottomSheetBinding
 import com.example.ezinvoice.databinding.CatagoryBottomSheetBinding
+import com.example.ezinvoice.models.CatagoryModel
+import com.example.ezinvoice.models.CatagoryResponce
+import com.example.ezinvoice.network.RetrofitClient
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.jetbrains.annotations.Async.Execute
 import java.io.IOException
 
 class Add_Items : AppCompatActivity() {
@@ -45,6 +58,9 @@ class Add_Items : AppCompatActivity() {
     private lateinit var mediaPlayer: MediaPlayer
     private var intentData = ""
 
+    private lateinit var adapter: CategoryAdapter
+
+    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -54,7 +70,7 @@ class Add_Items : AppCompatActivity() {
             window.statusBarColor = getColor(R.color.status_bar_color)
         }
 
-        
+
         databinding = DataBindingUtil.setContentView(this, R.layout.activity_add_items)
 
         // Initialize MediaPlayer with beep sound
@@ -73,20 +89,21 @@ class Add_Items : AppCompatActivity() {
 
 
 
-            databinding.addcatagoryspinner .setOnClickListener {
-               bottomSheetDialogforCatagory.show()
-            }
+        databinding.addcatagoryspinner.setOnClickListener {
+            bottomSheetDialogforCatagory.show()
 
+        }
 
 
         // Register camera permission request callback
-        requestCamera = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                showBottomSheetDialog() // Permission granted, open scanner
-            } else {
-                handlePermissionDenied()
+        requestCamera =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) {
+                    showBottomSheetDialog() // Permission granted, open scanner
+                } else {
+                    handlePermissionDenied()
+                }
             }
-        }
 
         // Set header title
         databinding.headerLayout.tvTitle.text = "Add Items"
@@ -99,8 +116,6 @@ class Add_Items : AppCompatActivity() {
                 requestCamera.launch(android.Manifest.permission.CAMERA)
             }
         }
-
-
 
 
         // Pricing button click logic
@@ -137,9 +152,17 @@ class Add_Items : AppCompatActivity() {
     // Handle denied permission
     private fun handlePermissionDenied() {
         if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
-            Toast.makeText(this, "Camera permission is required for scanning barcodes", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Camera permission is required for scanning barcodes",
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
-            Toast.makeText(this, "Permission not granted. Please enable it in settings.", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "Permission not granted. Please enable it in settings.",
+                Toast.LENGTH_LONG
+            ).show()
             openAppSettings()
         }
     }
@@ -174,7 +197,8 @@ class Add_Items : AppCompatActivity() {
 
         barcodeDetector.setProcessor(object : Detector.Processor<Barcode> {
             override fun release() {
-                Toast.makeText(applicationContext, "Barcode scanner stopped", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Barcode scanner stopped", Toast.LENGTH_SHORT)
+                    .show()
             }
 
             @SuppressLint("SetTextI18n")
@@ -214,7 +238,9 @@ class Add_Items : AppCompatActivity() {
                 }
             }
 
-            override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {}
+            override fun surfaceChanged(holder: SurfaceHolder,format: Int, width: Int, height: Int) {
+            }
+
             override fun surfaceDestroyed(holder: SurfaceHolder) {
                 cameraSource.stop()
             }
@@ -227,11 +253,58 @@ class Add_Items : AppCompatActivity() {
         bottomSheetDialogforCatagory.setContentView(bottomSheetBindingforCatagory.root)
 
 
+        bottomSheetBindingforCatagory.showcategoryitems.layoutManager = LinearLayoutManager(this)
+        adapter = CategoryAdapter()
+        bottomSheetBindingforCatagory.showcategoryitems.adapter = adapter
 
-        bottomSheetBindingforCatagory.btncross.setOnClickListener{
+        fetchCategories()
+
+        bottomSheetBindingforCatagory.addnewcategory.setOnClickListener {
+            val intent = Intent(this@Add_Items, AddCategory::class.java)
+            startActivity(intent)
+        }
+
+        bottomSheetBindingforCatagory.btncross.setOnClickListener {
             bottomSheetDialogforCatagory.dismiss()
         }
     }
 
 
+    private fun fetchCategories() {
+        val apiService=RetrofitClient.createService(addcatageoryapi::class.java)
+
+        sharedPreferences =
+            application.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        val businessId = sharedPreferences.getString("business-id", "")
+         // Replace with the actual businessId
+
+        lifecycleScope.launch {
+            try {
+
+
+                Log.e("API_ERROR", "Business id :${businessId}")
+
+                val response =apiService.getAllCategory(businessId)
+                if (response != null) {
+                    if (response.body() != null) {
+                        val categories:List<CatagoryResponce> = response.body()!!
+
+                        Log.e("API_ERROR", "Fetch categories")
+                        Log.e("API_ERROR", "Fetch categories: ${response.body()}")
+
+                        adapter.setCategories(categories) // ✅ Update adapter
+                    } else {
+                        Log.e("API_ERROR", "Failed to fetch  categories")
+                    }
+                }
+
+            } catch (e: Exception) {
+                Log.e("API_ERROR", "Exception: ${e.message}")
+            }
+        }
+    }
+
 }
+
+
+

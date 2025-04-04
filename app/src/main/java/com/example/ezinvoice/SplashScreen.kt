@@ -32,7 +32,7 @@ class SplashScreen : AppCompatActivity() {
         window.decorView.postDelayed({
             val nextActivity = when {
                 authToken == null -> SignIn::class.java
-                businessToken == null -> Business_Info::class.java
+                businessToken == "" -> Business_Info::class.java
                 else -> MainActivity::class.java
             }
             startActivity(Intent(this, nextActivity))
