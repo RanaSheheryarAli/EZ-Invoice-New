@@ -24,6 +24,8 @@ class StartScreen : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //
+        //
         Log.e("TAG", "onCreate: testing.......")
     }
 }
