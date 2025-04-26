@@ -23,7 +23,7 @@ class StartScreen : AppCompatActivity() {
             val intent=Intent(this@StartScreen,Signup::class.java)
             startActivity(intent)
         }
-
+// mohsin
         Log.e("TAG", "onCreate: testing.......", )
     }
 }
