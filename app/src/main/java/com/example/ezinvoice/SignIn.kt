@@ -1,7 +1,9 @@
 package com.example.ezinvoice
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,15 +16,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.ezinvoice.databinding.ActivitySignInBinding
-import com.example.ezinvoice.models.AppUser
 import com.example.ezinvoice.viewmodels.SigninViewmodel
-import com.example.ezinvoice.viewmodels.SignupViewmodel
 
 class SignIn : AppCompatActivity() {
 
     lateinit var databinding: ActivitySignInBinding
     private lateinit var signinviewmodel: SigninViewmodel
-    private lateinit var appuser: AppUser
+
+
+    private lateinit var sharedPreferences: SharedPreferences
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,25 +37,47 @@ class SignIn : AppCompatActivity() {
             insets
         }
 
-        Log.e("TAG", "onCreate:  testing by sherirririr", )
+        val TAG = "sign.kt"
 
-
-
+        sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+//        val businessToken = sharedPreferences.getString("business_token", null)
 
         signinviewmodel = ViewModelProvider(this)[SigninViewmodel::class.java]
         databinding.lifecycleOwner = this
         databinding.signinviewmodel = signinviewmodel
 
 
+
         // ✅ Observe success or failure
         signinviewmodel.issuccessfull.observe(this) { isSuccess ->
             if (isSuccess) {
+                signinviewmodel.loginResponse.value?.user?.let { user ->
+                    try {
 
-                val intent = Intent(this@SignIn, Business_Info::class.java)
-                startActivity(intent)
-                finish()
+                        Log.d(TAG, "Sign-in successful, navigating to Business_Info Activity")
+
+//                        Log.e(TAG, "check business token: ${businessToken} ")
+
+                        val business_tocken = signinviewmodel.loginResponse.value!!.user.businessID
+                        if (business_tocken == "") {
+                            Log.d("check business error", "Sign-in successful, navigating to Business_Info Activity")
+                            val intent = Intent(this@SignIn, Business_Info::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Log.d("check Main error", "Sign-in successful, navigating to Main Activity")
+                            val intent = Intent(this@SignIn, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+
+                    } catch (e: Exception) {
+                        Log.e("check business error after catch", "Error while navigating to Business_Info: ${e.localizedMessage}")
+                    }
+                } ?: Log.e(TAG, "User data is null")
             }
         }
+
 
         // ✅ Observe error messages separately to prevent multiple Toasts
         signinviewmodel.errorMessage.observe(this) { errorMsg ->
@@ -61,6 +85,7 @@ class SignIn : AppCompatActivity() {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
 
                 signinviewmodel.clearError()  // Clear error after showing
+
             }
         }
 

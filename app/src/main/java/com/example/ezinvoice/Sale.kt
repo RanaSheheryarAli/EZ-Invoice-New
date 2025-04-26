@@ -27,7 +27,7 @@ class Sale : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        databinding.headerLayout.tvTitle.text="New Invoice"
+        databinding.tvTitle.text="New Invoice"
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = getColor(R.color.status_bar_color)

@@ -11,19 +11,21 @@ import androidx.databinding.DataBindingUtil
 import com.example.ezinvoice.databinding.ActivityStartScreenBinding
 
 class StartScreen : AppCompatActivity() {
-    lateinit var databinding:ActivityStartScreenBinding
+    lateinit var databinding: ActivityStartScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       databinding=DataBindingUtil.setContentView(this,R.layout.activity_start_screen)
+        databinding = DataBindingUtil.setContentView(this, R.layout.activity_start_screen)
         databinding.btnGetStarted.setOnClickListener {
-            val intent= Intent(this@StartScreen,Signup::class.java)
+            val intent = Intent(this@StartScreen, Signup::class.java)
             startActivity(intent)
         }
-        databinding.tvSignIn.setOnClickListener{
-            val intent=Intent(this@StartScreen,Signup::class.java)
+        databinding.tvSignIn.setOnClickListener {
+            val intent = Intent(this@StartScreen, Signup::class.java)
             startActivity(intent)
         }
-// mohsin develop
-        Log.e("TAG", "onCreate: testing.......", )
+
+        //mohsin
+        //testing
+        Log.e("TAG", "onCreate: testing.......")
     }
 }

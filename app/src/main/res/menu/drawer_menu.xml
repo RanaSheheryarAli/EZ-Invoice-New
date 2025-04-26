@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_businessinfo"
+        android:icon="@drawable/business_24"
+        android:title="Business info" />
+    <item
+        android:id="@+id/nav_sync"
+        android:icon="@drawable/sync"
+        android:title="Sync" />
+    <item
+        android:id="@+id/nav_report"
+        android:icon="@drawable/booking"
+        android:title="Report" />
+    <item
+        android:id="@+id/nav_items"
+        android:icon="@drawable/items"
+        android:title="Items" />
+    <item
+        android:id="@+id/nav_share"
+        android:icon="@drawable/share_xml"
+        android:title="Share App" />
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/logout_24"
+        android:title="Logout" />
+</menu>

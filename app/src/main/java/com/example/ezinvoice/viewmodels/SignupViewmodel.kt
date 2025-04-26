@@ -4,8 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.ezinvoice.apis.AuthApi
 import com.example.ezinvoice.models.AppUser
+import com.example.ezinvoice.network.RetrofitClient
+import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,22 +23,14 @@ class SignupViewmodel : ViewModel() {
     val UsernameLD = MutableLiveData<String>("")
     val EmailLD = MutableLiveData<String>("")
     val passwordLD = MutableLiveData<String>("")
-
     var attemptedSignup = false
-
-
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
-
     private val _issuccessfull = MutableLiveData(false)
     val issuccessfull: LiveData<Boolean> get() = _issuccessfull
 
     // Retrofit setup
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("http://localhost:5000/api/auth")
-//        .baseUrl("http://192.168.100.45:5000/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    private val api = RetrofitClient.createService(AuthApi::class.java)
 
     // Email validation regex
     private fun isValidEmail(email: String): Boolean {
@@ -45,14 +40,12 @@ class SignupViewmodel : ViewModel() {
         return emailPattern.matcher(email).matches()
     }
 
-    private val api = retrofit.create(AuthApi::class.java)
 
     // Signup button click handler
     fun onSignupClick() {
         val username = UsernameLD.value?.trim() ?: ""
         val email = EmailLD.value?.trim() ?: ""
         val password = passwordLD.value?.trim() ?: ""
-
         attemptedSignup = true
         Log.d("Signup", "Username: $username, Email: $email, Password: $password")
 
@@ -64,7 +57,6 @@ class SignupViewmodel : ViewModel() {
                 _issuccessfull.value = false
                 return
             }
-
             // Validate password length (minimum 6 characters)
             if (password.length < 6) {
                 _errorMessage.value = "Password must be at least 6 characters!"
@@ -72,40 +64,38 @@ class SignupViewmodel : ViewModel() {
                 _issuccessfull.value = false
                 return
             }
+            val SignuprequestModel = AppUser("", username, email, password, "")
+            viewModelScope.launch {
+                try {
+                    val response = api.signup1(SignuprequestModel)
 
-
-            val request = AppUser(0,username, email, password)
-
-            // Convert request to JSON and log it
-            val gson = com.google.gson.Gson()
-            Log.d("Signup", "JSON Sent: ${gson.toJson(request)}")
-
-            val call = api.signup(request)
-            call.enqueue(object : Callback<ResponseBody?> { override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                     if (response.isSuccessful) {
-                        _errorMessage.value="User Created"
+                        _errorMessage.value = "User Created"
                         Log.d("Signup", "Signup Successful")
                         _issuccessfull.value = true
                     } else {
-                        _errorMessage.value=response.errorBody()?.string()
+                        _errorMessage.value = "Signup Failed: ${response.message()}"
                         Log.d("Signup", "Signup Failed: ${response.errorBody()?.string()}")
                         _issuccessfull.value = false
                     }
-                }
-
-                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                    _errorMessage.value=t.message
-                    Log.d("Signup", "Network Error: ${t.message}")
+                } catch (e: Exception) {
+                    _errorMessage.value = e.message ?: "An unknown error occurred"
+                    Log.d("Signup", "Signup Failed: ${e.message}")
                     _issuccessfull.value = false
                 }
-            })
+
+            }
+
         } else {
-            _errorMessage.value = "All fields are Required"
-            _issuccessfull.value = false
+                _errorMessage.value = "All fields are Required"
+                _issuccessfull.value = false
+            }
         }
-    }
-    fun clearError() {
-        _errorMessage.value = null
+
+        fun clearError() {
+            _errorMessage.value = null
+        }
+
     }
 
-}
+
