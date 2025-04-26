@@ -6,17 +6,14 @@ const createSubcategory = async (req, res) => {
     try {
         const { categoryId, name } = req.body;
 
-        // Validate if categoryId exists
         const category = await Category.findById(categoryId);
         if (!category) {
             return res.status(404).json({ error: "Category not found" });
         }
 
-        // Create new subcategory
         const newSubcategory = new Subcategory({ categoryId, name });
         await newSubcategory.save();
 
-        // Update the category to include the subcategory
         category.subcategories.push(newSubcategory._id);
         await category.save();
 
@@ -26,18 +23,31 @@ const createSubcategory = async (req, res) => {
     }
 };
 
-// Get all subcategories for a specific category
+// ✅ Updated Get all subcategories for a specific category
 const getSubcategoriesByCategory = async (req, res) => {
     try {
         const { categoryId } = req.params;
 
-        const subcategories = await Subcategory.find({ categoryId }).populate("products");
+        const subcategories = await Subcategory.find({ categoryId }).lean(); // Important: .lean()
+
         if (!subcategories.length) {
             return res.status(404).json({ error: "No subcategories found" });
         }
 
-        res.status(200).json(subcategories);
+        // ✅ Transform products array to only IDs
+        const subcategoriesWithProductIds = subcategories.map(subcat => ({
+            ...subcat,
+            products: subcat.products.map(product => {
+                if (typeof product === 'object' && product._id) {
+                    return product._id.toString();
+                }
+                return product.toString(); // If already ID
+            })
+        }));
+
+        res.status(200).json(subcategoriesWithProductIds);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: "Server error" });
     }
 };
@@ -55,7 +65,7 @@ const getSubcategoryById = async (req, res) => {
         res.status(200).json(subcategory);
     } 
     catch (error) {
-        res.status(500).json({ error: "Server error ha " });
+        res.status(500).json({ error: "Server error" });
     }
 };
 

@@ -126,6 +126,7 @@ class BusinesssinfoViewmodel(application: Application) : AndroidViewModel(applic
 
                             businessResponse?.business?.let {
                                 sharedPreferences.edit().putString("business_token", it._id).apply()
+                                sharedPreferences.edit().putString("business-id", it._id).apply()
                                 sharedPreferences.edit().putString("business_name", it.name).apply()
                                 sharedPreferences.edit().putString("business_email", it.email).apply()
 

@@ -6,6 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     private const val BASE_URL = "http://localhost:5000/api/" // Use 10.0.2.2 for emulator
+//private const val BASE_URL = "http://192.168.100.58:5000/api/"
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()

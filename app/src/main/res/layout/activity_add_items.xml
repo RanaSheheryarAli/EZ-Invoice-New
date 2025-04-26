@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="viewmodel"
+            type="com.example.ezinvoice.viewmodels.AddProductsViewmodel" />
 
     </data>
 
@@ -18,7 +21,7 @@
 
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:background="#DCEDEF"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,6 +50,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/rounded_box_outline_edt"
                         android:gravity="center_vertical"
+                        android:padding="8dp"
                         android:orientation="horizontal">
 
                         <EditText
@@ -56,18 +60,12 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_box"
                             android:hint="Item Name"
+                            android:text="@={viewmodel.nameMLD}"
                             android:textColor="@color/primery_input_text"
                             android:textColorHint="@color/scendory_input_text"
                             android:textSize="12sp" />
 
-                        <Button
-                            android:id="@+id/btv_select_unit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="#DCEDEF"
-                            android:text="Select Unit"
-                            android:textColor="@color/imp_text_color"
-                            android:textSize="6sp" />
+
 
 
                     </LinearLayout>
@@ -88,6 +86,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_box"
                             android:hint="Item Code / Barcode"
+                            android:text="@={viewmodel.barcodeMLD}"
                             android:textColor="@color/primery_input_text"
                             android:textColorHint="@color/scendory_input_text"
                             android:textSize="12sp" />
@@ -149,6 +148,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_box"
                             android:hint="Add Catagory"
+                            android:text="@={viewmodel.catagoryMLD}"
                             android:textColor="@color/primery_input_text"
                             android:textColorHint="@color/scendory_input_text"
                             android:textSize="14sp" />
@@ -173,6 +173,54 @@
 
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:padding="3dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edt_add_subcatagory"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_box"
+                            android:hint="Add SubCatagory"
+                            android:text="@={viewmodel.subcatagoryMLD}"
+                            android:textColor="@color/primery_input_text"
+                            android:textColorHint="@color/scendory_input_text"
+                            android:textSize="14sp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_box_outline_edt"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:src="@drawable/arrow_down"
+                                android:id="@+id/addsubcatagoryspinner"
+                                android:layout_width="45dp"
+                                android:layout_height="25dp"
+                                android:hint="Item Category"
+                                android:padding="8dp"
+                                android:spinnerMode="dropdown" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+
+
+
 
 
                 </LinearLayout>
@@ -274,6 +322,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/rounded_box"
                             android:hint="Sale Price"
+                            android:text="@={viewmodel.salepriceMLD}"
                             android:padding="12dp"
                             android:textSize="12sp"
                             android:textColor="#333333"
@@ -299,6 +348,7 @@
                             android:background="@drawable/rounded_box"
                             android:hint="Disc. On Sale Price"
                             android:padding="12dp"
+                            android:text="@={viewmodel.dis_sale_priceMLD}"
                             android:textSize="12sp"
                             android:textColor="#333333"
                             android:textColorHint="#B0B0B0" />
@@ -346,6 +396,7 @@
                             android:background="@drawable/rounded_box"
                             android:hint="Purchase Price"
                             android:padding="12dp"
+                            android:text="@={viewmodel.purchaseMLD}"
                             android:textSize="12sp"
                             android:textColor="#333333"
                             android:textColorHint="#B0B0B0" />
@@ -393,6 +444,7 @@
                             android:background="@drawable/rounded_box"
                             android:hint="Taxe"
                             android:padding="12dp"
+                            android:text="@={viewmodel.texesMLD}"
                             android:textSize="12sp"
                             android:textColor="#333333"
                             android:textColorHint="#B0B0B0" />
@@ -418,11 +470,13 @@
                         android:layout_height="wrap_content"
                         android:hint="Opening Stock"
                         app:endIconMode="none"
+
                         app:helperText="Ex: 200">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:text="@={viewmodel.openingstockMLD}"
                             android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -441,6 +495,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="As of Date"
+
                             app:endIconDrawable="@drawable/calendar_24"
                             app:endIconMode="custom"
                             app:helperText="12/11/2024">
@@ -448,6 +503,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:text="@={viewmodel.dateMLD}"
                                 android:inputType="date" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -458,12 +514,14 @@
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:hint="At Price/Unit"
+
                             app:endIconMode="none"
                             app:helperText="Ex: 2,000">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:text="@={viewmodel.unit_priceMLD}"
                                 android:inputType="numberDecimal" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
@@ -482,12 +540,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="Min Stock Qty"
+
                             app:endIconMode="none"
                             app:helperText="Ex: 5">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:text="@={viewmodel.min_stockMLD}"
                                 android:inputType="number" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -498,10 +558,12 @@
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:hint="Item Location"
+
                             app:endIconMode="none">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
+                                android:text="@={viewmodel.locationMLD}"
                                 android:layout_height="wrap_content" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>

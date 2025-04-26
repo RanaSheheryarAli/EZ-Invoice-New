@@ -10,16 +10,32 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ezinvoice.R
 import com.example.ezinvoice.models.CatagoryResponce
 
-class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter(
+    private val onSelect: (CatagoryResponce) -> Unit
+) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
-    private var categoryList: List<CatagoryResponce> = listOf()
+    private var categoryList: List<CatagoryResponce> = emptyList()
+    private var selectedPosition = RecyclerView.NO_POSITION
 
-    class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val categoryName: TextView = view.findViewById(R.id.category_name)
-        val checkBox: CheckBox = view.findViewById(R.id.category1)  // Ensure this ID matches the XML layout
+        val checkBox: CheckBox    = view.findViewById(R.id.category_checkbox) // matches your XML
+
+        init {
+            view.setOnClickListener {
+                // use adapterPosition instead of bindingAdapterPosition
+                val previous = selectedPosition
+                selectedPosition = adapterPosition
+                notifyItemChanged(previous)
+                notifyItemChanged(selectedPosition)
+                onSelect(categoryList[selectedPosition])
+            }
+            checkBox.setOnClickListener { view.performClick() }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
+        // inflate the exact XML you showed: ecvcategoryitems.xml
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.ecvcategoryitems, parent, false)
         return CategoryViewHolder(view)
@@ -27,28 +43,27 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val category = categoryList[position]
-        holder.categoryName.text = category.name// Directly access `name` instead of `category.name`
-        holder.checkBox.isChecked = false // Default state
+        holder.categoryName.text = category.name
+        holder.checkBox.isChecked = (position == selectedPosition)
     }
 
     override fun getItemCount(): Int = categoryList.size
 
     fun setCategories(newCategories: List<CatagoryResponce>) {
-        val diffCallback = object : DiffUtil.Callback() {
+        val diff = object : DiffUtil.Callback() {
             override fun getOldListSize() = categoryList.size
             override fun getNewListSize() = newCategories.size
-
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return categoryList[oldItemPosition]._id == newCategories[newItemPosition]._id
-            }
-
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return categoryList[oldItemPosition] == newCategories[newItemPosition]
-            }
+            override fun areItemsTheSame(oldPos: Int, newPos: Int) =
+                categoryList[oldPos]._id == newCategories[newPos]._id
+            override fun areContentsTheSame(oldPos: Int, newPos: Int) =
+                categoryList[oldPos] == newCategories[newPos]
         }
-
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        val result = DiffUtil.calculateDiff(diff)
         categoryList = newCategories
-        diffResult.dispatchUpdatesTo(this)
+        selectedPosition = RecyclerView.NO_POSITION
+        result.dispatchUpdatesTo(this)
     }
+
+    fun getSelected(): CatagoryResponce? =
+        categoryList.getOrNull(selectedPosition)
 }
