@@ -46,6 +46,7 @@ class HomeFragment : Fragment() {
         }
         databinding.containerReports.setOnClickListener {
 
+
         }
 
         databinding.containerInventory.setOnClickListener{

@@ -1,21 +1,22 @@
 package com.example.ezinvoice.apis
 
 import com.example.ezinvoice.models.AppUser
+import com.example.ezinvoice.models.BusinessInfo
 import com.example.ezinvoice.models.LoginModel
-import com.example.ezinvoice.models.LoginResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-interface AuthApi {
-
+interface BusinessinfoApi {
     @Headers("Content-Type: application/json") // Ensure JSON format
-    @POST("auth/signup")
-    suspend fun signup1(@Body user: AppUser): Response<ResponseBody>
+    @POST("add-business")
+    fun createbusiness(@Body user: BusinessInfo): Call<ResponseBody>
 
-    @POST("auth/signin")
-    suspend fun signin1(@Body user: LoginModel): Response<LoginResponse>
+
+    @GET("get-business/{userId}")
+    fun getbusiness(@retrofit2.http.Path("userId") userId: String?): Call<BusinessInfo>
+
 }

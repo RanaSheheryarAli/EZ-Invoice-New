@@ -1,18 +1,21 @@
-package com.example.ezinvoice  // Change this to your actual package name
+package com.example.ezinvoice
 
 import android.content.Context
 import android.graphics.*
+import android.os.Build
 import android.os.Environment
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewParent
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 
 class SignatureView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null
-) : View(context, attrs) {
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
 
     private var path = Path()
     private var paint = Paint().apply {
@@ -21,9 +24,11 @@ class SignatureView @JvmOverloads constructor(
         style = Paint.Style.STROKE
         strokeCap = Paint.Cap.ROUND
         strokeJoin = Paint.Join.ROUND
+        isAntiAlias = true
     }
 
-    private var parentScrollView: ViewParent? = null
+    private var lastTouchX = 0f
+    private var lastTouchY = 0f
 
     init {
         setBackgroundColor(Color.WHITE)
@@ -35,18 +40,31 @@ class SignatureView @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        val touchX = event.x
+        val touchY = event.y
+
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                parent.requestDisallowInterceptTouchEvent(true)  // Disable scrolling
-                path.moveTo(event.x, event.y)
+                path.moveTo(touchX, touchY)
+                lastTouchX = touchX
+                lastTouchY = touchY
+                parent.requestDisallowInterceptTouchEvent(true)
             }
             MotionEvent.ACTION_MOVE -> {
-                path.lineTo(event.x, event.y)
+                val dx = Math.abs(touchX - lastTouchX)
+                val dy = Math.abs(touchY - lastTouchY)
+                if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+                    path.quadTo(lastTouchX, lastTouchY, (touchX + lastTouchX) / 2, (touchY + lastTouchY) / 2)
+                    lastTouchX = touchX
+                    lastTouchY = touchY
+                }
             }
             MotionEvent.ACTION_UP -> {
-                parent.requestDisallowInterceptTouchEvent(false)  // Enable scrolling
+                path.lineTo(lastTouchX, lastTouchY)
+                parent.requestDisallowInterceptTouchEvent(false)
             }
         }
+
         invalidate()
         return true
     }
@@ -56,28 +74,55 @@ class SignatureView @JvmOverloads constructor(
         invalidate()
     }
 
-    // Save signature as a transparent PNG
-    fun saveSignatureToFile(): String? {
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888) // ARGB supports transparency
-        val canvas = Canvas(bitmap)
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR) // Clear background
-        draw(canvas)
-
-        val directory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Signatures")
-        if (!directory.exists()) {
-            directory.mkdirs()
+    fun saveSignatureToFile(context: Context): String? {
+        if (width == 0 || height == 0) {
+            return null
         }
 
-        val file = File(directory, "signature_${System.currentTimeMillis()}.png")
         return try {
-            val outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Save with transparency
-            outputStream.flush()
-            outputStream.close()
-            file.absolutePath // Return saved file path
+            // Create bitmap
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply {
+                eraseColor(Color.TRANSPARENT)
+            }
+            val canvas = Canvas(bitmap)
+            draw(canvas)
+
+            // Get storage directory
+            val storageDir = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            } else {
+                File(Environment.getExternalStorageDirectory(), "Pictures")
+            }
+
+            // Create signatures directory if needed
+            val signaturesDir = File(storageDir, "Signatures").apply {
+                if (!exists()) {
+                    mkdirs()
+                }
+            }
+
+            // Create the file
+            val file = File(signaturesDir, "signature_${System.currentTimeMillis()}.png")
+
+            // Save the bitmap
+            FileOutputStream(file).use { out ->
+                if (!bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)) {
+                    return null
+                }
+                out.flush()
+            }
+
+            file.absolutePath
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
         } catch (e: Exception) {
             e.printStackTrace()
             null
         }
+    }
+
+    companion object {
+        private const val TOUCH_TOLERANCE = 4f
     }
 }
