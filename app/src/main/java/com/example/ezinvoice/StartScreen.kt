@@ -24,8 +24,6 @@ class StartScreen : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //mohsin
-        //testing
         Log.e("TAG", "onCreate: testing.......")
     }
 }
