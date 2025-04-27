@@ -56,6 +56,28 @@ const createProduct = async (req, res) => {
     }
 };
 
+// ✅ Get a product by Barcode
+const getProductByBarcode = async (req, res) => {
+    try {
+        const { barcode } = req.params;
+
+        if (!barcode) {
+            return res.status(400).json({ error: "Barcode is required" });
+        }
+
+        const product = await Product.findOne({ barcode });
+
+        if (!product) {
+            return res.status(404).json({ error: "Product not found with this barcode" });
+        }
+
+        res.status(200).json(product);
+
+    } catch (error) {
+        console.error("Error fetching product by barcode:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
 
 
 const getProductsByBusiness = async (req, res) => {
@@ -177,4 +199,4 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports = { createProduct, getProductsBySubcategory, getProductById, updateProduct, deleteProduct ,getProductsByBusiness};
+module.exports = { createProduct, getProductsBySubcategory, getProductById, updateProduct, deleteProduct ,getProductsByBusiness,getProductByBarcode};

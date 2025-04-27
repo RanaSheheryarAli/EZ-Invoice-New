@@ -1,10 +1,12 @@
 package com.example.ezinvoice
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.hardware.Camera
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -31,13 +33,13 @@ import com.example.ezinvoice.databinding.CameraBottomSheetBinding
 import com.example.ezinvoice.databinding.CatagoryBottomSheetBinding
 import com.example.ezinvoice.network.RetrofitClient
 import com.example.ezinvoice.viewmodels.AddProductsViewmodel
-import com.google.android.gms.vision.CameraSource
-import com.google.android.gms.vision.Detector
+import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.nio.ByteBuffer
 
 class Add_Items : AppCompatActivity() {
 
@@ -45,6 +47,11 @@ class Add_Items : AppCompatActivity() {
 
     private lateinit var addProductViewmodel: AddProductsViewmodel
 
+
+    private var camera: Camera? = null
+    private var isTorchOn = false
+    private var isBarcodeDetected = false
+    private var scanLineAnimator: ValueAnimator? = null
 
     private lateinit var bottomSheetBindingForCamera: CameraBottomSheetBinding
     private lateinit var bottomSheetDialogForCamera: BottomSheetDialog
@@ -59,7 +66,6 @@ class Add_Items : AppCompatActivity() {
 
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var barcodeDetector: BarcodeDetector
-    private lateinit var cameraSource: CameraSource
 
     private lateinit var requestCamera: ActivityResultLauncher<String>
     private lateinit var addSubCategoryLauncher: ActivityResultLauncher<Intent>
@@ -182,65 +188,188 @@ class Add_Items : AppCompatActivity() {
         }
     }
 
+
     private fun setupCameraBottomSheet() {
         bottomSheetBindingForCamera = CameraBottomSheetBinding.inflate(layoutInflater)
         bottomSheetDialogForCamera = BottomSheetDialog(this)
         bottomSheetDialogForCamera.setContentView(bottomSheetBindingForCamera.root)
-    }
 
-    private fun showCameraBottomSheet() {
-        initializeBarcodeScanner()
-        initializeCameraSource()
-        bottomSheetDialogForCamera.show()
-    }
+        // Add Torch Button Click
+        bottomSheetBindingForCamera.torchbtn.setOnClickListener {
+            toggleFlashlight()
+        }
 
-    private fun initializeBarcodeScanner() {
-        barcodeDetector = BarcodeDetector.Builder(this)
-            .setBarcodeFormats(Barcode.ALL_FORMATS)
-            .build()
-
-        barcodeDetector.setProcessor(object : Detector.Processor<Barcode> {
-            override fun release() {
-                Toast.makeText(applicationContext, "Barcode scanner stopped", Toast.LENGTH_SHORT).show()
-            }
-
-            @SuppressLint("SetTextI18n")
-            override fun receiveDetections(detections: Detector.Detections<Barcode>) {
-                val barcodes = detections.detectedItems
-                if (barcodes.size() != 0) {
-                    val scannedData = barcodes.valueAt(0).displayValue
-                    runOnUiThread {
-                        mediaPlayer.start()
-                        intentData = scannedData
-                        databinding.edtBarcode.setText(intentData)
-                        bottomSheetDialogForCamera.dismiss()
-                    }
-                }
-            }
-        })
-    }
-
-    private fun initializeCameraSource() {
-        cameraSource = CameraSource.Builder(this, barcodeDetector)
-            .setRequestedPreviewSize(1920, 1080)
-            .setAutoFocusEnabled(true)
-            .build()
-
+        // Setup surface view callback
         bottomSheetBindingForCamera.surfaceview.holder.addCallback(object : SurfaceHolder.Callback {
             @SuppressLint("MissingPermission")
             override fun surfaceCreated(holder: SurfaceHolder) {
                 try {
-                    cameraSource.start(bottomSheetBindingForCamera.surfaceview.holder)
+                    camera = Camera.open()
+                    camera?.setDisplayOrientation(90)
+
+                    val params = camera?.parameters
+                    params?.focusMode = Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE
+                    camera?.parameters = params
+
+                    camera?.setPreviewDisplay(holder)
+                    camera?.startPreview()
+
+                    initializeBarcodeDetector()
+
+                    bottomSheetBindingForCamera.barcodeOverlay.post {
+                        startScanLineAnimation()
+                    }
+
+
                 } catch (e: IOException) {
                     e.printStackTrace()
+                    Toast.makeText(this@Add_Items, "Error opening camera", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {}
+
             override fun surfaceDestroyed(holder: SurfaceHolder) {
-                cameraSource.stop()
+                releaseCamera()
             }
         })
+    }
+
+
+    private fun showCameraBottomSheet() {
+        bottomSheetDialogForCamera.show()
+    }
+
+
+
+
+    private fun initializeBarcodeDetector() {
+        barcodeDetector = BarcodeDetector.Builder(this)
+            .setBarcodeFormats(Barcode.ALL_FORMATS)
+            .build()
+
+        if (!barcodeDetector.isOperational) {
+            Toast.makeText(this, "Barcode Detector not ready", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        camera?.setPreviewCallback { data, cam ->
+
+            if (isBarcodeDetected) return@setPreviewCallback
+
+            val parameters = cam.parameters
+            val previewWidth = parameters.previewSize.width
+            val previewHeight = parameters.previewSize.height
+
+            val frame = Frame.Builder()
+                .setImageData(ByteBuffer.wrap(data), previewWidth, previewHeight, android.graphics.ImageFormat.NV21)
+                .build()
+
+            val barcodes = barcodeDetector.detect(frame)
+
+            if (barcodes.size() > 0) {
+                val barcode = barcodes.valueAt(0)
+
+                val scanningBox = bottomSheetBindingForCamera.barcodeOverlay.getFrameRect()
+
+                if (scanningBox != null) {
+                    val surfaceWidth = bottomSheetBindingForCamera.surfaceview.width
+                    val surfaceHeight = bottomSheetBindingForCamera.surfaceview.height
+
+                    val scaleX = surfaceWidth.toFloat() / previewHeight.toFloat() // because rotated
+                    val scaleY = surfaceHeight.toFloat() / previewWidth.toFloat()
+
+                    val centerX = (barcode.boundingBox.centerY() * scaleX).toInt()
+                    val centerY = (barcode.boundingBox.centerX() * scaleY).toInt()
+
+                    if (scanningBox.contains(centerX, centerY)) {
+                        runOnUiThread {
+                            mediaPlayer.start()
+                            isBarcodeDetected = true
+                            databinding.edtBarcode.setText(barcode.displayValue)
+                            stopScanLineAnimation()
+                            releaseCamera()
+                            bottomSheetDialogForCamera.dismiss()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private fun releaseCamera() {
+        try {
+            stopScanLineAnimation()
+            camera?.stopPreview()
+            camera?.setPreviewCallback(null)
+            camera?.release()
+            camera = null
+            isTorchOn = false
+            isBarcodeDetected = false
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+
+    private fun stopScanLineAnimation() {
+        scanLineAnimator?.cancel()
+        scanLineAnimator = null
+        bottomSheetBindingForCamera.scanningLine.visibility = View.INVISIBLE
+    }
+
+    private fun toggleFlashlight() {
+        camera?.let {
+            val params = it.parameters
+            if (!isTorchOn) {
+                params.flashMode = Camera.Parameters.FLASH_MODE_TORCH
+                isTorchOn = true
+            } else {
+                params.flashMode = Camera.Parameters.FLASH_MODE_OFF
+                isTorchOn = false
+            }
+            it.parameters = params
+            it.startPreview()
+        } ?: Toast.makeText(this, "Camera not ready", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun startScanLineAnimation() {
+        val scanningBox = bottomSheetBindingForCamera.barcodeOverlay.getFrameRect()
+
+        if (scanningBox == null) {
+            bottomSheetBindingForCamera.scanningLine.visibility = View.INVISIBLE
+            return
+        }
+
+        val surfaceViewTop = bottomSheetBindingForCamera.surfaceview.top
+        val absoluteTop = surfaceViewTop + scanningBox.top
+        val absoluteBottom = surfaceViewTop + scanningBox.bottom
+
+        val layoutParams = bottomSheetBindingForCamera.scanningLine.layoutParams
+        layoutParams.width = scanningBox.width()
+        bottomSheetBindingForCamera.scanningLine.layoutParams = layoutParams
+
+        bottomSheetBindingForCamera.scanningLine.x = scanningBox.left.toFloat()
+        bottomSheetBindingForCamera.scanningLine.y = absoluteTop.toFloat()
+
+        bottomSheetBindingForCamera.scanningLine.visibility = View.VISIBLE
+
+        scanLineAnimator?.cancel()
+
+        scanLineAnimator = ValueAnimator.ofFloat(
+            absoluteTop.toFloat(),
+            absoluteBottom.toFloat()
+        ).apply {
+            duration = 2000
+            repeatMode = ValueAnimator.RESTART
+            repeatCount = ValueAnimator.INFINITE
+
+            addUpdateListener { animation ->
+                val animatedValue = animation.animatedValue as Float
+                bottomSheetBindingForCamera.scanningLine.y = animatedValue
+            }
+
+            start()
+        }
     }
 
     private fun setupCategoryBottomSheet() {
@@ -298,6 +427,7 @@ class Add_Items : AppCompatActivity() {
             bottomSheetDialogForSubCategory.dismiss()
         }
     }
+
 
     private fun fetchCategories() {
         val apiService = RetrofitClient.createService(addcatageoryapi::class.java)

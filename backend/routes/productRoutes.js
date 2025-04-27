@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createProduct, getProductsBySubcategory, getProductById, updateProduct, deleteProduct, getProductsByBusiness } = require("../controllers/productController");
+const { createProduct, getProductsBySubcategory, getProductById, updateProduct, deleteProduct, getProductsByBusiness,getProductByBarcode } = require("../controllers/productController");
 
 router.post("/create-product", createProduct);
 router.get("/get-products/:subcategoryId", getProductsBySubcategory);
@@ -10,5 +10,8 @@ router.delete("/delete-product/:productId", deleteProduct);
 
 // ✅ New route for fetching all products by business
 router.get("/get-products-by-business/:businessId", getProductsByBusiness);
+
+router.get("/get-product-by-barcode/:barcode", getProductByBarcode);
+
 
 module.exports = router;

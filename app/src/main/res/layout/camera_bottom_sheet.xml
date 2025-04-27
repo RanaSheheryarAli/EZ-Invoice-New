@@ -6,27 +6,21 @@
         <!-- Add binding variables here if needed -->
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="1dp"
-        android:background="@drawable/rounded_box_outline_edt"
+        android:background="@drawable/rounded_box_outline_edt">
 
-        >
+
+
+
 
         <RelativeLayout
             android:id="@+id/maincon"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:backgroundTint="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@drawable/rounded_box_outline_edt"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-            <!-- Close Button FloatingActionButton -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/closebtn"
                 android:layout_width="64dp"
@@ -34,55 +28,51 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="-45dp"
                 android:backgroundTint="@color/white"
-                android:contentDescription="Close Button"
-                android:elevation="4dp"
                 android:src="@drawable/arrow_down"
                 app:shapeAppearanceOverlay="@style/FABShape"
-                app:tint="@color/buttoncolor" />
+                app:tint="@color/buttoncolor"
+                android:contentDescription="Close Button"
+                android:elevation="4dp" />
+            <SurfaceView
+                android:id="@+id/surfaceview"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:layout_below="@id/closebtn"
+                android:layout_marginTop="20dp" />
 
+            <com.example.ezinvoice.BarcodeOverlay
+                android:id="@+id/barcode_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:layout_below="@id/closebtn"
+                android:layout_marginTop="20dp" />
 
-
-
-                <SurfaceView
-                    android:id="@+id/surfaceview"
-                    android:layout_width="match_parent"
-                    android:layout_height="600dp"
-                    android:layout_below="@id/closebtn"
-                    android:layout_marginTop="20dp"
-                    android:contentDescription="Camera Feed" />
-
-            <!-- SurfaceView for Camera Feed -->
-
-
-
-            <!-- Done Button FloatingActionButton -->
+            <View
+                android:id="@+id/scanning_line"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="@android:color/holo_red_light"
+                android:visibility="invisible" />
 
 
         </RelativeLayout>
 
+        <!-- Torch Button FloatingActionButton -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/torchbtn"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:backgroundTint="@color/white"
-            android:elevation="6dp"
-            android:layout_marginBottom="120dp"
+            android:layout_marginBottom="100dp"
             android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/white"
             android:src="@drawable/flashlight_on_24"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            app:maxImageSize="32dp"
+            app:tint="@color/buttoncolor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:shapeAppearanceOverlay="@style/FABShape"
-            app:tint="@color/buttoncolor"
-            android:scaleType="center" />
-
-
-
+            app:shapeAppearanceOverlay="@style/FABShape" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
 </layout>

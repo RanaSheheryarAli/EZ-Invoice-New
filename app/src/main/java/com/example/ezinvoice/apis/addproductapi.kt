@@ -18,5 +18,8 @@ interface productapi {
     @GET("products/get-products-by-business/{businessId}")
     suspend fun getProductsByBusiness(@Path("businessId") businessId: String): Response<List<ProductResponse>>
 
+    @GET("products/get-product-by-barcode/{barcode}")
+    suspend fun getProductByBarcode(@Path("barcode") barcode: String): Response<ProductResponse>
+
 
 }
