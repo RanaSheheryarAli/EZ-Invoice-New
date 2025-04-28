@@ -1,5 +1,7 @@
 package com.example.ezinvoice.models
 
+import java.io.Serializable
+
 data class CatagoryModel(
     var businessId:String,
     var name:String,
@@ -57,4 +59,4 @@ data class ProductResponse(
     val date: String,
     val minstock: Int,
     val itemlocation: String
-)
+) : Serializable

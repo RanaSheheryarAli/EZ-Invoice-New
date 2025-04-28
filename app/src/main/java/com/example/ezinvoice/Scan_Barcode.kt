@@ -2,9 +2,11 @@ package com.example.ezinvoice
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.hardware.Camera
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.SurfaceHolder
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +20,7 @@ import com.example.ezinvoice.apis.productapi
 import com.example.ezinvoice.databinding.ActivityBarcodeScannerBinding
 import com.example.ezinvoice.databinding.CameraBottomSheetBinding
 import com.example.ezinvoice.models.ProductResponse
+import com.example.ezinvoice.models.ScannedProduct
 import com.example.ezinvoice.network.RetrofitClient
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
@@ -40,7 +43,7 @@ class Scan_Barcode : AppCompatActivity() {
     private var isTorchOn = false
     private var isScanningPaused = false
 
-    private val scannedProducts = mutableListOf<ProductResponse>()
+    private val scannedProducts = mutableListOf<ScannedProduct>()
     private lateinit var adapter: Scan_BarcodeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +60,22 @@ class Scan_Barcode : AppCompatActivity() {
         mediaPlayer = MediaPlayer.create(this, R.raw.beep)
 
         setupRecyclerView()
+
+        databinding.btnnext.setOnClickListener {
+            if (bottomSheetDialog.isShowing) {
+                bottomSheetDialog.dismiss()
+            }
+
+            releaseCamera()
+
+            databinding.main.postDelayed({
+                val intent = Intent(this, Sale::class.java)
+                intent.putExtra("scanned_products", ArrayList(scannedProducts))
+                Log.e("ReceivedList", scannedProducts.toString())
+
+                startActivity(intent)
+            }, 400)
+        }
 
         databinding.floatingActionButton.setOnClickListener {
             openCameraBottomSheet()
@@ -77,9 +96,7 @@ class Scan_Barcode : AppCompatActivity() {
         bottomSheetDialog.setOnDismissListener {
             releaseCamera()
         }
-
         setupCameraInBottomSheet()
-
         bottomSheetBinding.torchbtn.setOnClickListener {
             toggleFlashlight()
         }
@@ -164,7 +181,6 @@ class Scan_Barcode : AppCompatActivity() {
 
                     if (scanningBox.contains(centerX, centerY)) {
                         isScanningPaused = true
-                        mediaPlayer.start()
                         searchProductByBarcode(barcode.displayValue)
                     }
                 }
@@ -182,8 +198,10 @@ class Scan_Barcode : AppCompatActivity() {
 
                 if (response.isSuccessful && response.body() != null) {
                     val product = response.body()!!
-                    scannedProducts.add(product)
+                    scannedProducts.add(ScannedProduct(product))
+                    databinding.btnnext.visibility=android.view.View.VISIBLE
                     adapter.notifyDataSetChanged()
+                    mediaPlayer.start()
 
                 } else {
                     Toast.makeText(this@Scan_Barcode, "Item not found!", Toast.LENGTH_SHORT).show()

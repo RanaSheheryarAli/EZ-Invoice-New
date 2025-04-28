@@ -89,4 +89,8 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
     implementation("com.squareup.moshi:moshi-adapters:1.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+
+    implementation("com.google.android.material:material:1.10.1")
+
 }

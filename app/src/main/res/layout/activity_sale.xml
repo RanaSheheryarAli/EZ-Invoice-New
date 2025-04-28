@@ -18,42 +18,42 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <!-- Toolbar Section -->
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/toobar"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/toobar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/buttoncolor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/whitelogo" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:background="@color/buttoncolor">
-
-
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/whitelogo" />
-
-                    <TextView
-                        android:id="@+id/tvTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Home"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -64,7 +64,9 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="20dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -119,7 +121,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="6dp"
                 android:background="@color/white"
                 android:orientation="vertical">
 
@@ -145,7 +147,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -159,16 +162,30 @@
                         android:textStyle="bold" />
 
 
-
                     <ImageView
                         android:id="@+id/barcodeScan_btn"
                         android:layout_width="45dp"
-                        android:layout_marginStart="5dp"
                         android:layout_height="45dp"
+                        android:layout_marginStart="5dp"
                         android:background="@drawable/rounded_box_outline_edt"
                         android:src="@drawable/blue_barcode_scanner" />
                 </LinearLayout>
             </LinearLayout>
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/showscannedproductsRCV"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginEnd="13dp"
+                tools:listitem="@layout/scannedproductslayout"
+
+                />
+
+
+
 
             <!-- Total Amount Section -->
             <LinearLayout
@@ -188,22 +205,39 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/totalAmountText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="7dp"
                     android:autoLink="all"
                     android:text="Rs 10,000"
-                    android:layout_marginEnd="7dp"
                     android:textAlignment="textEnd"
-                    android:textStyle="bold"
                     android:textColor="@color/imp_text_color"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <!-- Footer Buttons at the Bottom -->
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -262,7 +296,6 @@
         </LinearLayout>
 
 
-
         <LinearLayout
             android:id="@+id/save_container"
             android:layout_width="match_parent"
@@ -294,12 +327,7 @@
                 android:textStyle="bold" />
 
 
-
-
         </LinearLayout>
-
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
