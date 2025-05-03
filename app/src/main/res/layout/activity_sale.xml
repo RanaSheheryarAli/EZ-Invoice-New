@@ -82,6 +82,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/invoiceNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="10"
@@ -109,6 +110,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/dateText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="13/11/2024"
@@ -126,17 +128,20 @@
                 android:orientation="vertical">
 
                 <EditText
+                    android:id="@+id/etCustomerName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:background="@drawable/rounded_box_outline_edt"
-                    android:hint="Billing Name (Optional)"
+                    android:hint="Billing Name"
                     android:padding="12dp" />
 
                 <EditText
+                    android:id="@+id/etCustomerPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:inputType="number"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/rounded_box_outline_edt"
@@ -205,6 +210,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+
                     android:id="@+id/totalAmountText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -216,82 +222,6 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
-        </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Footer Buttons at the Bottom -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="25dp"
-            android:background="@drawable/rounded_box_outline_edt"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:weightSum="4"
-            app:layout_constraintBottom_toTopOf="@+id/save_container"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_white"
-                android:drawableTop="@drawable/baseline_eye_24"
-                android:drawablePadding="2dp"
-                android:text="Preview"
-                android:textColor="@color/primery_input_text"
-                android:textSize="9sp" />
-
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_white"
-                android:drawableTop="@drawable/outline_print_24"
-                android:text="Print"
-                android:textColor="@color/primery_input_text"
-                android:textSize="9sp" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_white"
-                android:drawableTop="@drawable/outline_pdf_24"
-                android:text="Export"
-                android:textColor="@color/primery_input_text"
-                android:textSize="9sp" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_white"
-                android:drawableTop="@drawable/outline_share_24"
-                android:text="Share"
-                android:textColor="@color/imp_text_color"
-                android:textSize="9sp" />
-
 
         </LinearLayout>
 

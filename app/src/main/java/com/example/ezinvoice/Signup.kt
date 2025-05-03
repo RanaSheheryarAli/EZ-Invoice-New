@@ -1,8 +1,11 @@
 package com.example.ezinvoice
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +21,9 @@ class Signup : AppCompatActivity() {
     private lateinit var signupviewmodel: SignupViewmodel
     private lateinit var databinding: ActivitySignupBinding
 
+    private lateinit var  prefs:SharedPreferences
+
+
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +36,8 @@ class Signup : AppCompatActivity() {
             insets
         }
 
+        prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+
         signupviewmodel = ViewModelProvider(this)[SignupViewmodel::class.java]
         databinding.lifecycleOwner = this
         databinding.signupviewmodel = signupviewmodel
@@ -39,7 +47,15 @@ class Signup : AppCompatActivity() {
         // ✅ Observe success or failure
         signupviewmodel.issuccessfull.observe(this) { isSuccess ->
             if (isSuccess) {
-                val intent = Intent(this@Signup, SignIn::class.java)
+
+                val userId = signupviewmodel.userid  // ✅ fetch only after success
+
+                Log.d("Signup", "Saving userId: $userId")
+                prefs.edit().putString("auth_id", userId).apply()
+
+                Log.d("checkuserid", "checkuserid from pre: ${prefs.getString("auth_id", null)}}")
+                val intent = Intent(this@Signup, Business_Info::class.java)
+
                 startActivity(intent)
                 finish()
             }

@@ -12,3 +12,13 @@ data class AppUser(
     @SerializedName("password") val password: String,
     @SerializedName("businessID") val businessID: String
 )
+data class SignupResponse(
+    val message: String,
+    val newUser: NewUser
+)
+
+data class NewUser(
+    val _id: String,
+    val username: String,
+    val email: String
+)

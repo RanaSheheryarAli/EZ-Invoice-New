@@ -6,75 +6,64 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ezinvoice.adaptors.InvoiceAdapter
 import com.example.ezinvoice.databinding.FragmentHomeBinding
-import com.example.ezinvoice.databinding.FragmentItemsBinding
 import com.example.ezinvoice.models.Invoice
+import com.example.ezinvoice.viewmodels.HomeFragmentViewmodel
 
 
 class HomeFragment : Fragment() {
 
-    lateinit var databinding: FragmentHomeBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var viewModel: HomeFragmentViewmodel
+    private lateinit var adapter: InvoiceAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        databinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-        // Inflate the layout for this fragment
-        return databinding.root
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        databinding.containerProduct.setOnClickListener{
-            val intent = Intent(requireContext(), Add_Items::class.java)
-            startActivity(intent)
+        val businessId = Scan_Barcode.SharedPrefManager.getBusinessId(requireContext()) // replace with your actual method
+        adapter = InvoiceAdapter(emptyList())
+        binding.recentinvoiceRCV.layoutManager = LinearLayoutManager(requireContext())
+        binding.recentinvoiceRCV.adapter = adapter
+
+        viewModel = ViewModelProvider(this)[HomeFragmentViewmodel::class.java]
+        viewModel.fetchInvoices(businessId)
+
+        viewModel.invoices.observe(viewLifecycleOwner) { invoices ->
+            adapter.updateData(invoices)
+        }
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+
+            if (error != null) {
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                viewModel.clearError()
+            }
         }
 
-        databinding.containerInvoice.setOnClickListener{
-            val intent = Intent(requireContext(), Sale::class.java)
-            startActivity(intent)
+        // Navigation listeners
+        binding.containerInvoice.setOnClickListener {
+            startActivity(Intent(requireContext(), Sale::class.java))
         }
-        databinding.containerReports.setOnClickListener {
-
-
+        binding.containerProduct.setOnClickListener {
+            startActivity(Intent(requireContext(), Add_Items::class.java))
         }
-
-        databinding.containerInventory.setOnClickListener{
-            val intent = Intent(requireContext(), Add_Items::class.java)
-            startActivity(intent)
+        binding.containerClient.setOnClickListener {
+            startActivity(Intent(requireContext(), Client::class.java))
         }
-
-        databinding.containerClient.setOnClickListener{
-            val intent = Intent(requireContext(), Client::class.java)
-            startActivity(intent)
+        binding.containerInventory.setOnClickListener {
+            startActivity(Intent(requireContext(), Add_Items::class.java))
         }
-
-
-
-        val recyclerView: RecyclerView = databinding.recentinvoiceRCV  // your RecyclerView ID
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        val invoices = listOf(
-            Invoice("001", "2025-03-01", "$200"),
-            Invoice("002", "2025-04-02", "$150"),
-            Invoice("003", "2025-04-03", "$2500"),
-            Invoice("004", "2025-04-02", "$150"),
-            Invoice("005", "2025-04-03", "$2500"),
-            Invoice("006", "2025-05-03", "$5500")
-        )
-
-        val adapter = InvoiceAdapter(invoices)
-        recyclerView.adapter = adapter
     }
-
 }

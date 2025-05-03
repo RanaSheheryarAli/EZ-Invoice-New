@@ -37,7 +37,7 @@ class AddProductsViewmodel(application: Application) : AndroidViewModel(applicat
 
 
     private val sharedPreferences: SharedPreferences = application.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-    val businessId = sharedPreferences.getString("business-id", "") ?: ""
+
 
 
 
@@ -52,6 +52,13 @@ class AddProductsViewmodel(application: Application) : AndroidViewModel(applicat
             return
         }
 
+        val businessId = getBusinessId()
+
+        if(businessId.isEmpty()) {
+            errorMessage.value = "Business ID missing. Please login again!"
+            Toast.makeText(context, "Business ID missing. Please login again!", Toast.LENGTH_SHORT).show()
+            return
+        }
         if(businessId.isNullOrEmpty()){
             errorMessage.value = "Business ID missing. Please login again!"
             Toast.makeText(context, "Business ID missing. Please login again!", Toast.LENGTH_SHORT).show()
@@ -98,6 +105,7 @@ class AddProductsViewmodel(application: Application) : AndroidViewModel(applicat
                 val response = api.addProduct(product)
                 if (response.isSuccessful && response.body() != null) {
                     isSuccessful.value = true
+
                     Toast.makeText(context, "Product added successfully!", Toast.LENGTH_SHORT).show()
                 } else {
                     errorMessage.value = "Failed to add product: ${response.errorBody()?.string()}"
@@ -110,4 +118,8 @@ class AddProductsViewmodel(application: Application) : AndroidViewModel(applicat
             }
         }
     }
+    fun getBusinessId(): String {
+        return sharedPreferences.getString("business_id", "") ?: ""
+    }
+
 }

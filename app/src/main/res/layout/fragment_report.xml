@@ -126,6 +126,7 @@
                     android:textColor="@color/black" />
 
                 <TextView
+                    android:id="@+id/tv_total_invoices"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="331"
@@ -155,6 +156,7 @@
                     android:textColor="@color/black" />
 
                 <TextView
+                    android:id="@+id/tv_total_sales"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Rs 25,488"
@@ -288,7 +290,7 @@
                     android:background="#75757373" />
 
                <androidx.recyclerview.widget.RecyclerView
-                   android:id="@+id/iterecyclerView"
+                   android:id="@+id/itemrecyclerView"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
                    tools:listitem="@layout/report_items_layout"

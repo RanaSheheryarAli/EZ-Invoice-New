@@ -1,43 +1,72 @@
 const Business = require('../models/Business');
 const mongoose = require("mongoose");
 const User = require("../models/User");
+const path = require('path');
+
+
+
+
+
+const uploadLogo = async (req, res) => {
+    try {
+        if (!req.file) {
+            console.error("❌ No file received in request.");
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+
+        const logoUrl = `${req.protocol}://${req.get('host')}/uploads/logos/${req.file.filename}`;
+        return res.status(200).send(logoUrl);
+    } catch (error) {
+        console.error("❌ Upload Error:", error);
+        return res.status(500).json({ error: "Upload failed", details: error.message });
+    }
+};
+
+
+
+
 
 const createBusiness = async (req, res) => {
     try {
         const {
             userId, name, ownername, gstin, address, email,
-            contact, website, country, currency, numberformate, dateformate, signature, categoryIds
+            contact, website, country, currency, numberformate, dateformate,
+            signature, logoUrl, categoryIds
         } = req.body;
 
-        if (!userId) return res.status(400).json({ error: "User ID is required!" });
-        if (!website) return res.status(400).json({ error: "Website link is required!" });
-        if (!name) return res.status(400).json({ error: "Business name is required!" });
-        if (!ownername) return res.status(400).json({ error: "Owner name is required!" });
-        if (!address) return res.status(400).json({ error: "Address is required!" });
-        if (!email) return res.status(400).json({ error: "Email is required!" });
-        if (!contact) return res.status(400).json({ error: "Contact is required!" });
-        if (!country) return res.status(400).json({ error: "Country is required!" });
-        if (!currency) return res.status(400).json({ error: "Currency is required!" });
-        if (!numberformate) return res.status(400).json({ error: "Number format is required!" });
-        if (!dateformate) return res.status(400).json({ error: "Date format is required!" });
-        if (!signature) return res.status(400).json({ error: "Signature is required!" });
+        if (!userId || !name || !ownername || !gstin || !address || !email || !contact || !website || !country || !currency || !numberformate || !dateformate || !signature) {
+            return res.status(400).json({ error: "All fields are required!" });
+        }
 
-        // Check if the user exists before creating the business
         const foundUser = await User.findById(userId);
         if (!foundUser) {
             return res.status(404).json({ error: "User not found!" });
         }
 
-        // Create the business
-        const business = new Business({
-            userId, name, ownername, gstin, address, email, contact, 
-            website, country, currency, numberformate, dateformate, 
-            signature, categoryIds
-        });
+        const cleanedCategoryIds = Array.isArray(categoryIds)
+        ? categoryIds.map(cat => typeof cat === 'object' && cat._id ? cat._id : cat)
+        : [];
+    
+    const business = new Business({
+        userId,
+        name,
+        ownername,
+        gstin,
+        address,
+        email,
+        contact,
+        website,
+        country,
+        currency,
+        numberformate,
+        dateformate,
+        signature,
+        logoUrl,
+        categoryIds: cleanedCategoryIds
+    });
+    
 
         await business.save();
-
-        // Update the user's businessID
         await User.findByIdAndUpdate(userId, { businessID: business._id }, { new: true });
 
         res.status(201).json({ message: "Business added successfully", business });
@@ -47,7 +76,8 @@ const createBusiness = async (req, res) => {
     }
 };
 
-module.exports = { createBusiness };
+
+
 
 
 const getBusiness = async (req, res) => {
@@ -131,6 +161,9 @@ module.exports = {
     createBusiness,
     getBusiness,
     updateBusiness,
-    deleteBusiness
+    deleteBusiness,
+    uploadLogo
     
   };
+
+

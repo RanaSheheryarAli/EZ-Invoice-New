@@ -1,5 +1,6 @@
 package com.example.ezinvoice
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -23,4 +24,16 @@ class StartScreen : AppCompatActivity() {
             startActivity(intent)
         }
     }
+    override fun onStart() {
+        super.onStart()
+        val prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        val authToken = prefs.getString("auth_id", null)
+        val businessToken = prefs.getString("business_id", null)
+
+        if (!authToken.isNullOrEmpty() && !businessToken.isNullOrEmpty()) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+    }
+
 }

@@ -2,25 +2,28 @@ package com.example.ezinvoice.viewmodels
 
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
+import android.net.Uri
+import android.provider.OpenableColumns
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.example.ezinvoice.apis.BusinessinfoApi
+import com.example.ezinvoice.apis.UploadImgApi
 import com.example.ezinvoice.models.BusinessInfo
-import com.example.ezinvoice.models.BusinessResponse
+import com.example.ezinvoice.network.RetrofitClient
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.regex.Pattern
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class BusinesssinfoViewmodel(application: Application) : AndroidViewModel(application) {
 
     val businessname = MutableLiveData("")
+    val logoUri = MutableLiveData<String>()
+    val logoLocalUri = MutableLiveData<Uri?>()
     val ownername = MutableLiveData("")
     val gstin = MutableLiveData("")
     val adress = MutableLiveData("")
@@ -33,125 +36,155 @@ class BusinesssinfoViewmodel(application: Application) : AndroidViewModel(applic
     val dateformate = MutableLiveData("")
     val signature1 = MutableLiveData("")
 
-
-    val sharedPreferences =
-        getApplication<Application>().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-    val userid = sharedPreferences.getString("user_id", null)
+    private val prefs = application.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+    private val userid = prefs.getString("auth_id", null)
 
 
     private val _errorMessage = MutableLiveData<String?>()
-    val errorMessage: LiveData<String?> get() = _errorMessage
+    val errorMessage: LiveData<String?> = _errorMessage
 
     private val _businessinfo = MutableLiveData<BusinessInfo?>()
-    val businessinfo: LiveData<BusinessInfo?> get() = _businessinfo
+    val businessinfo: LiveData<BusinessInfo?> = _businessinfo
 
     private val _issuccessfull = MutableLiveData(false)
-    val issuccessfull: LiveData<Boolean> get() = _issuccessfull
+    val issuccessfull: LiveData<Boolean> = _issuccessfull
 
-    // ✅ Fix: Use 10.0.2.2 for emulator
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("http://localhost:5000/api/businesses/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val api = retrofit.create(BusinessinfoApi::class.java)
-
-    private fun isValidEmail(email: String): Boolean {
-        val emailPattern = Pattern.compile(
-            "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"
-        )
-        return emailPattern.matcher(email).matches()
-    }
+    private val api = RetrofitClient.createService(BusinessinfoApi::class.java)
+    private val uploadApi = RetrofitClient.createService(UploadImgApi::class.java)
 
     fun onupdateClick() {
-        val name = businessname.value?.trim() ?: ""
-        val owner = ownername.value?.trim() ?: ""
-        val gstinstring = gstin.value?.trim() ?: ""
-        val adress = adress.value?.trim() ?: ""
-        val email = email.value?.trim() ?: ""
-        val country = country.value?.trim() ?: ""
-        val contact = phone.value?.trim() ?: ""
-        val website = websitelink.value?.trim() ?: ""
-        val currency = currency.value?.trim() ?: ""
-        val numberformate = numberformate.value?.trim() ?: ""
-        val dateformate = dateformate.value?.trim() ?: ""
-        val sig = signature1.value?.trim() ?: ""
+        val fields = listOfNotNull(
+            businessname.value, ownername.value, gstin.value, adress.value,
+            email.value, phone.value, websitelink.value, currency.value,
+            country.value, numberformate.value, dateformate.value, signature1.value
+        )
 
-        if (listOf(
-                name,
-                owner,
-                gstinstring,
-                adress,
-                email,
-                country,
-                contact,
-                website,
-                currency,
-                numberformate,
-                dateformate,
-                sig
-            ).any { it.isEmpty() }
-        ) {
+        Log.e("BusinesssinfoViewmodel", "User ID from prefs: $userid")
+        if (fields.any { it.trim().isEmpty() }) {
             _errorMessage.value = "All fields are required!"
-            _issuccessfull.value = false
             return
         }
 
-        if (!isValidEmail(email)) {
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email.value ?: "").matches()) {
             _errorMessage.value = "Invalid email format!"
             return
         }
 
-        val request = userid?.let {
+        val business = userid?.let {
             BusinessInfo(
-                "", it, name, owner, gstinstring, adress, email, contact, website, country,
-                currency, numberformate, dateformate, sig, emptyList(), ""
+                _id = "",
+                userId = it,
+                name = businessname.value!!,
+                ownername = ownername.value!!,
+                gstin = gstin.value!!,
+                address = adress.value!!,
+                email = email.value!!,
+                contact = phone.value!!,
+                website = websitelink.value!!,
+                country = country.value!!,
+                currency = currency.value!!,
+                numberformate = numberformate.value!!,
+                dateformate = dateformate.value!!,
+                signature = signature1.value!!,
+                logoUrl = logoUri.value,
+                categoryIds = emptyList(),
+                createdAt = ""
             )
+        } ?: run {
+            _errorMessage.value = "User ID is missing"
+            return
         }
 
-        val call = request?.let { api.createbusiness(it) }
-        call?.enqueue(object : Callback<ResponseBody?> {
-            override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+        viewModelScope.launch {
+            try {
+                val response = api.createbusiness(business)
                 if (response.isSuccessful) {
-                    response.body()?.string()?.let {
-                        Log.e("RAW_RESPONSE", "onResponse: $it")
-
-                        val gson = com.google.gson.Gson()
-                        val businessResponse = gson.fromJson(it, BusinessResponse::class.java)
-
-                        businessResponse?.business?.let { business ->
-                            Log.e("Business Name", "onResponse: ${business.name}")
-                            _businessinfo.value = business
 
 
-                            businessResponse?.business?.let {
-                                sharedPreferences.edit().putString("business_token", it._id).apply()
-                                sharedPreferences.edit().putString("business-id", it._id).apply()
-                                sharedPreferences.edit().putString("business_name", it.name).apply()
-                                sharedPreferences.edit().putString("business_email", it.email).apply()
+                    val data = response.body()
 
-                                Log.e("SharedPreferences", "Business token saved: ${it._id}")
-                            }
-
-
-                            _errorMessage.value = "Business created successfully!"
-                            _issuccessfull.value = true
-                        }
+                    data?.let {
+                        prefs.edit().apply {
+                            putString("auth_id", it.userId)
+                            putString("business_id", it._id)          // ✅ this should be used consistently
+                            putString("business_name", it.name)
+                            putString("business_owner", it.ownername)
+                            putString("business_gstin", it.gstin)
+                            putString("business_adress", it.address)
+                            putString("business_email", it.email)
+                            putString("business_phone", it.contact)
+                            putString("business_website", it.website)
+                            putString("business_country", it.country)
+                            putString("business_currency", it.currency)
+                            putString("business_numberformate", it.numberformate)
+                            putString("business_dateformate", it.dateformate)
+                            putString("business_signature", it.signature)
+                            putString("business_logouri", it.logoUrl)
+                        }.apply() // ✅ this line was missing — CRITICAL!
                     }
+
+                    _businessinfo.value = data
+                    _issuccessfull.value = true
+                    _errorMessage.value = "Business created successfully!"
+
+
                 } else {
-                    _errorMessage.value = response.errorBody()?.string()
+                    _errorMessage.value = response.errorBody()?.string() ?: "Unexpected error"
                     _issuccessfull.value = false
                 }
-            }
-
-            override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
-                _errorMessage.value = "Network error: ${t.message}"
+            } catch (e: Exception) {
+                _errorMessage.value = "Network error: ${e.localizedMessage}"
                 _issuccessfull.value = false
             }
-        })
+        }
+    }
+
+    fun uploadLogoImage(context: Context) {
+        val imageUri = logoLocalUri.value ?: return
+        val file = getFileFromUri(context, imageUri) ?: run {
+            _errorMessage.value = "File conversion failed"
+            return
+        }
+
+        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val body = MultipartBody.Part.createFormData("logo", file.name, requestFile)
+
+        viewModelScope.launch {
+            try {
+                val response = uploadApi.uploadBusinessLogo(body)
+                if (response.isSuccessful) {
+                    logoUri.value = response.body()?.string()
+                    _errorMessage.value = "Logo uploaded successfully"
+                    onupdateClick() // only after success
+                } else {
+                    _errorMessage.value = "Upload failed: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                _errorMessage.value = "Upload error: ${e.message}"
+            }
+        }
     }
 
     fun clearError() {
         _errorMessage.value = null
+    }
+
+    private fun getFileFromUri(context: Context, uri: Uri): File? {
+        val returnCursor = context.contentResolver.query(uri, null, null, null, null)
+        val nameIndex = returnCursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME) ?: -1
+        returnCursor?.moveToFirst()
+        val name = if (nameIndex != -1) returnCursor?.getString(nameIndex) else "temp_file"
+        returnCursor?.close()
+
+        val file = File(context.cacheDir, name ?: "temp_file")
+        return try {
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                FileOutputStream(file).use { output -> input.copyTo(output) }
+            }
+            file
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
     }
 }

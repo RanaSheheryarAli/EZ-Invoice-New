@@ -2,12 +2,14 @@ package com.example.ezinvoice
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.hardware.Camera
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceHolder
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -96,7 +98,9 @@ class Scan_Barcode : AppCompatActivity() {
         bottomSheetDialog.setOnDismissListener {
             releaseCamera()
         }
+
         setupCameraInBottomSheet()
+
         bottomSheetBinding.torchbtn.setOnClickListener {
             toggleFlashlight()
         }
@@ -133,7 +137,6 @@ class Scan_Barcode : AppCompatActivity() {
             }
 
             override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {}
-
             override fun surfaceDestroyed(holder: SurfaceHolder) {
                 releaseCamera()
             }
@@ -151,7 +154,6 @@ class Scan_Barcode : AppCompatActivity() {
         }
 
         camera?.setPreviewCallback { data, cam ->
-
             if (isScanningPaused) return@setPreviewCallback
 
             val parameters = cam.parameters
@@ -166,7 +168,6 @@ class Scan_Barcode : AppCompatActivity() {
 
             if (barcodes.size() > 0) {
                 val barcode = barcodes.valueAt(0)
-
                 val scanningBox = bottomSheetBinding.barcodeOverlay.getFrameRect()
 
                 if (scanningBox != null) {
@@ -190,19 +191,29 @@ class Scan_Barcode : AppCompatActivity() {
 
     private fun searchProductByBarcode(barcode: String) {
         val api = RetrofitClient.createService(productapi::class.java)
+        val businessId = SharedPrefManager.getBusinessId(this)
+
+        if (businessId.isEmpty()) {
+            Toast.makeText(this, "Business ID not found", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         lifecycleScope.launch {
             try {
-
-                val response = api.getProductByBarcode(barcode)
+                val response = api.getProductByBarcode(barcode, businessId)
 
                 if (response.isSuccessful && response.body() != null) {
                     val product = response.body()!!
+
+                    if (scannedProducts.any { it.product.barcode == product.barcode }) {
+                        Toast.makeText(this@Scan_Barcode, "Item already scanned", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
+
                     scannedProducts.add(ScannedProduct(product))
-                    databinding.btnnext.visibility=android.view.View.VISIBLE
+                    databinding.btnnext.visibility = View.VISIBLE
                     adapter.notifyDataSetChanged()
                     mediaPlayer.start()
-
                 } else {
                     Toast.makeText(this@Scan_Barcode, "Item not found!", Toast.LENGTH_SHORT).show()
                 }
@@ -212,21 +223,37 @@ class Scan_Barcode : AppCompatActivity() {
             } finally {
                 bottomSheetBinding.surfaceview.postDelayed({
                     isScanningPaused = false
-                }, 1000) // 1 second delay
-
+                }, 1000)
             }
+        }
+    }
+
+    object SharedPrefManager {
+        private const val PREF_NAME = "UserPrefs"
+        private const val KEY_BUSINESS_ID = "business_id"
+
+        fun getBusinessId(context: Context): String {
+            val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+            return prefs.getString(KEY_BUSINESS_ID, "") ?: ""
+        }
+
+        fun saveBusinessId(context: Context, id: String) {
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putString(KEY_BUSINESS_ID, id)
+                .apply()
         }
     }
 
     private fun toggleFlashlight() {
         camera?.let {
             val params = it.parameters
-            if (!isTorchOn) {
-                params.flashMode = Camera.Parameters.FLASH_MODE_TORCH
+            params.flashMode = if (!isTorchOn) {
                 isTorchOn = true
+                Camera.Parameters.FLASH_MODE_TORCH
             } else {
-                params.flashMode = Camera.Parameters.FLASH_MODE_OFF
                 isTorchOn = false
+                Camera.Parameters.FLASH_MODE_OFF
             }
             it.parameters = params
             it.startPreview()
@@ -234,13 +261,7 @@ class Scan_Barcode : AppCompatActivity() {
     }
 
     private fun startScanLineAnimation() {
-        val scanningBox = bottomSheetBinding.barcodeOverlay.getFrameRect()
-
-        if (scanningBox == null) {
-            bottomSheetBinding.scanningLine.visibility = android.view.View.INVISIBLE
-            return
-        }
-
+        val scanningBox = bottomSheetBinding.barcodeOverlay.getFrameRect() ?: return
         val surfaceViewTop = bottomSheetBinding.surfaceview.top
         val absoluteTop = surfaceViewTop + scanningBox.top
         val absoluteBottom = surfaceViewTop + scanningBox.bottom
@@ -248,27 +269,19 @@ class Scan_Barcode : AppCompatActivity() {
         val layoutParams = bottomSheetBinding.scanningLine.layoutParams
         layoutParams.width = scanningBox.width()
         bottomSheetBinding.scanningLine.layoutParams = layoutParams
-
         bottomSheetBinding.scanningLine.x = scanningBox.left.toFloat()
         bottomSheetBinding.scanningLine.y = absoluteTop.toFloat()
-
-        bottomSheetBinding.scanningLine.visibility = android.view.View.VISIBLE
+        bottomSheetBinding.scanningLine.visibility = View.VISIBLE
 
         scanLineAnimator?.cancel()
 
-        scanLineAnimator = ValueAnimator.ofFloat(
-            absoluteTop.toFloat(),
-            absoluteBottom.toFloat()
-        ).apply {
+        scanLineAnimator = ValueAnimator.ofFloat(absoluteTop.toFloat(), absoluteBottom.toFloat()).apply {
             duration = 2000
             repeatMode = ValueAnimator.RESTART
             repeatCount = ValueAnimator.INFINITE
-
             addUpdateListener { animation ->
-                val animatedValue = animation.animatedValue as Float
-                bottomSheetBinding.scanningLine.y = animatedValue
+                bottomSheetBinding.scanningLine.y = animation.animatedValue as Float
             }
-
             start()
         }
     }
@@ -276,7 +289,7 @@ class Scan_Barcode : AppCompatActivity() {
     private fun stopScanLineAnimation() {
         scanLineAnimator?.cancel()
         scanLineAnimator = null
-        bottomSheetBinding.scanningLine.visibility = android.view.View.INVISIBLE
+        bottomSheetBinding.scanningLine.visibility = View.INVISIBLE
     }
 
     private fun releaseCamera() {

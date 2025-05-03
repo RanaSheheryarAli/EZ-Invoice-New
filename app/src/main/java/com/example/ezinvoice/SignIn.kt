@@ -54,28 +54,40 @@ class SignIn : AppCompatActivity() {
                 signinviewmodel.loginResponse.value?.user?.let { user ->
                     try {
 
-                        Log.d(TAG, "Sign-in successful, navigating to Business_Info Activity")
+                        Log.d(TAG, "Sign-in successful, checking business status...")
 
-//                        Log.e(TAG, "check business token: ${businessToken} ")
+                        val businessToken = user.businessID
 
-                        val business_tocken = signinviewmodel.loginResponse.value!!.user.businessID
-                        if (business_tocken == "") {
-                            Log.d("check business error", "Sign-in successful, navigating to Business_Info Activity")
+
+                        sharedPreferences.edit().putString("auth_id",user.id).apply()
+                        if (businessToken.isNullOrEmpty()) {
+                            Log.d(TAG, "No business info found, redirecting to Business_Info")
                             val intent = Intent(this@SignIn, Business_Info::class.java)
                             startActivity(intent)
                             finish()
                         } else {
-                            Log.d("check Main error", "Sign-in successful, navigating to Main Activity")
-                            val intent = Intent(this@SignIn, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                            Log.d(TAG, "Business info exists, fetching business data...")
+
+                            // Fetch and cache business info
+                            signinviewmodel.fetchBusinessInfo(
+                                context = this@SignIn,
+                                userId = user.id?: "",
+                                onSuccess = {
+                                    startActivity(Intent(this@SignIn, MainActivity::class.java))
+                                    finish()
+                                },
+                                onError = { error ->
+                                    Toast.makeText(this@SignIn, error, Toast.LENGTH_SHORT).show()
+                                }
+                            )
                         }
 
                     } catch (e: Exception) {
-                        Log.e("check business error after catch", "Error while navigating to Business_Info: ${e.localizedMessage}")
+                        Log.e(TAG, "Navigation error: ${e.localizedMessage}")
                     }
                 } ?: Log.e(TAG, "User data is null")
             }
+
         }
 
 
@@ -128,4 +140,6 @@ class SignIn : AppCompatActivity() {
 
 
     }
+
+
 }

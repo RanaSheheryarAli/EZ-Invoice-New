@@ -60,15 +60,20 @@ const createProduct = async (req, res) => {
 const getProductByBarcode = async (req, res) => {
     try {
         const { barcode } = req.params;
+        const { businessId } = req.query;
 
         if (!barcode) {
             return res.status(400).json({ error: "Barcode is required" });
         }
 
-        const product = await Product.findOne({ barcode });
+        if (!businessId) {
+            return res.status(400).json({ error: "Business ID is required" });
+        }
+
+        const product = await Product.findOne({ barcode, businessId });
 
         if (!product) {
-            return res.status(404).json({ error: "Product not found with this barcode" });
+            return res.status(404).json({ error: "Product not found for this business with this barcode" });
         }
 
         res.status(200).json(product);
@@ -78,6 +83,7 @@ const getProductByBarcode = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
 
 
 const getProductsByBusiness = async (req, res) => {

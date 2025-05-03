@@ -8,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface productapi {
     @Headers("Content-Type: application/json")
@@ -19,7 +20,7 @@ interface productapi {
     suspend fun getProductsByBusiness(@Path("businessId") businessId: String): Response<List<ProductResponse>>
 
     @GET("products/get-product-by-barcode/{barcode}")
-    suspend fun getProductByBarcode(@Path("barcode") barcode: String): Response<ProductResponse>
+    suspend fun getProductByBarcode(@Path("barcode") barcode: String,  @Query("businessId") businessId: String): Response<ProductResponse>
 
 
 }

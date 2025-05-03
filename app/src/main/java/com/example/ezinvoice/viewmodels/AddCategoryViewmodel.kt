@@ -27,13 +27,14 @@ class AddCategoryViewmodel(application: Application) : AndroidViewModel(applicat
     private val _issuccessfull = MutableLiveData(false)
     val issuccessfull: LiveData<Boolean> get() = _issuccessfull
 
-    private val businessid: String? = sharedPreferences.getString("business-id", null)
+
 
     private val api = RetrofitClient.createService(addcatageoryapi::class.java)
 
     fun Onaddcategory() {
         val catName = catagoryMLD.value?.trim()
 
+        val businessid: String? = sharedPreferences.getString("business_id", null)
         // Check if businessid is null
         if (businessid.isNullOrEmpty()) {
             _errorMessage.value = "Business ID is missing! please wipe the app data"

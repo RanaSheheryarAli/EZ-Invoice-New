@@ -1,6 +1,9 @@
 package com.example.ezinvoice.viewmodels
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +20,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.regex.Pattern
 
-class SignupViewmodel : ViewModel() {
+class SignupViewmodel(application: Application) : AndroidViewModel(application) {
 
     // Two-way binding using MutableLiveData
     val UsernameLD = MutableLiveData<String>("")
@@ -28,6 +31,8 @@ class SignupViewmodel : ViewModel() {
     val errorMessage: LiveData<String?> get() = _errorMessage
     private val _issuccessfull = MutableLiveData(false)
     val issuccessfull: LiveData<Boolean> get() = _issuccessfull
+
+   var userid:String=""
 
     // Retrofit setup
     private val api = RetrofitClient.createService(AuthApi::class.java)
@@ -70,9 +75,12 @@ class SignupViewmodel : ViewModel() {
                     val response = api.signup1(SignuprequestModel)
 
                     if (response.isSuccessful) {
-                        _errorMessage.value = "User Created"
-                        Log.d("Signup", "Signup Successful")
+
+
+                        userid= response.body()?.newUser?._id.toString()
+                        Log.d("checkuserid ", "from view model: ${userid}")
                         _issuccessfull.value = true
+                        _errorMessage.value = "User Created"
                     } else {
                         _errorMessage.value = "Signup Failed: ${response.message()}"
                         Log.d("Signup", "Signup Failed: ${response.errorBody()?.string()}")
@@ -87,15 +95,15 @@ class SignupViewmodel : ViewModel() {
             }
 
         } else {
-                _errorMessage.value = "All fields are Required"
-                _issuccessfull.value = false
-            }
+            _errorMessage.value = "All fields are Required"
+            _issuccessfull.value = false
         }
-
-        fun clearError() {
-            _errorMessage.value = null
-        }
-
     }
+
+    fun clearError() {
+        _errorMessage.value = null
+    }
+
+}
 
 

@@ -123,7 +123,7 @@ class Add_Items : AppCompatActivity() {
 
         mediaPlayer = MediaPlayer.create(this, R.raw.beep)
 
-        databinding.headerLayout.tvTitle.text = "Add Items"
+        databinding.tvTitle.text = "Add Items"
 
         setupCameraBottomSheet()
         setupCategoryBottomSheet()
@@ -431,7 +431,7 @@ class Add_Items : AppCompatActivity() {
 
     private fun fetchCategories() {
         val apiService = RetrofitClient.createService(addcatageoryapi::class.java)
-        val businessId = sharedPreferences.getString("business-id", "") ?: ""
+        val businessId = sharedPreferences.getString("business_id", "") ?: ""
 
         if (businessId.isNullOrEmpty()) {
             Toast.makeText(this, "Business ID missing. Please login again!", Toast.LENGTH_SHORT).show()

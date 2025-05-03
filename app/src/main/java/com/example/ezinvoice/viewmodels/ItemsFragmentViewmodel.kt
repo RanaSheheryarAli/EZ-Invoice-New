@@ -29,7 +29,7 @@ class ItemsFragmentViewmodel(application: Application) : AndroidViewModel(applic
     private val api = RetrofitClient.createService(productapi::class.java)
 
     fun fetchProducts() {
-        val businessId = sharedPreferences.getString("business-id", "") ?: ""
+        val businessId = sharedPreferences.getString("business_id", "") ?: ""
 
         if (businessId.isEmpty()) {
             _errorMessage.value = "Business ID missing!"

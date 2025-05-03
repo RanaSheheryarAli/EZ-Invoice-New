@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".InvoicePreview">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray">
+
+            <!-- ScrollView containing the Invoice -->
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/footerButtons">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <!--                <include layout="@layout/invoice_content" />-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <!-- Business Info -->
+                        <TextView
+                            android:id="@+id/businessName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Mall of Taj"
+                            android:textStyle="bold"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/businessAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Main City Road, Arifwala Punjab"
+                            android:textAlignment="center"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/businessPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Phone: 03001234567"
+                            android:textAlignment="center"
+                            android:textSize="12sp" />
+
+                        <!-- Dashed Line -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/custom_dashed_line"
+                            android:layout_marginTop="8dp" />
+
+                        <!-- Invoice Info -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="4dp">
+
+                            <TextView
+                                android:id="@+id/invoiceNumber"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Invoice #001"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/invoiceDate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Date: 2025-04-27"
+                                android:textAlignment="textEnd"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <!-- Dashed Line -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/custom_dashed_line"
+                            android:layout_marginTop="8dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="2dp"
+                            android:paddingHorizontal="4dp">
+
+                            <TextView
+                                android:id="@+id/description"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Item"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/quantityRate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="-10dp"
+                                android:text="Qty*Price"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/discountRate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="10dp"
+                                android:text="Disc"
+                                android:textSize="12sp" />
+
+
+                            <TextView
+                                android:id="@+id/discount"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Tax"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/total"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Total"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <!-- RecyclerView for Items -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewItems"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/item_invoice_row"
+                            android:layout_marginTop="8dp" />
+
+                        <!-- Dashed Line -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/custom_dashed_line"
+                            android:layout_marginTop="8dp" />
+
+                        <!-- Subtotal, Tax, Shipping, Grand Total Box -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@drawable/custom_dashed_line"
+                            android:padding="8dp"
+                            android:layout_marginTop="8dp">
+
+                            <TextView
+                                android:id="@+id/subtotal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Subtotal: Rs 2000"
+                                android:textAlignment="textEnd"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tax"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Tax: Rs 200"
+                                android:textAlignment="textEnd"
+                                android:textSize="12sp" />
+
+
+
+                            <TextView
+                                android:id="@+id/totalAmount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Grand Total: Rs 2300"
+                                android:textAlignment="textEnd"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="4dp" />
+                        </LinearLayout>
+
+                        <!-- Dashed Line -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/custom_dashed_line"
+                            android:layout_marginTop="8dp" />
+
+
+
+                        <!-- Signature -->
+
+
+                        <ImageView
+                            android:id="@+id/signatureImage"
+                            android:layout_width="120dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="4dp"
+                            android:scaleType="fitCenter"
+                            android:layout_marginStart="10dp"
+                            android:contentDescription="Signature Preview"
+                            android:background="@android:color/white"
+                            android:layout_gravity="start" />
+
+
+                        <View
+                            android:layout_width="120dp"
+                            android:layout_height="1dp"
+                            android:background="@android:color/darker_gray"
+                            android:layout_marginTop="4dp"
+
+                            android:layout_marginStart="10dp"
+                            android:layout_gravity="start" />
+                        <TextView
+                            android:id="@+id/signatureLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Signature"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="16dp"
+                            android:textSize="12sp" />
+
+
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </ScrollView>
+
+            <!-- Footer Buttons: Print, Export, Share -->
+            <LinearLayout
+                android:id="@+id/footerButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:background="@drawable/rounded_box_outline_edt"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+<!--                <androidx.appcompat.widget.AppCompatButton-->
+<!--                    android:id="@+id/invoicepreviewbtn"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/bg_white"-->
+<!--                    android:drawableTop="@drawable/baseline_eye_24"-->
+<!--                    android:drawablePadding="2dp"-->
+<!--                    android:text="Preview"-->
+<!--                    android:textColor="@color/primery_input_text"-->
+<!--                    android:textSize="9sp" />-->
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_white"
+                    android:drawableTop="@drawable/outline_print_24"
+                    android:text="Print"
+                    android:textColor="@color/primery_input_text"
+                    android:textSize="9sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnExport"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_white"
+                    android:drawableTop="@drawable/outline_pdf_24"
+                    android:text="Export"
+                    android:textColor="@color/primery_input_text"
+                    android:textSize="9sp" />
+
+<!--                <androidx.appcompat.widget.AppCompatButton-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/bg_white"-->
+<!--                    android:drawableTop="@drawable/outline_share_24"-->
+<!--                    android:text="Share"-->
+<!--                    android:textColor="@color/imp_text_color"-->
+<!--                    android:textSize="9sp" />-->
+
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
