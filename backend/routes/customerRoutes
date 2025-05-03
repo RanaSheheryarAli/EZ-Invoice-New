@@ -1,9 +1,0 @@
-// routes/customerRoutes.js
-const express = require('express');
-const router = express.Router();
-const { getTopCustomers,findOrCreateCustomerAPI } = require('../controllers/customerController');
-
-router.get('/top-customers/:businessId', getTopCustomers);
-router.post('/find-or-create', findOrCreateCustomerAPI);
-
-module.exports = router;
