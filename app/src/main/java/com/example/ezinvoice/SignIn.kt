@@ -22,8 +22,6 @@ class SignIn : AppCompatActivity() {
 
     lateinit var databinding: ActivitySignInBinding
     private lateinit var signinviewmodel: SigninViewmodel
-
-
     private lateinit var sharedPreferences: SharedPreferences
 
     @SuppressLint("SuspiciousIndentation")
@@ -37,6 +35,8 @@ class SignIn : AppCompatActivity() {
             insets
         }
 
+        window.statusBarColor = getColor(R.color.status_bar_color)
+
         val TAG = "sign.kt"
 
         sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
@@ -45,7 +45,6 @@ class SignIn : AppCompatActivity() {
         signinviewmodel = ViewModelProvider(this)[SigninViewmodel::class.java]
         databinding.lifecycleOwner = this
         databinding.signinviewmodel = signinviewmodel
-
 
 
         // ✅ Observe success or failure
@@ -59,7 +58,7 @@ class SignIn : AppCompatActivity() {
                         val businessToken = user.businessID
 
 
-                        sharedPreferences.edit().putString("auth_id",user.id).apply()
+                        sharedPreferences.edit().putString("auth_id", user.id).apply()
                         if (businessToken.isNullOrEmpty()) {
                             Log.d(TAG, "No business info found, redirecting to Business_Info")
                             val intent = Intent(this@SignIn, Business_Info::class.java)
@@ -71,7 +70,7 @@ class SignIn : AppCompatActivity() {
                             // Fetch and cache business info
                             signinviewmodel.fetchBusinessInfo(
                                 context = this@SignIn,
-                                userId = user.id?: "",
+                                userId = user.id ?: "",
                                 onSuccess = {
                                     startActivity(Intent(this@SignIn, MainActivity::class.java))
                                     finish()

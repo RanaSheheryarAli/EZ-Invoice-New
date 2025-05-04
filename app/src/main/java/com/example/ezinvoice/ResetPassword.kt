@@ -22,6 +22,8 @@ class ResetPassword : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.status_bar_color)
+
 
         databinding.btnResetPassword.setOnClickListener {
             val intent = Intent(this@ResetPassword,SignIn::class.java)

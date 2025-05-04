@@ -27,7 +27,7 @@ class ReportAdapterClient(private val clientList: List<Show_Report_Clients>) : R
         val reportItem = clientList[position]
         holder.clientName.text = reportItem.name
         holder.invoicesCount.text = reportItem.invoiceCount.toString()
-        holder.invoiceAmount.text = "Rs ${reportItem.totalSpent}"
+        holder.invoiceAmount.text = "Rs: ${reportItem.totalSpent}"
     }
 
     override fun getItemCount(): Int = clientList.size

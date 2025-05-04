@@ -94,6 +94,9 @@ class Business_Info : AppCompatActivity() {
             insets
         }
 
+        window.statusBarColor = getColor(R.color.status_bar_color)
+
+
         val currencyList = listOf("PKR (Rs)", "USD ($)", "EUR (€)", "GBP (£)")
         val countryList = listOf("Pakistan", "USA", "UK", "Germany")
         val numberFormatList = listOf("1,000,000", "1.000.000", "1 000 000")

@@ -25,11 +25,13 @@ class AddCategory : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.status_bar_color)
+
         viewmodel=ViewModelProvider(this)[AddCategoryViewmodel::class.java]
         databinding.lifecycleOwner=this
         databinding.viewmodel=viewmodel
 
-        databinding.appbar.tvTitle.setText("Add Category")
+        databinding.tvTitle.setText("Add New")
         viewmodel.errorMessage.observe(this){
            Toast.makeText(this,it.toString(),Toast.LENGTH_SHORT).show()
         }

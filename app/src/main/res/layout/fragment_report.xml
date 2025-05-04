@@ -202,7 +202,7 @@
 
         </androidx.cardview.widget.CardView>
 
-        <!-- Sales by Client Section -->
+        <!-- Sales by Customer Section -->
         <androidx.cardview.widget.CardView
             android:id="@+id/salesByClientCard"
             android:layout_width="0dp"

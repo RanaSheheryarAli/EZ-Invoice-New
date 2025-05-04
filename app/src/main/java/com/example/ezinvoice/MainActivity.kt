@@ -31,8 +31,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var dataBinding: ActivityMainBinding
 
-    private lateinit var compnayname: TextView
-    private lateinit var compnayemail: TextView
+    private lateinit var companyName: TextView
+    private lateinit var companyEmail: TextView
+
     private lateinit var companyLogo: ImageView
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                     logoutUser()
                     true
                 }
+
                 else -> false
             }
         }
@@ -102,12 +104,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun bindHeader() {
         val navHeaderView: View = dataBinding.navigationView.getHeaderView(0)
-        compnayname = navHeaderView.findViewById(R.id.textViewCompanyName)
-        compnayemail = navHeaderView.findViewById(R.id.textViewEmail)
+        companyName = navHeaderView.findViewById(R.id.textViewCompanyName)
+        companyEmail = navHeaderView.findViewById(R.id.textViewEmail)
         companyLogo = navHeaderView.findViewById(R.id.imageViewLogo)
     }
-
-
 
 
     private fun loadCachedBusinessDetails() {
@@ -116,8 +116,8 @@ class MainActivity : AppCompatActivity() {
         val logoUrl = sharedPreferences.getString("business_logouri", null)
 
         if (!name.isNullOrEmpty() && !email.isNullOrEmpty()) {
-            compnayname.text = name
-            compnayemail.text = email
+            companyName.text = name
+            companyEmail.text = email
         }
 
         if (!logoUrl.isNullOrEmpty()) {
@@ -126,12 +126,9 @@ class MainActivity : AppCompatActivity() {
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.logo)
                 .into(companyLogo)
-        }
+        } else {
 
-
-        else{
-            getBusinessDetailsFromApi(userId)
-            Toast.makeText(this,"cash have not logo info",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "cash have not logo info", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -167,8 +164,8 @@ class MainActivity : AppCompatActivity() {
                             apply()
                         }
 
-                        compnayname.text = business.name
-                        compnayemail.text = business.email
+                        companyName.text = business.name
+                        companyEmail.text = business.email
 
                         if (!business.logoUrl.isNullOrEmpty()) {
                             Glide.with(this@MainActivity)
@@ -200,7 +197,8 @@ class MainActivity : AppCompatActivity() {
         prefs.edit().clear().apply() // Clears all saved preferences
 
         val intent = Intent(this, SignIn::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Prevent back navigation
+        intent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Prevent back navigation
         startActivity(intent)
         finish()
     }

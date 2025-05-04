@@ -20,10 +20,7 @@ class Signup : AppCompatActivity() {
 
     private lateinit var signupviewmodel: SignupViewmodel
     private lateinit var databinding: ActivitySignupBinding
-
-    private lateinit var  prefs:SharedPreferences
-
-
+    private lateinit var prefs: SharedPreferences
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,13 +33,12 @@ class Signup : AppCompatActivity() {
             insets
         }
 
-        prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        window.statusBarColor = getColor(R.color.status_bar_color)
 
+        prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         signupviewmodel = ViewModelProvider(this)[SignupViewmodel::class.java]
         databinding.lifecycleOwner = this
         databinding.signupviewmodel = signupviewmodel
-
-
 
         // ✅ Observe success or failure
         signupviewmodel.issuccessfull.observe(this) { isSuccess ->

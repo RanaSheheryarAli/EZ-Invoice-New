@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.ezinvoice.adaptors.InvoiceAdapter
 import com.example.ezinvoice.databinding.FragmentHomeBinding
-import com.example.ezinvoice.models.Invoice
 import com.example.ezinvoice.viewmodels.HomeFragmentViewmodel
 
 
@@ -53,14 +52,20 @@ class HomeFragment : Fragment() {
         }
 
         // Navigation listeners
-        binding.containerInvoice.setOnClickListener {
-            startActivity(Intent(requireContext(), Sale::class.java))
+        binding.containerReports.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_reportFragment)
         }
         binding.containerProduct.setOnClickListener {
             startActivity(Intent(requireContext(), Add_Items::class.java))
         }
+        binding.containerEstimate.setOnClickListener {
+            startActivity(Intent(requireContext(), Sale::class.java))
+        }
+        binding.containerProduct.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_itemsFragment)
+        }
         binding.containerClient.setOnClickListener {
-            startActivity(Intent(requireContext(), Client::class.java))
+            startActivity(Intent(requireContext(), Customer::class.java))
         }
         binding.containerInventory.setOnClickListener {
             startActivity(Intent(requireContext(), Add_Items::class.java))

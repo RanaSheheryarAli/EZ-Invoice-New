@@ -30,6 +30,11 @@
           <theme>@style/Base.Theme.EZInvoice</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_client.xml">
+        <config>
+          <theme>@style/Base.Theme.EZInvoice</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_invoice_preview.xml">
         <config>
           <theme>@style/Base.Theme.EZInvoice</theme>
@@ -46,6 +51,11 @@
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_sign_in.xml">
+        <config>
+          <theme>@style/Base.Theme.EZInvoice</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_signup.xml">
         <config>
           <theme>@style/Base.Theme.EZInvoice</theme>
         </config>
@@ -125,6 +135,11 @@
           <theme>@style/Base.Theme.EZInvoice</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/navigation/navgraph.xml">
+        <config>
+          <theme>@style/Base.Theme.EZInvoice</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/xml/file_paths.xml">
         <config>
           <theme>@style/Base.Theme.EZInvoice</theme>
@@ -136,8 +151,38 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1eaba24f-76a0-4e9c-95d2-894ae9c1d7a1" name="Changes" comment="adding functionality in Report Fragment first">
+    <list default="true" id="1eaba24f-76a0-4e9c-95d2-894ae9c1d7a1" name="Changes" comment="adding functionality in Report Fragment first with backend files 1">
+      <change afterPath="$PROJECT_DIR$/.idea/navEditor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/other.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/AddCategory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/AddCategory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/AddSubCategory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/AddSubCategory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Add_Items.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Add_Items.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Business_Info.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Business_Info.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Client.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Customer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ForgotPassword.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ForgotPassword.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/HomeFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/OTP.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/OTP.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ResetPassword.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ResetPassword.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/SignIn.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/SignIn.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Signup.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Signup.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/StartScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/StartScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/ReportAdapterClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/ReportAdapterClient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/ReportAdatperItems.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/ReportAdatperItems.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_category.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_category.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_sub_category.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_sub_category.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_client.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_sign_in.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_sign_in.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_signup.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_signup.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/appbar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/appbar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_items.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_items.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/report_items_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/report_items_layout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/navigation/navgraph.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/navigation/navgraph.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/controllers/customerController.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/controllers/customerController.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -333,7 +378,23 @@
       <option name="project" value="LOCAL" />
       <updated>1746307412750</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="adding functionality in Report Fragment first with backend files">
+      <option name="closed" value="true" />
+      <created>1746307812900</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1746307812900</updated>
+    </task>
+    <task id="LOCAL-00005" summary="adding functionality in Report Fragment first with backend files 1">
+      <option name="closed" value="true" />
+      <created>1746307875377</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1746307875377</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -351,7 +412,9 @@
     <MESSAGE value="Adding and fetching subcatagorys, Product to the database" />
     <MESSAGE value="getting products for invoice creation" />
     <MESSAGE value="adding functionality in Report Fragment first" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding functionality in Report Fragment first" />
+    <MESSAGE value="adding functionality in Report Fragment first with backend files" />
+    <MESSAGE value="adding functionality in Report Fragment first with backend files 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding functionality in Report Fragment first with backend files 1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

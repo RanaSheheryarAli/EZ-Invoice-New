@@ -7,14 +7,14 @@
     android:layout_marginBottom="15dp"
        >
 
-        <!-- Left Section: Client Info -->
+        <!-- Left Section: Customer Info -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1">
 
-            <!-- Client Name -->
+            <!-- Customer Name -->
             <TextView
                 android:id="@+id/tv_client_name"
                 android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Invoices: 9"
+                    android:text="9"
                     android:textColor="#808080"
                     android:textSize="14sp" />
 

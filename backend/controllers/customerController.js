@@ -10,13 +10,6 @@ const findOrCreateCustomer = async (businessId, name, phone) => {
     return customer;
 };
 
-
-
-
-
-
-
-
 const getTopCustomers = async (req, res) => {
     try {
       const { businessId } = req.params;
@@ -57,5 +50,16 @@ const findOrCreateCustomerAPI = async (req, res) => {
     }
 };
 
+// ✅ NEW: Get all customers by businessId
+const getCustomersByBusiness = async (req, res) => {
+  try {
+      const { businessId } = req.params;
 
-module.exports = { findOrCreateCustomer, getTopCustomers,findOrCreateCustomerAPI };
+      const customers = await Customer.find({ businessId });
+
+      res.status(200).json(customers);
+  } catch (err) {
+      res.status(500).json({ error: "Failed to fetch customers" });
+  }
+};
+module.exports = { findOrCreateCustomer, getTopCustomers,findOrCreateCustomerAPI ,getCustomersByBusiness};

@@ -15,6 +15,9 @@ class StartScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        databinding=DataBindingUtil.setContentView(this,R.layout.activity_start_screen)
+
+        window.statusBarColor = getColor(R.color.status_bar_color)
+
         databinding.btnGetStarted.setOnClickListener {
             val intent= Intent(this@StartScreen,Signup::class.java)
             startActivity(intent)

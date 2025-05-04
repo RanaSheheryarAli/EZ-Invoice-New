@@ -188,7 +188,6 @@ class Add_Items : AppCompatActivity() {
         }
     }
 
-
     private fun setupCameraBottomSheet() {
         bottomSheetBindingForCamera = CameraBottomSheetBinding.inflate(layoutInflater)
         bottomSheetDialogForCamera = BottomSheetDialog(this)
@@ -235,13 +234,9 @@ class Add_Items : AppCompatActivity() {
         })
     }
 
-
     private fun showCameraBottomSheet() {
         bottomSheetDialogForCamera.show()
     }
-
-
-
 
     private fun initializeBarcodeDetector() {
         barcodeDetector = BarcodeDetector.Builder(this)
@@ -296,6 +291,7 @@ class Add_Items : AppCompatActivity() {
             }
         }
     }
+
     private fun releaseCamera() {
         try {
             stopScanLineAnimation()
@@ -309,7 +305,6 @@ class Add_Items : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-
 
     private fun stopScanLineAnimation() {
         scanLineAnimator?.cancel()

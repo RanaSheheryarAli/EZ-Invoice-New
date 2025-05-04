@@ -29,13 +29,15 @@ class AddSubCategory : AppCompatActivity() {
             insets
         }
 
+        window.statusBarColor = getColor(R.color.status_bar_color)
+
         categoryId = intent.getStringExtra("categoryId")
 
         viewmodel = ViewModelProvider(this)[AddSubcategoryViewmodel::class.java]
         databinding.lifecycleOwner = this
         databinding.viewmodel = viewmodel
 
-        databinding.appbar.tvTitle.text = "Add SubCategory"
+        databinding.tvTitle.text = "Add New"
 
         viewmodel.errorMessage.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()

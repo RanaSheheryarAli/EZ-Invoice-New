@@ -27,7 +27,7 @@ class ReportAdatperItems(private val itemtList: List<Show_Report_Items>):Recycle
         val reportItem = itemtList[position]
         holder.ProductName.text = reportItem.productName
         holder.invoicesCount.text = reportItem.quantitySold.toString()
-        holder.invoiceAmount.text = reportItem.totalSales.toString()
+        holder.invoiceAmount.text = "RS:${reportItem.totalSales}"
         holder.invoiceCountttxt.text="QTY:"
     }
 }

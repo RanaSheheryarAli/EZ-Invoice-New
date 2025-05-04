@@ -11,7 +11,8 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Client">
+        android:background="@color/white"
+        tools:context=".Customer">
 
 
         <include
@@ -151,7 +152,6 @@
 
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/container_show_items"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -164,10 +164,11 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_addnew">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/clientrecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/items_layout"
-                android:layout_marginTop="10dp"
+                tools:listitem="@layout/report_items_layout"
+                android:layout_margin="7dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_recentinvoice" />
