@@ -55,8 +55,14 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
+//    implementation(libs.androidx.navigation.fragment.ktx)
+//    implementation(libs.androidx.navigation.ui.ktx)
+    // Navigation
+    implementation("androidx.navigation:navigation-ui:2.5.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
+    implementation("androidx.navigation:navigation-fragment:2.5.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
+
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.lifecycle)
     testImplementation(libs.junit)

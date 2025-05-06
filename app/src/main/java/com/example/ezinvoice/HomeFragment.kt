@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ezinvoice.adaptors.InvoiceAdapter
 import com.example.ezinvoice.databinding.FragmentHomeBinding
 import com.example.ezinvoice.viewmodels.HomeFragmentViewmodel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class HomeFragment : Fragment() {
@@ -53,7 +55,14 @@ class HomeFragment : Fragment() {
 
         // Navigation listeners
         binding.containerReports.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_reportFragment)
+            val navController = findNavController()
+
+            // Programmatically select the second position (ReportFragment) in the BottomNavigationView
+            val bottomNavigationView: BottomNavigationView = activity?.findViewById(R.id.bottomnavigation)!!
+            bottomNavigationView.selectedItemId = R.id.reportFragment
+
+            // Navigate to the second fragment (ReportFragment)
+            navController.navigate(R.id.reportFragment)
         }
         binding.containerProduct.setOnClickListener {
             startActivity(Intent(requireContext(), Add_Items::class.java))
@@ -62,7 +71,15 @@ class HomeFragment : Fragment() {
             startActivity(Intent(requireContext(), Sale::class.java))
         }
         binding.containerProduct.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_itemsFragment)
+            val navController = findNavController()
+
+            // Programmatically select the second position (ReportFragment) in the BottomNavigationView
+            val bottomNavigationView: BottomNavigationView = activity?.findViewById(R.id.bottomnavigation)!!
+            bottomNavigationView.selectedItemId = R.id.itemsFragment
+
+            // Navigate to the second fragment (ReportFragment)
+            navController.navigate(R.id.itemsFragment)
+//            findNavController().navigate(R.id.action_homeFragment_to_itemsFragment)
         }
         binding.containerClient.setOnClickListener {
             startActivity(Intent(requireContext(), Customer::class.java))

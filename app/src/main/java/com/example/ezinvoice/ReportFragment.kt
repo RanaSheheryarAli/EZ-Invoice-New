@@ -46,10 +46,10 @@ class ReportFragment : Fragment() {
         setupSpinners()
         setupRecyclerViews()
 
-        loadTotalStats(businessId)
-        loadGraphData(businessId)
-        loadTopClients(businessId)
-        loadTopItems(businessId)
+//        loadTotalStats(businessId)
+//        loadGraphData(businessId)
+//        loadTopClients(businessId)
+//        loadTopItems(businessId)
 
         return binding.root
     }

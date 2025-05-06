@@ -17,6 +17,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.ezinvoice.apis.BusinessinfoApi
@@ -46,11 +49,11 @@ class MainActivity : AppCompatActivity() {
 
         enableEdgeToEdge()
 
-        ViewCompat.setOnApplyWindowInsetsListener(dataBinding.main) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(dataBinding.main) { view, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
 
         window.statusBarColor = getColor(R.color.status_bar_color)
 
@@ -87,18 +90,75 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupNavigation() {
-        val navController = findNavController(R.id.fragmentContainerView2)
-        dataBinding.bottomnavigation.setupWithNavController(navController)
+//    private fun setupNavigation() {
+//        val navController = findNavController(R.id.fragmentContainerView2)
+//        dataBinding.bottomnavigation.setupWithNavController(navController)
+//
+//        navController.addOnDestinationChangedListener { _, destination, _ ->
+//            dataBinding.headerLayout.tvTitle.text = when (destination.id) {
+//                R.id.homeFragment -> "Home"
+//                R.id.reportFragment -> "Reports"
+//                R.id.itemsFragment -> "Items"
+//                R.id.settingFragment -> "Settings"
+//                else -> ""
+//            }
+//        }
+//    }
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            dataBinding.headerLayout.tvTitle.text = when (destination.id) {
-                R.id.homeFragment -> "Home"
-                R.id.reportFragment -> "Reports"
-                R.id.itemsFragment -> "Items"
-                R.id.settingFragment -> "Settings"
-                else -> ""
-            }
+    private fun getBottomNavigationIds() = listOf(
+        R.id.homeFragment,
+        R.id.reportFragment,
+        R.id.itemsFragment,
+        R.id.settingFragment
+    )
+
+    private fun setupNavigation() {
+        dataBinding.bottomnavigation.setupWithNavController(findNavController(R.id.fragmentContainerView2))
+//        setupActionBarWithNavController(
+//            findNavController(R.id.fragmentContainerView2),
+//            AppBarConfiguration(getBottomNavigationIds().toSet())
+//        )
+
+        dataBinding.bottomnavigation.setOnNavigationItemSelectedListener {
+            NavigationUI.onNavDestinationSelected(it, findNavController(R.id.fragmentContainerView2))
+            true
+        }
+
+        // Setting BottomNavigationView visibility for different screens
+        findNavController(R.id.fragmentContainerView2).addOnDestinationChangedListener { _, destination, _ ->
+            // Screens which show Bottom Navigation
+//            if (getScreenIdsWithBottomNavigation().contains(destination.id)) {
+//                if(destination.id==R.id.editDetailsFragment){
+//                    dataBinding.imageView2.visibility= View.VISIBLE
+//                    dataBinding.moreimg.visibility= View.GONE
+//                    dataBinding.textView6.text="Edit"
+//                }
+//                else{
+//                    dataBinding.imageView2.visibility= View.GONE
+//                    dataBinding.moreimg.visibility= View.VISIBLE
+//                    if(destination.id==R.id.homeFragment){
+//                        dataBinding.textView6.text="Home"
+//                    }else  if(destination.id==R.id.previewFragment){
+//                        dataBinding.textView6.text="Preview"
+//                    }else  if(destination.id==R.id.savedFragment){
+//                        dataBinding.textView6.text="Saved"
+//                    }else  if(destination.id==R.id.accountFragment){
+//                        dataBinding.textView6.text="Account"
+//                    }
+//
+//                }
+//                showBottomNavigation()
+//            }
+//            // Screens which hide Bottom Navigation
+//            else {
+//                hideBottomNavigation()
+//            }
+
+            // Adjust ActionBar
+//            adjustActionBarForDestination(destination.id)
+
+            // Adjust StatusBar
+//            adjustStatusBarColorForDestination(destination.id)
         }
     }
 
