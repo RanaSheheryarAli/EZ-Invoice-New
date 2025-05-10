@@ -47,8 +47,8 @@ data class ProductModel(
 data class ProductResponse(
     val _id: String,
     val businessId: String,       // ✅ newly added Business ID field
-    val categoryId: String,
-    val subcategoryId: String,
+    val categoryId: Catagoryid,
+    val subcategoryId: SubCatagoryid,
     val name: String,
     val barcode: String,
     val saleprice: Double,
@@ -60,3 +60,13 @@ data class ProductResponse(
     val minstock: Int,
     val itemlocation: String
 ) : Serializable
+
+
+data class Catagoryid(
+    val _id: String,
+    val name: String
+)
+data class SubCatagoryid(
+    val _id: String,
+    val name: String
+)

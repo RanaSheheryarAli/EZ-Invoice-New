@@ -9,8 +9,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 class SplashScreen : AppCompatActivity() {
 
@@ -19,11 +21,9 @@ class SplashScreen : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_splash_screen)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = getColor(R.color.status_bar_color)
-        } else {
-            Toast.makeText(this, "Build Version is not compatible", Toast.LENGTH_SHORT).show()
-        }
+        window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
+
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
         val prefs: SharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         val authToken = prefs.getString("auth_id", null)

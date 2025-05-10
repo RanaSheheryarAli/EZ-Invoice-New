@@ -41,6 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import android.database.Cursor
 import android.provider.OpenableColumns
+import androidx.core.view.WindowInsetsControllerCompat
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.*
 
@@ -94,7 +95,9 @@ class Business_Info : AppCompatActivity() {
             insets
         }
 
-        window.statusBarColor = getColor(R.color.status_bar_color)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
+
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
 
         val currencyList = listOf("PKR (Rs)", "USD ($)", "EUR (€)", "GBP (£)")

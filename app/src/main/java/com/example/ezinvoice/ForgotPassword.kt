@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import com.example.ezinvoice.databinding.ActivityForgotPasswordBinding
 import com.example.ezinvoice.databinding.ActivityStartScreenBinding
@@ -23,7 +25,9 @@ class ForgotPassword : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        window.statusBarColor = getColor(R.color.status_bar_color)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
+
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
         databinding.btnPasswordReset.setOnClickListener{
             val intent= Intent(this@ForgotPassword,ResetPassword::class.java)

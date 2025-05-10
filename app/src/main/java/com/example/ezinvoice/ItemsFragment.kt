@@ -2,6 +2,8 @@ package com.example.ezinvoice
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +38,30 @@ class ItemsFragment : Fragment() {
         viewmodel = ViewModelProvider(this)[ItemsFragmentViewmodel::class.java]
         itemAdapter = ItemAdapter()
 
+
+
+        databinding.searchInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString().trim()
+                if (query.isEmpty()) {
+                    viewmodel.fetchProducts() // default all products
+                } else {
+                    viewmodel.searchProducts(query)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        databinding.scanIcon.setOnClickListener{
+
+            val intent=Intent(requireContext(),Scan_Barcode::class.java)
+            startActivity(intent)
+
+
+        }
         databinding.showitemRCV.layoutManager = LinearLayoutManager(requireContext())
         databinding.showitemRCV.adapter = itemAdapter
 

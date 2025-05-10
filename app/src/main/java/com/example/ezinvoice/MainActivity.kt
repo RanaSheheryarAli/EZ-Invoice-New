@@ -9,64 +9,53 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.ezinvoice.apis.BusinessinfoApi
 import com.example.ezinvoice.databinding.ActivityMainBinding
-import com.example.ezinvoice.models.BusinessInfo
 import com.example.ezinvoice.network.RetrofitClient
 import kotlinx.coroutines.launch
-import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var dataBinding: ActivityMainBinding
-
     private lateinit var companyName: TextView
     private lateinit var companyEmail: TextView
-
     private lateinit var companyLogo: ImageView
-
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var userId: String
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        set status bar color
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        enableEdgeToEdge()
 
-//        ViewCompat.setOnApplyWindowInsetsListener(dataBinding.main) { view, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
 
-        window.statusBarColor = getColor(R.color.status_bar_color)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
-        sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE) // ✅ now valid
 
+
+
+
+
+        sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         userId = sharedPreferences.getString("auth_id", null).toString()
-        Log.d("Signup", "user id from main: $userId")
 
         setupNavigation()
         bindHeader()
         loadCachedBusinessDetails()
         getBusinessDetailsFromApi(userId)
-
 
         dataBinding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -75,14 +64,40 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.reportFragment -> {
+                    findNavController(R.id.fragmentContainerView2).navigate(R.id.reportFragment)
+                    dataBinding.main.closeDrawer(GravityCompat.END)
+                    true
+                }
+
+                R.id.itemsFragment -> {
+                    findNavController(R.id.fragmentContainerView2).navigate(R.id.itemsFragment)
+                    dataBinding.main.closeDrawer(GravityCompat.END)
+                    true
+                }
+
+                R.id.nav_sync -> {
+                    bindHeader()
+                    loadCachedBusinessDetails()
+                    getBusinessDetailsFromApi(userId)
+
+                    Toast.makeText(this, "Business info synced", Toast.LENGTH_SHORT).show()
+                    dataBinding.main.closeDrawer(GravityCompat.END)
+                    true
+                }
+
+                R.id.nav_shareapp -> {
+                    shareApp()
+                    dataBinding.main.closeDrawer(GravityCompat.END)
+                    true
+                }
+
                 else -> false
             }
         }
 
-
-
         dataBinding.floatingActionButton.setOnClickListener {
-            startActivity(Intent(this@MainActivity, Sale::class.java))
+            startActivity(Intent(this, Sale::class.java))
         }
 
         dataBinding.headerLayout.menuButton.setOnClickListener {
@@ -90,75 +105,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun setupNavigation() {
-//        val navController = findNavController(R.id.fragmentContainerView2)
-//        dataBinding.bottomnavigation.setupWithNavController(navController)
-//
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//            dataBinding.headerLayout.tvTitle.text = when (destination.id) {
-//                R.id.homeFragment -> "Home"
-//                R.id.reportFragment -> "Reports"
-//                R.id.itemsFragment -> "Items"
-//                R.id.settingFragment -> "Settings"
-//                else -> ""
-//            }
-//        }
-//    }
-
-    private fun getBottomNavigationIds() = listOf(
-        R.id.homeFragment,
-        R.id.reportFragment,
-        R.id.itemsFragment,
-        R.id.settingFragment
-    )
-
     private fun setupNavigation() {
-        dataBinding.bottomnavigation.setupWithNavController(findNavController(R.id.fragmentContainerView2))
-//        setupActionBarWithNavController(
-//            findNavController(R.id.fragmentContainerView2),
-//            AppBarConfiguration(getBottomNavigationIds().toSet())
-//        )
+        val navController = findNavController(R.id.fragmentContainerView2)
+        dataBinding.bottomnavigation.setupWithNavController(navController)
 
-        dataBinding.bottomnavigation.setOnNavigationItemSelectedListener {
-            NavigationUI.onNavDestinationSelected(it, findNavController(R.id.fragmentContainerView2))
-            true
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            dataBinding.headerLayout.tvTitle.text = when (destination.id) {
+                R.id.homeFragment -> "Home"
+                R.id.reportFragment -> "Reports"
+                R.id.itemsFragment -> "Items"
+                R.id.settingFragment -> "Settings"
+                else -> ""
+            }
         }
 
-        // Setting BottomNavigationView visibility for different screens
-        findNavController(R.id.fragmentContainerView2).addOnDestinationChangedListener { _, destination, _ ->
-            // Screens which show Bottom Navigation
-//            if (getScreenIdsWithBottomNavigation().contains(destination.id)) {
-//                if(destination.id==R.id.editDetailsFragment){
-//                    dataBinding.imageView2.visibility= View.VISIBLE
-//                    dataBinding.moreimg.visibility= View.GONE
-//                    dataBinding.textView6.text="Edit"
-//                }
-//                else{
-//                    dataBinding.imageView2.visibility= View.GONE
-//                    dataBinding.moreimg.visibility= View.VISIBLE
-//                    if(destination.id==R.id.homeFragment){
-//                        dataBinding.textView6.text="Home"
-//                    }else  if(destination.id==R.id.previewFragment){
-//                        dataBinding.textView6.text="Preview"
-//                    }else  if(destination.id==R.id.savedFragment){
-//                        dataBinding.textView6.text="Saved"
-//                    }else  if(destination.id==R.id.accountFragment){
-//                        dataBinding.textView6.text="Account"
-//                    }
-//
-//                }
-//                showBottomNavigation()
-//            }
-//            // Screens which hide Bottom Navigation
-//            else {
-//                hideBottomNavigation()
-//            }
-
-            // Adjust ActionBar
-//            adjustActionBarForDestination(destination.id)
-
-            // Adjust StatusBar
-//            adjustStatusBarColorForDestination(destination.id)
+        dataBinding.bottomnavigation.setOnNavigationItemSelectedListener {
+            NavigationUI.onNavDestinationSelected(it, navController)
+            true
         }
     }
 
@@ -169,37 +132,28 @@ class MainActivity : AppCompatActivity() {
         companyLogo = navHeaderView.findViewById(R.id.imageViewLogo)
     }
 
-
     private fun loadCachedBusinessDetails() {
-        val name = sharedPreferences.getString("business_name", null)
-        val email = sharedPreferences.getString("business_email", null)
-        val logoUrl = sharedPreferences.getString("business_logouri", null)
+        with(sharedPreferences) {
+            companyName.text = getString("business_name", null) ?: ""
+            companyEmail.text = getString("business_email", null) ?: ""
 
-        if (!name.isNullOrEmpty() && !email.isNullOrEmpty()) {
-            companyName.text = name
-            companyEmail.text = email
-        }
-
-        if (!logoUrl.isNullOrEmpty()) {
-            Glide.with(this)
-                .load(logoUrl)
-                .placeholder(R.drawable.logo)
-                .error(R.drawable.logo)
-                .into(companyLogo)
-        } else {
-
-            Toast.makeText(this, "cash have not logo info", Toast.LENGTH_SHORT).show()
+            val logoUrl = getString("business_logouri", null)
+            if (!logoUrl.isNullOrEmpty()) {
+                Glide.with(this@MainActivity)
+                    .load(logoUrl)
+                    .placeholder(R.drawable.logo)
+                    .error(R.drawable.logo)
+                    .into(companyLogo)
+            } else {
+                Toast.makeText(this@MainActivity, "Cached logo not found", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun getBusinessDetailsFromApi(userId: String?) {
-        if (userId.isNullOrEmpty()) {
-            Log.e("API_ERROR", "User ID is null or empty")
-            return
-        }
+        if (userId.isNullOrEmpty()) return
 
         val api = RetrofitClient.createService(BusinessinfoApi::class.java)
-
         lifecycleScope.launch {
             try {
                 val response = api.getbusiness(userId)
@@ -234,9 +188,9 @@ class MainActivity : AppCompatActivity() {
                                 .error(R.drawable.logo)
                                 .into(companyLogo)
                         }
-                    } ?: Log.e("API_ERROR", "Response body is null")
+                    }
                 } else {
-                    Log.e("API_ERROR", "Failed: ${response.code()}")
+                    Log.e("API_ERROR", "Code: ${response.code()}")
                 }
             } catch (e: Exception) {
                 Log.e("API_FAILURE", "Exception: ${e.localizedMessage}")
@@ -252,15 +206,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun logoutUser() {
-        val prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        prefs.edit().clear().apply() // Clears all saved preferences
-
+    private fun logoutUser() {
+        getSharedPreferences("UserPrefs", Context.MODE_PRIVATE).edit().clear().apply()
         val intent = Intent(this, SignIn::class.java)
-        intent.flags =
-            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Prevent back navigation
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }
+
+    private fun shareApp() {
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_SUBJECT, "EZ Invoice")
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "Download the EZ Invoice app to easily create and manage your business invoices. \n\nLink: https://play.google.com/store/apps/details?id=${packageName}"
+            )
+        }
+        startActivity(Intent.createChooser(shareIntent, "Share EZ Invoice via"))
+    }
+
 
 }

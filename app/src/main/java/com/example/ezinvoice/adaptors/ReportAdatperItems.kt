@@ -7,7 +7,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ezinvoice.R
 import com.example.ezinvoice.models.Show_Report_Items
 
-class ReportAdatperItems(private val itemtList: List<Show_Report_Items>):RecyclerView.Adapter<ReportAdatperItems.ReportViewHolder>() {
+class ReportAdatperItems(private var itemtList: MutableList<Show_Report_Items>) :
+    RecyclerView.Adapter<ReportAdatperItems.ReportViewHolder>() {
+
+    fun updateData(newData: List<Show_Report_Items>) {
+        itemtList = newData.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun addMore(data: List<Show_Report_Items>) {
+        val oldSize = itemtList.size
+        itemtList.addAll(data)
+        notifyItemRangeInserted(oldSize, data.size)
+    }
+
     class ReportViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
         val ProductName: TextView = itemView.findViewById(R.id.tv_client_name)
         val invoicesCount: TextView = itemView.findViewById(R.id.tv_invoices_count)

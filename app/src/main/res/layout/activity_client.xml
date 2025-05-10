@@ -15,91 +15,64 @@
         tools:context=".Customer">
 
 
-        <include
-            layout="@layout/appbar"
-            android:id="@+id/mainheader"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-
-            android:id="@+id/headerLayout1"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/appbarhead"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/rounded_box_outline"
-            android:backgroundTint="@color/buttoncolor"
-            android:orientation="horizontal"
-            android:padding="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="60dp"
+            android:background="@color/buttoncolor"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mainheader">
-
-
-            <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="38dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_icon"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/searchInput"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_icon"
-                    android:drawableStart="@drawable/search"
-                    android:drawablePadding="3dp"
-                    android:hint="Search for an item"
-                    android:padding="10dp"
-                    android:textColor="@color/primery_input_text"
-                    android:textColorHint="#D8D8D8"
-                    android:textSize="14sp" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-
-                    android:background="#777777" />
-
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/filter_icon" />
-            </LinearLayout>
-
+            app:layout_constraintEnd_toEndOf="parent">
+            >
 
             <ImageView
-                android:id="@+id/scanIcon"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/bg_icon"
-                android:padding="6dp"
-                android:src="@drawable/barcodescanner"
+                android:id="@+id/imageView3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:srcCompat="@drawable/whitelogo" />
 
-                />
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Customer"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Settings/More Icon -->
             <ImageView
-                android:id="@+id/optionsIcon"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/bg_icon"
-                android:contentDescription="More Options"
-                android:padding="8dp"
-                android:src="@drawable/more" />
-        </LinearLayout>
+                android:id="@+id/syn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                app:layout_constraintStart_toEndOf="@+id/tvTitle"
+                app:layout_constraintEnd_toStartOf="@+id/imageView6"
+                app:layout_constraintTop_toTopOf="@+id/tvTitle"
+                app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+                app:srcCompat="@drawable/sync" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toEndOf="@+id/syn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/syn"
+                app:layout_constraintBottom_toBottomOf="@+id/syn"
+                app:srcCompat="@drawable/notification" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tx_no_item_show"
@@ -108,7 +81,7 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_addnew"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerLayout1">
+            app:layout_constraintTop_toBottomOf="@+id/appbarhead">
 
 
             <ImageView
@@ -159,16 +132,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:gravity="start"
             app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             android:padding="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/headerLayout1"
+            app:layout_constraintTop_toBottomOf="@+id/appbarhead"
             app:layout_constraintBottom_toTopOf="@+id/btn_addnew">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/clientrecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/report_items_layout"
-                android:layout_margin="7dp"
+                tools:listitem="@layout/report_items_layout_with_bg"
+                android:layout_marginTop="7dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_recentinvoice" />

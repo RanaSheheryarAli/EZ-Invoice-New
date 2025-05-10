@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION")
 package com.example.ezinvoice.viewmodels
 
 import android.app.Application
@@ -36,27 +37,61 @@ class ItemsFragmentViewmodel(application: Application) : AndroidViewModel(applic
             return
         }
 
-
-                viewModelScope.launch {
-                    try {
-                        val response = api.getProductsByBusiness(businessId)
-//                        if (response.body() != null) {
-                        if (response.isSuccessful) {
-                            _productList.value = response.body()
-                            _issuccessfull.value=true
-                        } else {
-                            _errorMessage.value = "Nothing found in Products"
-                            _issuccessfull.value=false
-                        }
-                    } catch (e: Exception) {
-                        if (e is CancellationException) {
-                            // ✅ Ignore cancellation, it's not a real error
-                            throw e
-                        }
-                        Log.e("FetchProductsError", e.message.toString())
-                        _errorMessage.value = "API Error: ${e.message}"
-                    }
+        viewModelScope.launch {
+            try {
+                val response = api.getProductsByBusiness(businessId)
+                if (response.isSuccessful) {
+                    _productList.value = response.body()
+                    _issuccessfull.value = true
+                } else {
+                    _errorMessage.value = "Nothing found in Products"
+                    _issuccessfull.value = false
                 }
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                Log.e("FetchProductsError", e.message.toString())
+                _errorMessage.value = "API Error: ${e.message}"
+            }
+        }
+    }
 
+    fun searchProducts(query: String) {
+        val businessId = sharedPreferences.getString("business_id", "") ?: ""
+        if (businessId.isEmpty() || query.isEmpty()) return
+
+        viewModelScope.launch {
+            try {
+                val response = api.searchProducts(businessId, query)
+                if (response.isSuccessful) {
+                    _productList.value = response.body()
+                } else {
+                    _productList.value = emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("SearchProductsError", e.message.toString())
+                _errorMessage.value = "Search Error: ${e.message}"
+            }
+        }
+    }
+
+    fun filterProductsByCategory(categoryId: String?, subcategoryId: String?) {
+        val businessId = sharedPreferences.getString("business_id", "") ?: return
+
+        viewModelScope.launch {
+            try {
+                val response = api.getProductsByBusiness(businessId)
+                if (response.isSuccessful) {
+                    val allProducts = response.body() ?: emptyList()
+                    val filtered = allProducts.filter {
+                        (categoryId == null || it.categoryId._id == categoryId) &&
+                                (subcategoryId == null || it.subcategoryId._id == subcategoryId)
+                    }
+                    _productList.value = filtered
+                }
+            } catch (e: Exception) {
+                Log.e("FilterProductsError", e.message.toString())
+                _errorMessage.value = "Filter Error: ${e.message}"
+            }
+        }
     }
 }

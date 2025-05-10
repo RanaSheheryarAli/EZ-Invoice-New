@@ -3,6 +3,7 @@ package com.example.ezinvoice.adaptors
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ezinvoice.R
 import com.example.ezinvoice.databinding.ItemsLayoutBinding
 import com.example.ezinvoice.models.ProductResponse
 
@@ -25,8 +26,14 @@ class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
                 binding.textViewItemName.text = product.name
                 binding.textViewSalePrice.text = "Rs ${product.saleprice}"
                 binding.textViewPurchasePrice.text = "Rs ${product.purchaceprice}"
+                if(product.stock>0){
+                    binding.textViewStock.setTextColor(binding.root.context.getColor(R.color.green_color))
+                }else{
+                    binding.textViewStock.setTextColor(binding.root.context.getColor(R.color.red_color))
+                }
                 binding.textViewStock.text = "${product.stock}"
-                binding.textViewCatagory.text=product.categoryId
+                binding.textViewCatagory.text=product.categoryId.name
+                binding.textViewSubCatagory.text=product.subcategoryId.name
             }
         }
     }

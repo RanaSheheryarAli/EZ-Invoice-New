@@ -1,4 +1,4 @@
-package com.example.ezinvoice.adapters
+package com.example.ezinvoice.adaptors
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,31 +6,19 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ezinvoice.R
-import com.example.ezinvoice.models.Invoice
 import com.example.ezinvoice.models.Show_Report_Clients
 
-class ReportAdapterClient(private var clientList: MutableList<Show_Report_Clients>) :
-    RecyclerView.Adapter<ReportAdapterClient.ReportViewHolder>() {
-
-    fun updateData(newData: List<Show_Report_Clients>) {
-        clientList = newData.toMutableList()
-        notifyDataSetChanged()
-    }
-
-    fun addMore(data: List<Show_Report_Clients>) {
-        val oldSize = clientList.size
-        clientList.addAll(data)
-        notifyItemRangeInserted(oldSize, data.size)
-    }
-    class ReportViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class CustomerAdaptor(private val clientList: List<Show_Report_Clients>) :RecyclerView.Adapter<CustomerAdaptor.ReportViewHolder>() {
+    class ReportViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)  {
         val clientName: TextView = itemView.findViewById(R.id.tv_client_name)
         val invoicesCount: TextView = itemView.findViewById(R.id.tv_invoices_count)
         val invoiceAmount: TextView = itemView.findViewById(R.id.tv_invoice_amount)
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.report_items_layout, parent, false)
+            .inflate(R.layout.report_items_layout_with_bg, parent, false)
         return ReportViewHolder(view)
     }
 

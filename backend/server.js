@@ -9,6 +9,8 @@ const SubCategoryRoutes = require('./routes/subcategoryRoutes');
 const ProductsRoutes = require('./routes/productRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes'); // ✅ new
 const customerRoutes = require('./routes/customerRoutes'); // ✅ new
+const reportRoutes = require('./routes/reportRoutes');
+
 
 const app = express();
 const port = 5000;
@@ -30,6 +32,11 @@ app.use('/api/subcategories', SubCategoryRoutes);
 app.use('/api/products', ProductsRoutes);
 app.use('/api/invoices', invoiceRoutes);      // ✅ Invoice routes
 app.use('/api/customers', customerRoutes);    // ✅ Customer routes
+
+app.use('/api/reports', reportRoutes);
+
+
+
 
 // MongoDB connection and server start
 async function startServer() {

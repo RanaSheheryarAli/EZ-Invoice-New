@@ -1,6 +1,5 @@
 package com.example.ezinvoice
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.ezinvoice.adapters.ReportAdapterClient
 import com.example.ezinvoice.adaptors.ReportAdatperItems
 import com.example.ezinvoice.apis.ReportApi
@@ -23,8 +23,9 @@ import com.example.ezinvoice.network.RetrofitClient
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import kotlinx.coroutines.launch
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import kotlinx.coroutines.launch
 
 class ReportFragment : Fragment() {
 
@@ -34,84 +35,157 @@ class ReportFragment : Fragment() {
     private lateinit var clientAdapter: ReportAdapterClient
     private lateinit var itemAdapter: ReportAdatperItems
 
+    private var allClients = listOf<Show_Report_Clients>()
+    private var allItems = listOf<Show_Report_Items>()
+    private var clientPage = 1
+    private var itemPage = 1
+    private val pageSize = 5
+
+    private lateinit var businessId: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentReportBinding.inflate(inflater, container, false)
 
-        val businessId = requireContext().getSharedPreferences("UserPrefs", AppCompatActivity.MODE_PRIVATE)
-            .getString("business_id", "") ?: ""
+        businessId =
+            requireContext().getSharedPreferences("UserPrefs", AppCompatActivity.MODE_PRIVATE)
+                .getString("business_id", "") ?: ""
 
         setupSpinners()
         setupRecyclerViews()
 
-//        loadTotalStats(businessId)
-//        loadGraphData(businessId)
-//        loadTopClients(businessId)
-//        loadTopItems(businessId)
+        // Default load for Today
+        val (start, end) = getDateRangeForFilter("Today")
+        loadTotalStats(businessId, start, end)
+
+        loadTopClients(businessId)
+        loadTopItems(businessId)
 
         return binding.root
     }
 
     private fun setupSpinners() {
-        val priceFilterData = listOf("PKR", "Under 1000", "1000 - 5000", "5000 - 10000", "Above 10000")
-        val dateFilterData = listOf("Dates", "Today", "This Week", "This Month", "Custom Date")
+        val priceFilterData = listOf("RS")
+        val dateFilterData = listOf("Dates", "Today", "This Week", "This Month")
 
-        binding.datePriceSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, priceFilterData).apply {
+        binding.datePriceSpinner.adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            priceFilterData
+        ).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
 
-        binding.dateFilterSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, dateFilterData).apply {
+        binding.dateFilterSpinner.adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            dateFilterData
+        ).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
 
-        binding.datePriceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                // Handle price filter selection if needed
+        binding.dateFilterSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selected = parent.getItemAtPosition(position).toString()
+                    if (selected != "Dates") {
+                        val (startDate, endDate) = getDateRangeForFilter(selected)
+                        loadTotalStats(businessId, startDate, endDate)
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {}
+            }
+    }
+
+    private fun getDateRangeForFilter(filter: String): Pair<String, String> {
+        val today = java.util.Calendar.getInstance()
+        val dateFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+
+        return when (filter) {
+            "Today" -> {
+                val date = dateFormat.format(today.time)
+                Pair(date, date)
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-
-        binding.dateFilterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                // Handle date filter selection if needed
+            "This Week" -> {
+                val end = dateFormat.format(today.time)
+                today.add(java.util.Calendar.DAY_OF_YEAR, -6)
+                val start = dateFormat.format(today.time)
+                Pair(start, end)
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {}
+            "This Month" -> {
+                val end = dateFormat.format(today.time)
+                today.set(java.util.Calendar.DAY_OF_MONTH, 1)
+                val start = dateFormat.format(today.time)
+                Pair(start, end)
+            }
+
+            else -> {
+                val date = dateFormat.format(today.time)
+                Pair(date, date)
+            }
         }
     }
 
-    private fun setupRecyclerViews() {
-        binding.clientrecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.itemrecyclerView.layoutManager = LinearLayoutManager(requireContext())
-    }
-
-    private fun loadTotalStats(businessId: String) {
-        lifecycleScope.launch {
-            val api = RetrofitClient.createService(ReportApi::class.java)
-            val response = api.getTotalStats(businessId)
-            if (response.isSuccessful) {
-                val stats = response.body()
-                binding.tvTotalInvoices.text = "${stats?.get("totalInvoices") ?: "0"}"
-                binding.tvTotalSales.text = "Rs ${stats?.get("totalSales") ?: "0"}"
-            }
-        }
-    }
-
-
-    private fun loadGraphData(businessId: String) {
+    private fun loadTotalStats(businessId: String, startDate: String, endDate: String) {
         lifecycleScope.launch {
             try {
                 val api = RetrofitClient.createService(ReportApi::class.java)
-                val response = api.getSalesGraph(businessId)
+                val response = api.getReportSummary(businessId, startDate, endDate)
+
                 if (response.isSuccessful) {
-                    val graphData = response.body() as? Map<String, Double>
-                    val entries = graphData?.entries?.mapIndexed { index, entry ->
-                        Entry(index.toFloat(), entry.value.toFloat())
+                    val stats = response.body()
+                    binding.tvTotalInvoices.text = stats?.totalInvoices.toString()
+                    binding.tvTotalSales.text = "Rs ${stats?.totalSales ?: 0.0}"
+                    binding.tvTotalExpence.text = "Rs ${stats?.totalExpense ?: 0.0}"
+                    val profitOrLoss = stats?.profitOrLoss ?: 0.0
+                    binding.tvTotalProfitloss.text = "Rs $profitOrLoss"
+
+                    when {
+                        profitOrLoss > 0 -> {
+                            binding.tvTotalProfitloss.setTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.green_color
+                                )
+                            ) // profit
+                        }
+
+                        profitOrLoss < 0 -> {
+                            binding.tvTotalProfitloss.setTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.red_color
+                                )
+                            ) // loss
+                        }
+
+                        else -> {
+                            binding.tvTotalProfitloss.setTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.imp_text_color
+                                )
+                            ) // default
+                        }
+                    }
+
+                    val entries = stats?.salesGraph?.mapIndexed { index, entry ->
+                        Entry(index.toFloat(), entry.amount.toFloat())
                     } ?: emptyList()
-                    updateLineChart(entries)
+
+                    val labels = stats?.salesGraph?.map { it.date } ?: emptyList()
+
+                    updateLineChart(entries, labels)
 
                 }
             } catch (e: Exception) {
@@ -120,9 +194,7 @@ class ReportFragment : Fragment() {
         }
     }
 
-
-
-    private fun updateLineChart(entries: List<Entry>) {
+    private fun updateLineChart(entries: List<Entry>, labels: List<String>) {
         val dataSet = LineDataSet(entries, "Sales Trends").apply {
             color = ContextCompat.getColor(requireContext(), R.color.buttoncolor)
             valueTextColor = Color.BLACK
@@ -133,18 +205,59 @@ class ReportFragment : Fragment() {
             fillAlpha = 50
         }
 
+        val lineData = LineData(dataSet)
+
         binding.lineChart.apply {
+            data = lineData
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.textColor = Color.BLACK
             xAxis.granularity = 1f
             axisRight.isEnabled = false
             axisLeft.textColor = Color.BLACK
-            data = LineData(dataSet)
             description.text = "Sales Graph"
             description.textColor = Color.BLACK
             animateXY(1000, 1000)
+
+            // ✅ Set date labels for X-axis
+            xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+            xAxis.labelRotationAngle = -45f // optional: slant text for clarity
+
             invalidate()
         }
+    }
+
+
+    private fun setupRecyclerViews() {
+        binding.clientrecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.itemrecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.clientrecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisible = layoutManager.findLastCompletelyVisibleItemPosition()
+                if (::clientAdapter.isInitialized && lastVisible == clientAdapter.itemCount - 1 &&
+                    clientPage * pageSize < allClients.size
+                ) {
+                    clientPage++
+                    val nextClients = allClients.take(clientPage * pageSize)
+                    clientAdapter.updateData(nextClients)
+                }
+            }
+        })
+
+        binding.itemrecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisible = layoutManager.findLastCompletelyVisibleItemPosition()
+                if (::itemAdapter.isInitialized && lastVisible == itemAdapter.itemCount - 1 &&
+                    itemPage * pageSize < allItems.size
+                ) {
+                    itemPage++
+                    val nextItems = allItems.take(itemPage * pageSize)
+                    itemAdapter.updateData(nextItems)
+                }
+            }
+        })
     }
 
     private fun loadTopClients(businessId: String) {
@@ -153,18 +266,16 @@ class ReportFragment : Fragment() {
                 val api = RetrofitClient.createService(ReportApi::class.java)
                 val response = api.getTopClients(businessId)
                 if (response.isSuccessful) {
-                    val clients = response.body() ?: emptyList()
-                    clientAdapter = ReportAdapterClient(clients)
+                    allClients = response.body() ?: emptyList()
+                    clientAdapter = ReportAdapterClient(allClients.take(pageSize).toMutableList())
                     binding.clientrecyclerView.adapter = clientAdapter
-                    clientAdapter = ReportAdapterClient(clients)
-                    binding.clientrecyclerView.adapter = clientAdapter
+                    clientPage = 1
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
-
 
     private fun loadTopItems(businessId: String) {
         lifecycleScope.launch {
@@ -172,7 +283,7 @@ class ReportFragment : Fragment() {
                 val api = RetrofitClient.createService(ReportApi::class.java)
                 val response = api.getTopSellingItems(businessId)
                 if (response.isSuccessful) {
-                    val items = response.body()?.filterNotNull()?.map {
+                    allItems = response.body()?.filterNotNull()?.map {
                         Show_Report_Items(
                             productId = it.productId ?: "Unknown",
                             productName = it.productName ?: "Unknown",
@@ -180,15 +291,15 @@ class ReportFragment : Fragment() {
                             totalSales = it.totalSales ?: 0
                         )
                     } ?: emptyList()
-                    itemAdapter = ReportAdatperItems(items)
+                    itemAdapter = ReportAdatperItems(allItems.take(pageSize).toMutableList())
                     binding.itemrecyclerView.adapter = itemAdapter
+                    itemPage = 1
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

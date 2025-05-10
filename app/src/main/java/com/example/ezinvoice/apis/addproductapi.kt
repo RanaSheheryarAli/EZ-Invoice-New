@@ -22,5 +22,11 @@ interface productapi {
     @GET("products/get-product-by-barcode/{barcode}")
     suspend fun getProductByBarcode(@Path("barcode") barcode: String,  @Query("businessId") businessId: String): Response<ProductResponse>
 
+    @GET("products/search-products")
+    suspend fun searchProducts(
+        @Query("businessId") businessId: String,
+        @Query("query") query: String
+    ): Response<List<ProductResponse>>
+
 
 }

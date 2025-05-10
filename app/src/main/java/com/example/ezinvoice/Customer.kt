@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ezinvoice.adapters.ReportAdapterClient
+import com.example.ezinvoice.adaptors.CustomerAdaptor
 import com.example.ezinvoice.apis.ReportApi
 import com.example.ezinvoice.databinding.ActivityClientBinding
 import com.example.ezinvoice.network.RetrofitClient
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 
 class Customer : AppCompatActivity() {
 
-    private lateinit var clientAdapter: ReportAdapterClient
+    private lateinit var clientAdapter: CustomerAdaptor
     private lateinit var databinding: ActivityClientBinding
     private lateinit var pref: SharedPreferences
 
@@ -36,12 +37,16 @@ class Customer : AppCompatActivity() {
         window.statusBarColor = getColor(R.color.status_bar_color)
 
 
+
         pref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
         val businessId = pref.getString("business_id", "") ?: ""
 
         databinding.clientrecyclerView.layoutManager = LinearLayoutManager(this)
-        databinding.mainheader.tvTitle.text = "Customer"
+        databinding.tvTitle.text = "Customer"
 
+        databinding.syn.setOnClickListener{
+            loadTopClients(businessId)
+        }
         loadTopClients(businessId)
 
         databinding.btnAddnew.setOnClickListener{
@@ -61,14 +66,14 @@ class Customer : AppCompatActivity() {
                         databinding.txNoItemShow.visibility=android.view.View.VISIBLE
                         databinding.containerShowItems.visibility=android.view.View.INVISIBLE
                         val clients = response.body() ?: emptyList()
-                        clientAdapter = ReportAdapterClient(clients)
+                        clientAdapter = CustomerAdaptor(clients)
                         databinding.clientrecyclerView.adapter = clientAdapter
                     }
                     else {
                         databinding.txNoItemShow.visibility=android.view.View.INVISIBLE
                         databinding.containerShowItems.visibility=android.view.View.VISIBLE
                         val clients = response.body() ?: emptyList()
-                        clientAdapter = ReportAdapterClient(clients)
+                        clientAdapter = CustomerAdaptor(clients)
                         databinding.clientrecyclerView.adapter = clientAdapter
                     }
                 }

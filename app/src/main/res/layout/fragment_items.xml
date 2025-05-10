@@ -52,19 +52,7 @@
                     android:textColorHint="#D8D8D8"
                     android:textSize="14sp" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:background="#777777" />
 
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/filter_icon" />
             </LinearLayout>
 
 
@@ -80,17 +68,17 @@
                 />
 
             <!-- Settings/More Icon -->
-            <ImageView
-                android:id="@+id/optionsIcon"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/bg_icon"
-                android:contentDescription="More Options"
-                android:padding="8dp"
-                android:src="@drawable/more" />
+<!--            <ImageView-->
+<!--                android:id="@+id/optionsIcon"-->
+<!--                android:layout_width="35dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginStart="5dp"-->
+<!--                android:layout_marginEnd="5dp"-->
+<!--                android:background="@drawable/bg_icon"-->
+<!--                android:contentDescription="More Options"-->
+<!--                android:padding="8dp"-->
+<!--                android:src="@drawable/more" />-->
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

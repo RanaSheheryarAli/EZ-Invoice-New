@@ -2,6 +2,7 @@ package com.example.ezinvoice
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -19,8 +20,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +43,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.nio.ByteBuffer
+import java.util.Calendar
 
 class Add_Items : AppCompatActivity() {
 
@@ -88,15 +92,34 @@ class Add_Items : AppCompatActivity() {
             insets
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = getColor(R.color.status_bar_color)
-        }
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
 
         addProductViewmodel = ViewModelProvider(this)[AddProductsViewmodel::class.java]
         databinding.viewmodel = addProductViewmodel
         databinding.lifecycleOwner = this
 
+
+        // Set calendar icon click listener
+        databinding.dateInputLayout.setEndIconOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val datePicker = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+                val formattedDate = String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear)
+                databinding.etAsOfDate.setText(formattedDate)
+            }, year, month, day)
+
+            datePicker.show()
+        }
+
+
+
+        databinding.tvTitle.text = "Add Items"
         databinding.btnSave.setOnClickListener {
             if (selectedCategoryId == null || selectedSubCategoryId == null) {
                 Toast.makeText(this, "Please select Category and SubCategory", Toast.LENGTH_SHORT).show()
@@ -123,7 +146,7 @@ class Add_Items : AppCompatActivity() {
 
         mediaPlayer = MediaPlayer.create(this, R.raw.beep)
 
-        databinding.tvTitle.text = "Add Items"
+
 
         setupCameraBottomSheet()
         setupCategoryBottomSheet()

@@ -15,7 +15,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_margin="8dp"
             android:background="@drawable/rounded_box_outline_edt"
             android:clipToPadding="false"
             android:elevation="2dp"
@@ -42,19 +41,49 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/textViewCatagory"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
                     android:background="@drawable/rounded_category_bg"
-                    android:gravity="center"
-                    android:paddingStart="12dp"
-                    android:paddingTop="4dp"
-                    android:paddingEnd="12dp"
-                    android:paddingBottom="4dp"
-                    android:text="Category"
-                    android:textColor="@color/scendory_input_text"
-                    android:textSize="12sp" />
+                    >
+
+                    <TextView
+                        android:id="@+id/textViewCatagory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingStart="12dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="4dp"
+                        android:text="Category"
+                        android:textColor="@color/scendory_input_text"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-->"
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewSubCatagory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingStart="12dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="4dp"
+                        android:text="SubCategory"
+                        android:textColor="@color/scendory_input_text"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+
+
             </LinearLayout>
 
             <!-- Row for Sale Price, Purchase Price, and In Stock -->

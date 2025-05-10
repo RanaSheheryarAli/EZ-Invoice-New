@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val businessId = Scan_Barcode.SharedPrefManager.getBusinessId(requireContext()) // replace with your actual method
+        val businessId = Scan_Barcode.SharedPrefManager.getBusinessId(requireContext())
         adapter = InvoiceAdapter(emptyList())
         binding.recentinvoiceRCV.layoutManager = LinearLayoutManager(requireContext())
         binding.recentinvoiceRCV.adapter = adapter
@@ -42,15 +42,25 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this)[HomeFragmentViewmodel::class.java]
         viewModel.fetchInvoices(businessId)
 
-        viewModel.invoices.observe(viewLifecycleOwner) { invoices ->
+        viewModel.visibleInvoices.observe(viewLifecycleOwner) { invoices ->
             adapter.updateData(invoices)
-        }
-        viewModel.error.observe(viewLifecycleOwner) { error ->
+            // Show or hide See More based on remaining invoices
+            val totalCount = invoices.size
+//            val isMore = totalCount < (viewModel.invoices.value?.size ?: Int.MAX_VALUE)
+            binding.btnSeeMore.visibility = if (viewModel.hasMoreInvoices()) View.VISIBLE else View.GONE
 
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
             if (error != null) {
                 Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
                 viewModel.clearError()
             }
+        }
+
+        // Load more invoices when "See More" is clicked
+        binding.btnSeeMore.setOnClickListener {
+            viewModel.loadMoreInvoices()
         }
 
         // Navigation listeners
@@ -85,7 +95,7 @@ class HomeFragment : Fragment() {
             startActivity(Intent(requireContext(), Customer::class.java))
         }
         binding.containerInventory.setOnClickListener {
-            startActivity(Intent(requireContext(), Add_Items::class.java))
+            startActivity(Intent(requireContext(), Inventory::class.java))
         }
     }
 }

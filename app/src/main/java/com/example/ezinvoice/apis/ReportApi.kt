@@ -1,10 +1,12 @@
 package com.example.ezinvoice.apis
 
+import com.example.ezinvoice.models.ReportSummary
 import com.example.ezinvoice.models.Show_Report_Clients
 import com.example.ezinvoice.models.Show_Report_Items
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ReportApi {
     @GET("invoices/stats/{businessId}")
@@ -18,4 +20,12 @@ interface ReportApi {
 
     @GET("customers/top-customers/{businessId}")
     suspend fun getTopClients(@Path("businessId") businessId: String): Response<List<Show_Report_Clients>>
+
+
+    @GET("reports/summary")
+    suspend fun getReportSummary(
+        @Query("businessId") businessId: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): Response<ReportSummary>
 }

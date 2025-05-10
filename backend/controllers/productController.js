@@ -93,9 +93,10 @@ const getProductsByBusiness = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(businessId)) {
             return res.status(400).json({ error: "Invalid business ID format" });
         }
-
-        const products = await Product.find({ businessId });
-
+        const products = await Product.find({ businessId })
+        .populate('categoryId', 'name') // only include category name
+        .populate('subcategoryId', 'name'); // optional: for subcategory name too
+      
         if (!products.length) {
             return res.status(404).json({ error: "No products found for this business" });
         }
@@ -205,4 +206,36 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports = { createProduct, getProductsBySubcategory, getProductById, updateProduct, deleteProduct ,getProductsByBusiness,getProductByBarcode};
+// ✅ Add this new controller function to productController.js
+const searchProductsByName = async (req, res) => {
+    try {
+        const { businessId, query } = req.query;
+
+        if (!businessId || !query) {
+            return res.status(400).json({ error: "Both businessId and query are required" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(businessId)) {
+            return res.status(400).json({ error: "Invalid business ID format" });
+        }
+
+        const products = await Product.find({
+            businessId,
+            name: { $regex: query, $options: "i" } // Case-insensitive partial match
+        })
+        .populate('categoryId', 'name')
+        .populate('subcategoryId', 'name');
+
+        if (!products.length) {
+            return res.status(404).json({ error: "No matching products found" });
+        }
+
+        res.status(200).json(products);
+
+    } catch (error) {
+        console.error("Error searching products by name:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+module.exports = { createProduct, getProductsBySubcategory, getProductById, updateProduct,
+     deleteProduct ,getProductsByBusiness,getProductByBarcode, searchProductsByName};
