@@ -66,8 +66,7 @@ class Business_Info : AppCompatActivity() {
             }
         }
 
-    private val pickImageLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 val correctedBitmap = handleImageOrientation(this, it)
                 databinding.imgAddLogo.setImageBitmap(correctedBitmap)
@@ -244,9 +243,10 @@ class Business_Info : AppCompatActivity() {
         val signatureBitmap = signatureView.getSignatureBitmap()
 
         val signatureDir = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
             "Signatures"
         )
+
 
         if (!signatureDir.exists()) {
             signatureDir.mkdirs()

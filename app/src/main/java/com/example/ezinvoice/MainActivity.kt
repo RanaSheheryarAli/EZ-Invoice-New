@@ -39,14 +39,8 @@ class MainActivity : AppCompatActivity() {
 //        set status bar color
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-
-
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
-
-
-
-
 
 
         sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)

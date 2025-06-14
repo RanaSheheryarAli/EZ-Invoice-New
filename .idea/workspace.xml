@@ -3,6 +3,8 @@
   <component name="AndroidLayouts">
     <shared>
       <config>
+        <device id="_device_class_phone" />
+        <device id="pixel_4a" />
         <device id="pixel_8_pro" />
       </config>
     </shared>
@@ -37,6 +39,11 @@
           <theme>@style/Base.Theme.EZInvoice</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_draw_signature.xml">
+        <config>
+          <theme>@style/Base.Theme.EZInvoice</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_inventory.xml">
         <config>
           <theme>@style/Base.Theme.EZInvoice</theme>
@@ -62,7 +69,17 @@
           <theme>@style/Base.Theme.EZInvoice</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_signature.xml">
+        <config>
+          <theme>@style/Base.Theme.EZInvoice</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_signup.xml">
+        <config>
+          <theme>@style/Base.Theme.EZInvoice</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_splash_screen.xml">
         <config>
           <theme>@style/Base.Theme.EZInvoice</theme>
         </config>
@@ -78,6 +95,16 @@
         </config>
       </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/catagory_bottom_sheet.xml">
+        <config>
+          <theme>@style/Base.Theme.EZInvoice</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_add_signature.xml">
+        <config>
+          <theme>@style/Base.Theme.EZInvoice</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_product_options.xml">
         <config>
           <theme>@style/Base.Theme.EZInvoice</theme>
         </config>
@@ -107,7 +134,7 @@
           <theme>@style/Base.Theme.EZInvoice</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_inventory_row.xml">
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_setting.xml">
         <config>
           <theme>@style/Base.Theme.EZInvoice</theme>
         </config>
@@ -178,66 +205,49 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1eaba24f-76a0-4e9c-95d2-894ae9c1d7a1" name="Changes" comment="nothing">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Inventory.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/InventoryFilterDialog.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/CustomerAdaptor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/models/ReportSummary.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/filter_alt_24.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_inventory.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/filter_popup_layout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/report_items_layout_with_bg.xml" afterDir="false" />
+    <list default="true" id="1eaba24f-76a0-4e9c-95d2-894ae9c1d7a1" name="Changes" comment="Starting Room DataBase">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/DrawSignatureActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Signature.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/models/OnProductActionListener.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/autograph.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/autographsmall.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/baseline_more_vert_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/file_upload_24.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/rounded_border.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/rounded_button.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/rounded_button_full.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_draw_signature.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_signature.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_add_signature.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_product_options.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_29_2025_1_13_PM_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_29_2025_1_13_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_29_2025_1_13_PM__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_29_2025_1_13_PM__Changes_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/other.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/AddCategory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/AddCategory.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/AddSubCategory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/AddSubCategory.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Add_Items.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Add_Items.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Business_Info.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Business_Info.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Customer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Customer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ForgotPassword.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ForgotPassword.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/HomeFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Inventory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Inventory.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/InvoicePreview.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/InvoicePreview.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ItemsFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ItemsFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/OTP.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/OTP.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ReportFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ReportFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ResetPassword.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/ResetPassword.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Sale.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Sale.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Scan_Barcode.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Scan_Barcode.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/SignIn.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/SignIn.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Signup.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/Signup.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/SettingFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/SettingFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/SplashScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/SplashScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/StartScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/StartScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/ItemAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/ItemAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/ReportAdapterClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/ReportAdapterClient.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/ReportAdatperItems.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/adaptors/ReportAdatperItems.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/apis/ReportApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/apis/ReportApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/apis/BusinessinfoApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/apis/BusinessinfoApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/apis/InvoiceApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/apis/InvoiceApi.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/apis/addproductapi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/apis/addproductapi.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/models/CatagoryModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/models/CatagoryModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/viewmodels/HomeFragmentViewmodel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/viewmodels/HomeFragmentViewmodel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/viewmodels/ItemsFragmentViewmodel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/viewmodels/ItemsFragmentViewmodel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/filter_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_items.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_items.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_client.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_items.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_items.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/viewmodels/AddProductsViewmodel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/viewmodels/AddProductsViewmodel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/viewmodels/SignupViewmodel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/ezinvoice/viewmodels/SignupViewmodel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_barcode_scanner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_barcode_scanner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_sign_in.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_sign_in.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_splash_screen.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_splash_screen.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/camera_bottom_sheet.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/camera_bottom_sheet.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_setting.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_setting.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/items_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/items_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/recent_invoice_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/recent_invoice_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/drawer_menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/menu/drawer_menu.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/xml/file_paths.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/xml/file_paths.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/controllers/productController.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/controllers/productController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/productRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/productRoutes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -253,15 +263,53 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="EZ Invoice" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="EZ Invoice" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="EZ Invoice" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="EZ Invoice" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Object" />
-        <option value="resourceFile" />
-        <option value="Kotlin Interface" />
         <option value="Kotlin Data Class" />
-        <option value="layoutResourceFile" />
         <option value="Kotlin Class" />
+        <option value="resourceFile" />
+        <option value="layoutResourceFile" />
+        <option value="Kotlin Interface" />
       </list>
     </option>
   </component>
@@ -285,6 +333,9 @@
     &quot;accountId&quot;: &quot;e1a0011b-a970-4aa0-b79a-fc1b3cc87cfb&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 0
@@ -309,6 +360,7 @@
     &quot;git-widget-placeholder&quot;: &quot;sherry__develop&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/EZ-Invoice&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   },
@@ -322,10 +374,16 @@
     <key name="android.template.-824915472">
       <recent name="com.example" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\EZ-Invoice\app\src\main\res\drawable" />
+    </key>
     <key name="android.template.1343920803">
       <recent name="com.example.ezinvoice" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.example.ezinvoice" />
+    </key>
+    <key name="android.template.-1927667103">
       <recent name="com.example.ezinvoice" />
     </key>
     <key name="android.template.-680552594">
@@ -452,7 +510,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746307875377</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Adding Inventory Activity Report Fragment update">
+      <option name="closed" value="true" />
+      <created>1746909101853</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1746909101853</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -473,7 +539,9 @@
     <MESSAGE value="adding functionality in Report Fragment first with backend files" />
     <MESSAGE value="adding functionality in Report Fragment first with backend files 1" />
     <MESSAGE value="nothing" />
-    <option name="LAST_COMMIT_MESSAGE" value="nothing" />
+    <MESSAGE value="Adding Inventory Activity Report Fragment update" />
+    <MESSAGE value="Starting Room DataBase" />
+    <option name="LAST_COMMIT_MESSAGE" value="Starting Room DataBase" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

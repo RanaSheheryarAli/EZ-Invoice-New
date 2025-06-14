@@ -70,7 +70,9 @@ const getProductByBarcode = async (req, res) => {
             return res.status(400).json({ error: "Business ID is required" });
         }
 
-        const product = await Product.findOne({ barcode, businessId });
+        const product = await Product.findOne({ barcode, businessId })
+          .populate('categoryId', 'name') // only include category name
+        .populate('subcategoryId', 'name'); // optional: for subcategory name too
 
         if (!product) {
             return res.status(404).json({ error: "Product not found for this business with this barcode" });
@@ -147,7 +149,9 @@ const getProductById = async (req, res) => {
             return res.status(400).json({ error: "Invalid product ID format" });
         }
 
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId)
+              .populate('categoryId', 'name') // only include category name
+        .populate('subcategoryId', 'name'); // optional: for subcategory name too
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
         }
@@ -168,7 +172,9 @@ const updateProduct = async (req, res) => {
             return res.status(400).json({ error: "Invalid product ID format" });
         }
 
-        const updatedProduct = await Product.findByIdAndUpdate(productId, req.body, { new: true });
+        const updatedProduct = await Product.findByIdAndUpdate(productId, req.body, { new: true })
+              .populate('categoryId', 'name') // only include category name
+        .populate('subcategoryId', 'name'); // optional: for subcategory name too
         if (!updatedProduct) {
             return res.status(404).json({ error: "Product not found" });
         }

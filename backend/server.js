@@ -30,8 +30,8 @@ app.use('/api/businesses', businessRoutes);
 app.use('/api/categories', CategoryRoutes);
 app.use('/api/subcategories', SubCategoryRoutes);
 app.use('/api/products', ProductsRoutes);
-app.use('/api/invoices', invoiceRoutes);      // ✅ Invoice routes
-app.use('/api/customers', customerRoutes);    // ✅ Customer routes
+app.use('/api/invoices', invoiceRoutes);      
+app.use('/api/customers', customerRoutes);    
 
 app.use('/api/reports', reportRoutes);
 

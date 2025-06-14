@@ -11,13 +11,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ezinvoice.adaptors.ItemAdapter
+import com.example.ezinvoice.apis.productapi
 import com.example.ezinvoice.databinding.FragmentItemsBinding
+import com.example.ezinvoice.models.OnProductActionListener
+import com.example.ezinvoice.network.RetrofitClient
 import com.example.ezinvoice.viewmodels.ItemsFragmentViewmodel
+import kotlinx.coroutines.launch
 
-
-class ItemsFragment : Fragment() {
+class ItemsFragment : Fragment(), OnProductActionListener {
 
     lateinit var databinding: FragmentItemsBinding
     lateinit var viewmodel: ItemsFragmentViewmodel
@@ -27,7 +31,7 @@ class ItemsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         databinding = DataBindingUtil.inflate(inflater, R.layout.fragment_items, container, false)
         return databinding.root
     }
@@ -36,32 +40,26 @@ class ItemsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewmodel = ViewModelProvider(this)[ItemsFragmentViewmodel::class.java]
-        itemAdapter = ItemAdapter()
-
-
+        itemAdapter = ItemAdapter(this) // passing listener
 
         databinding.searchInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString().trim()
                 if (query.isEmpty()) {
-                    viewmodel.fetchProducts() // default all products
+                    viewmodel.fetchProducts()
                 } else {
                     viewmodel.searchProducts(query)
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        databinding.scanIcon.setOnClickListener{
-
-            val intent=Intent(requireContext(),Scan_Barcode::class.java)
+        databinding.scanIcon.setOnClickListener {
+            val intent = Intent(requireContext(), Scan_Barcode::class.java)
             startActivity(intent)
-
-
         }
+
         databinding.showitemRCV.layoutManager = LinearLayoutManager(requireContext())
         databinding.showitemRCV.adapter = itemAdapter
 
@@ -89,4 +87,35 @@ class ItemsFragment : Fragment() {
             startActivity(intent)
         }
     }
+
+    override fun onUpdateClicked(productId: String) {
+        val intent = Intent(requireContext(), Add_Items::class.java)
+        intent.putExtra("product_id", productId)
+        intent.putExtra("isUpdate", true)
+        startActivity(intent)
+    }
+
+    override fun onDeleteClicked(productId: String) {
+        deleteProduct(productId)
+    }
+
+    fun deleteProduct(productId: String) {
+        val api = RetrofitClient.createService(productapi::class.java)
+        viewmodel.viewModelScope.launch {
+            try {
+                val response = api.deleteProduct(productId)
+                if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), "Product Deleted", Toast.LENGTH_SHORT).show()
+                    viewmodel.fetchProducts()
+                } else {
+                    val errorMsg = response.errorBody()?.string()
+                    val message = errorMsg ?: "Delete Failed"
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }

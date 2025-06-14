@@ -29,11 +29,12 @@ class SplashScreen : AppCompatActivity() {
         val authToken = prefs.getString("auth_id", null)
         val businessToken = prefs.getString("business_id", null)
 
-        Log.d("SplashScreen", "Auth Token: $authToken, Business Token: $businessToken")
+        Log.e("SplashScreen", "Auth Token: $authToken, Business Token: $businessToken")
 
         // Decide the next screen
         window.decorView.postDelayed({
             val nextActivity = when {
+
                 authToken.isNullOrEmpty() -> SignIn::class.java
                 businessToken.isNullOrEmpty() -> Business_Info::class.java
                 else -> MainActivity::class.java

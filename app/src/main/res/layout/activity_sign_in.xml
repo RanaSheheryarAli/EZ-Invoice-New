@@ -81,7 +81,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phone Number"
-
                     android:fontFamily="sans-serif-medium"
                     android:textStyle="bold"
                     android:layout_marginStart="20dp"

@@ -11,6 +11,8 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface BusinessinfoApi {
     @Headers("Content-Type: application/json") // Ensure JSON format
@@ -20,5 +22,10 @@ interface BusinessinfoApi {
     @GET("businesses/get-business/{userId}")
     suspend fun getbusiness(@retrofit2.http.Path("userId") userId: String?): Response<BusinessInfo>
 
+    @PUT("businesses/update-business/{userId}")
+    suspend fun updateBusiness(
+        @Path("userId") userId: String,
+        @Body data: Map<String, String>
+    ): Response<Any>
 
 }

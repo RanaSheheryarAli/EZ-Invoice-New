@@ -4,14 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ezinvoice.adaptors.ItemAdapter
@@ -35,13 +33,13 @@ class Inventory : AppCompatActivity() {
             insets
         }
 
-
         window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
 
         viewmodel = ViewModelProvider(this)[ItemsFragmentViewmodel::class.java]
-        itemAdapter = ItemAdapter()
+        itemAdapter = ItemAdapter() // ✅ because ItemsFragment implements OnProductActionListener
+
 
         databinding.recyclerInventory.layoutManager = LinearLayoutManager(this)
         databinding.recyclerInventory.adapter = itemAdapter
@@ -86,6 +84,10 @@ class Inventory : AppCompatActivity() {
                     viewmodel.searchProducts(query)
                 }
             }
+
+
+
+
 
             override fun afterTextChanged(s: Editable?) {}
         })

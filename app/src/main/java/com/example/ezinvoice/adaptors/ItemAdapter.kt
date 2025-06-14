@@ -1,13 +1,22 @@
 package com.example.ezinvoice.adaptors
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ezinvoice.Add_Items
+import com.example.ezinvoice.ItemsFragment
 import com.example.ezinvoice.R
 import com.example.ezinvoice.databinding.ItemsLayoutBinding
+import com.example.ezinvoice.models.OnProductActionListener
 import com.example.ezinvoice.models.ProductResponse
 
-class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+class ItemAdapter(
+    private val listener: OnProductActionListener? = null
+) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     private val items = mutableListOf<ProductResponse>()
 
@@ -17,30 +26,52 @@ class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
         notifyDataSetChanged()
     }
 
-    inner class ItemViewHolder(private val binding: ItemsLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ItemViewHolder(private val binding: ItemsLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
         fun bind(product: ProductResponse) {
-            binding.apply {
-                // bind product data to views
-                // change this according to your xml ids
-                // Example:
-                binding.textViewItemName.text = product.name
-                binding.textViewSalePrice.text = "Rs ${product.saleprice}"
-                binding.textViewPurchasePrice.text = "Rs ${product.purchaceprice}"
-                if(product.stock>0){
-                    binding.textViewStock.setTextColor(binding.root.context.getColor(R.color.green_color))
-                }else{
-                    binding.textViewStock.setTextColor(binding.root.context.getColor(R.color.red_color))
-                }
-                binding.textViewStock.text = "${product.stock}"
-                binding.textViewCatagory.text=product.categoryId.name
-                binding.textViewSubCatagory.text=product.subcategoryId.name
+            binding.textViewItemName.text = product.name
+            binding.textViewSalePrice.text = "Rs ${product.saleprice}"
+            binding.textViewPurchasePrice.text = "Rs ${product.purchaceprice}"
+            binding.textViewStock.text = "${product.stock}"
+            binding.textViewCatagory.text = product.categoryId.name
+            binding.textViewSubCatagory.text = product.subcategoryId.name
+
+            binding.textViewStock.setTextColor(
+                if (product.stock > 0)
+                    binding.root.context.getColor(R.color.green_color)
+                else
+                    binding.root.context.getColor(R.color.red_color)
+            )
+
+            binding.moreicon.setOnClickListener {
+                showPopup(product)
             }
+        }
+
+        private fun showPopup(product: ProductResponse) {
+            val context = binding.root.context
+            val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_product_options, null)
+            val dialog = android.app.AlertDialog.Builder(context)
+                .setView(dialogView)
+                .create()
+
+            dialogView.findViewById<TextView>(R.id.btnUpdate).setOnClickListener {
+                dialog.dismiss()
+                listener?.onUpdateClicked(product._id)
+            }
+
+            dialogView.findViewById<TextView>(R.id.btnDelete).setOnClickListener {
+                dialog.dismiss()
+                listener?.onDeleteClicked(product._id)
+            }
+
+            dialog.show()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemsLayoutBinding.inflate(inflater, parent, false)
+        val binding = ItemsLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding)
     }
 

@@ -113,23 +113,15 @@ class InvoicePreview : AppCompatActivity() {
         if (!signaturePath.isNullOrEmpty()) {
             val signatureFile = File(signaturePath)
             if (signatureFile.exists()) {
-                try {
-                    val uri = FileProvider.getUriForFile(
-                        this,
-                        "${packageName}.provider",
-                        signatureFile
-                    )
-                    val inputStream = contentResolver.openInputStream(uri)
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    binding.signatureImage.setImageBitmap(bitmap)
-                    inputStream?.close()
-                } catch (e: Exception) {
-                    Log.e("SIGNATURE_LOAD", "Error loading signature: ${e.message}")
-                    Toast.makeText(this, "Failed to load signature", Toast.LENGTH_SHORT).show()
-                }
+                val bitmap = BitmapFactory.decodeFile(signaturePath)
+                binding.signatureImage.setImageBitmap(bitmap)
+            } else {
+                Toast.makeText(this, "Signature file not found", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+
 
     private fun fetchInvoiceNumber() {
         val businessId = getSharedPreferences("UserPrefs", MODE_PRIVATE)

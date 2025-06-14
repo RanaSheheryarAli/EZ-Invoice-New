@@ -27,6 +27,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".DrawSignatureActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Signature"
+            android:exported="false" />
+        <activity
             android:name=".Inventory"
             android:exported="false" />
 
@@ -39,6 +45,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+
+
+
 
         <activity
             android:name=".InvoicePreview"

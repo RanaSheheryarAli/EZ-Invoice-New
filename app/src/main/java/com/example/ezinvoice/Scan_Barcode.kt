@@ -1,4 +1,4 @@
-package com.example.ezinvoice
+    package com.example.ezinvoice
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -68,6 +68,9 @@ class Scan_Barcode : AppCompatActivity() {
 
         setupRecyclerView()
 
+
+
+        openCameraBottomSheet()
         databinding.btnnext.setOnClickListener {
             if (bottomSheetDialog.isShowing) {
                 bottomSheetDialog.dismiss()
@@ -91,9 +94,15 @@ class Scan_Barcode : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter = Scan_BarcodeAdapter(scannedProducts)
-        databinding.showproductsRCV.layoutManager = LinearLayoutManager(this)
+
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
+
+        databinding.showproductsRCV.layoutManager = layoutManager
         databinding.showproductsRCV.adapter = adapter
     }
+
 
     private fun openCameraBottomSheet() {
         bottomSheetBinding = CameraBottomSheetBinding.inflate(layoutInflater)

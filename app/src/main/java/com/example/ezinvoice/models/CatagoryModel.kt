@@ -6,13 +6,13 @@ data class CatagoryModel(
     var businessId:String,
     var name:String,
     val subcategory:String
-)
+): Serializable
 data class CatagoryResponce(
     val _id: String,        // Unique ID of the category
     val businessId: String, // Business ID for the category
     val name: String,       // ✅ Name field (this was missing in your model)
     val subcategories: List<SubCategoryResponse> // Assuming subcategories are a list of strings (IDs)
-)
+): Serializable
 data class SubCatagoryModel(
     var categoryId:String,
     val name: String,
@@ -25,10 +25,8 @@ data class SubCategoryResponse(
     val products:  List<String>      // List of products under this subcategory
 )
 
-
-
-data class ProductModel(
-    val businessId: String,       // ✅ newly added Business ID field
+data class AddProductRequest(
+    val businessId: String,
     val categoryId: String,
     val subcategoryId: String,
     val name: String,
@@ -44,9 +42,26 @@ data class ProductModel(
 )
 
 
+data class ProductModel(
+    val businessId: String,
+    val categoryId: CatagoryModel?,
+    val subcategoryId: SubCatagoryModel?,
+    val name: String,
+    val barcode: String,
+    val saleprice: Double,
+    val salepriceDiscount: Double,
+    val purchaceprice: Double,
+    val Texes: Double,
+    val stock: Int,
+    val date: String,
+    val minstock: Int,
+    val itemlocation: String
+) : Serializable
+
+
 data class ProductResponse(
     val _id: String,
-    val businessId: String,       // ✅ newly added Business ID field
+    val businessId: String,
     val categoryId: Catagoryid,
     val subcategoryId: SubCatagoryid,
     val name: String,
@@ -65,8 +80,8 @@ data class ProductResponse(
 data class Catagoryid(
     val _id: String,
     val name: String
-)
+) : Serializable
 data class SubCatagoryid(
     val _id: String,
     val name: String
-)
+) : Serializable

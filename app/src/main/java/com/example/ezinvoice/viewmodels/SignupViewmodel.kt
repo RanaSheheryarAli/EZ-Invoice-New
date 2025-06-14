@@ -48,6 +48,7 @@ class SignupViewmodel(application: Application) : AndroidViewModel(application) 
 
     // Signup button click handler
     fun onSignupClick() {
+
         val username = UsernameLD.value?.trim() ?: ""
         val email = EmailLD.value?.trim() ?: ""
         val password = passwordLD.value?.trim() ?: ""
@@ -75,7 +76,6 @@ class SignupViewmodel(application: Application) : AndroidViewModel(application) 
                     val response = api.signup1(SignuprequestModel)
 
                     if (response.isSuccessful) {
-
 
                         userid= response.body()?.newUser?._id.toString()
                         Log.d("checkuserid ", "from view model: ${userid}")

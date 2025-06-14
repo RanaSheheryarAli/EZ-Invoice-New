@@ -16,11 +16,14 @@ interface InvoiceApi {
     @POST("customers/find-or-create")
     suspend fun findOrCreateCustomer(@Body customer: CustomerRequest): Response<CustomerResponse>
 
+
     @POST("invoices/create-invoice")
     suspend fun createInvoice(@Body invoice: InvoiceRequest): Response<InvoiceResponse>
 
+
     @GET("invoices/count-today/{businessId}")
     suspend fun getTodayInvoiceCount(@Path("businessId") businessId: String): Response<InvoiceCountResponse>
+
 
     @GET("invoices/all/{businessId}")
     suspend fun getInvoicesByBusinessId(@Path("businessId") businessId: String): Response<List<InvoiceDisplay>>

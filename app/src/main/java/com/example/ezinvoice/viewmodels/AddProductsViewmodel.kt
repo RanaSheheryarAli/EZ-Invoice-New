@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.ezinvoice.apis.productapi
+import com.example.ezinvoice.models.AddProductRequest
 import com.example.ezinvoice.models.ProductModel
 import com.example.ezinvoice.network.RetrofitClient
 import kotlinx.coroutines.launch
@@ -84,7 +85,7 @@ class AddProductsViewmodel(application: Application) : AndroidViewModel(applicat
         // ✅ If all fields are valid, proceed
         Toast.makeText(context, "Adding Product...", Toast.LENGTH_SHORT).show()
 
-        val product = ProductModel(
+        val product = AddProductRequest(
             businessId = businessId,
             categoryId = selectedCategoryId!!,
             subcategoryId = selectedSubCategoryId!!,
