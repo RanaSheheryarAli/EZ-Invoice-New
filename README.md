@@ -105,3 +105,44 @@ EZ-Invoice/
         ├── db.js                # MongoDB connection
         └── config.js            # Environment / app‑level settings
 
+---
+
+## 🚀 Getting Started
+
+Follow these steps to set up and run the EZ-Invoice project locally.
+
+### 🧰 Prerequisites
+
+- [Node.js](https://nodejs.org/) (v14 or higher)
+- [MongoDB](https://www.mongodb.com/try/download/community) (running locally or use MongoDB Atlas)
+- Android Studio (for mobile app)
+- Git (for cloning the repository)
+
+---
+
+### 💻 Backend Setup
+
+1. **Clone the Repository**
+
+```bash
+git clone https://github.com/RanaSheheryarAli/EZ-Invoice-New.git
+cd EZ-Invoice-New/backend
+npm install
+node server.js
+
+---
+
+### 📱 Mobile App Setup (Optional for Developers)
+
+1. Open the Android project in **Android Studio** (located in the root or `EZ-Invoice-New` folder).
+2. Go to the Retrofit configuration file and set:
+   ```kotlin
+   BASE_URL = "http://localhost:5000/"
+If you're running the app on an Android emulator, localhost will work.
+
+If you're using a physical device, make sure your computer and device are on the same Wi-Fi network.
+
+(⚠️ Required for physical devices only) Run this command inproject folder to allow the device to access your local backend server:
+
+adb reverse tcp:5000 tcp:5000
+
