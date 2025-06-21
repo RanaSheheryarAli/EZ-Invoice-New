@@ -150,4 +150,8 @@ Run the following command in the project terminal to allow your physical device 
 
 adb reverse tcp:5000 tcp:5000
 
+## 🖼️ Screenshots
+
+![WhatsApp Image 2025-06-21 at 9 13 40 AM](https://github.com/user-attachments/assets/83eefd34-5220-4d74-afa5-7dd0dd5b91f4)
+
 
