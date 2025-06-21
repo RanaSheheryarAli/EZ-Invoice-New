@@ -119,7 +119,6 @@ Follow these steps to set up and run the EZ-Invoice project locally.
 - Git (for cloning the repository)
 
 ---
-
 ### 💻 Backend Setup
 
 1. **Clone the Repository**
@@ -130,19 +129,25 @@ cd EZ-Invoice-New/backend
 npm install
 node server.js
 
----
 
-### 📱 Mobile App Setup (Optional for Developers)
 
-1. Open the Android project in **Android Studio** (located in the root or `EZ-Invoice-New` folder).
-2. Go to the Retrofit configuration file and set:
-   ```kotlin
-   BASE_URL = "http://localhost:5000/"
+
+📱 Mobile App Setup (Optional for Developers)
+Open the Android project in Android Studio (located in the root or EZ-Invoice-New folder).
+
+Go to the Retrofit configuration file and set:
+
+BASE_URL = "http://localhost:5000/"
+
+
+
 If you're running the app on an Android emulator, localhost will work.
 
 If you're using a physical device, make sure your computer and device are on the same Wi-Fi network.
 
-(⚠️ Required for physical devices only) Run this command inproject folder to allow the device to access your local backend server:
+(⚠️ Required for physical devices only)
+Run the following command in the project terminal to allow your physical device to access your local backend server:
 
 adb reverse tcp:5000 tcp:5000
+
 
