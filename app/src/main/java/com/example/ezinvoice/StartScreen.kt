@@ -3,6 +3,7 @@ package com.example.ezinvoice
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,7 +14,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.ezinvoice.databinding.ActivityStartScreenBinding
 
 class StartScreen : AppCompatActivity() {
-    lateinit var databinding:ActivityStartScreenBinding
+    lateinit var databinding: ActivityStartScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        databinding=DataBindingUtil.setContentView(this,R.layout.activity_start_screen)
@@ -23,13 +24,15 @@ class StartScreen : AppCompatActivity() {
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
         databinding.btnGetStarted.setOnClickListener {
-            val intent= Intent(this@StartScreen,Signup::class.java)
+            val intent = Intent(this@StartScreen, Signup::class.java)
             startActivity(intent)
         }
-        databinding.tvSignIn.setOnClickListener{
-            val intent=Intent(this@StartScreen,Signup::class.java)
+        databinding.tvSignIn.setOnClickListener {
+            val intent = Intent(this@StartScreen, Signup::class.java)
             startActivity(intent)
         }
+
+        Log.e("TAG", "onCreate: testing.......")
     }
     override fun onStart() {
         super.onStart()
