@@ -6,8 +6,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.ezinvoice.databinding.ActivityAddCategoryBinding
@@ -25,11 +27,15 @@ class AddCategory : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = ContextCompat.getColor(this, R.color.status_bar_color)
+
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
+
         viewmodel=ViewModelProvider(this)[AddCategoryViewmodel::class.java]
         databinding.lifecycleOwner=this
         databinding.viewmodel=viewmodel
 
-        databinding.appbar.tvTitle.setText("Add Category")
+        databinding.tvTitle.setText("Add New")
         viewmodel.errorMessage.observe(this){
            Toast.makeText(this,it.toString(),Toast.LENGTH_SHORT).show()
         }

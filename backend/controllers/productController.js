@@ -5,21 +5,28 @@ const mongoose = require("mongoose");
 // ✅ Create a new product and add it to the subcategory
 const createProduct = async (req, res) => {
     try {
-        const { subcategoryId, name, barcode, saleprice, salepriceDiscount, purchaceprice, Texes, stock, date, minstock, itemlocation } = req.body;
+        const { businessId, categoryId, subcategoryId, name, barcode, saleprice, salepriceDiscount, purchaceprice, Texes, stock, date, minstock, itemlocation } = req.body;
 
-        // Validate subcategoryId format
+        if (!mongoose.Types.ObjectId.isValid(businessId)) {
+            return res.status(400).json({ error: "Invalid business ID format" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+            return res.status(400).json({ error: "Invalid category ID format" });
+        }
+
         if (!mongoose.Types.ObjectId.isValid(subcategoryId)) {
             return res.status(400).json({ error: "Invalid subcategory ID format" });
         }
 
-        // Check if subcategory exists
         const subcategory = await Subcategory.findById(subcategoryId);
         if (!subcategory) {
             return res.status(404).json({ error: "Subcategory not found" });
         }
 
-        // Create new product
         const newProduct = new Product({
+            businessId,
+            categoryId,
             subcategoryId,
             name,
             barcode,
@@ -33,10 +40,11 @@ const createProduct = async (req, res) => {
             itemlocation
         });
 
-        // Save product to database
+     
+        
+
         await newProduct.save();
 
-        // Add product reference to subcategory
         subcategory.products.push(newProduct._id);
         await subcategory.save();
 
@@ -44,6 +52,61 @@ const createProduct = async (req, res) => {
 
     } catch (error) {
         console.error("Error creating product:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+// ✅ Get a product by Barcode
+const getProductByBarcode = async (req, res) => {
+    try {
+        const { barcode } = req.params;
+        const { businessId } = req.query;
+
+        if (!barcode) {
+            return res.status(400).json({ error: "Barcode is required" });
+        }
+
+        if (!businessId) {
+            return res.status(400).json({ error: "Business ID is required" });
+        }
+
+        const product = await Product.findOne({ barcode, businessId })
+          .populate('categoryId', 'name') // only include category name
+        .populate('subcategoryId', 'name'); // optional: for subcategory name too
+
+        if (!product) {
+            return res.status(404).json({ error: "Product not found for this business with this barcode" });
+        }
+
+        res.status(200).json(product);
+
+    } catch (error) {
+        console.error("Error fetching product by barcode:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+
+
+const getProductsByBusiness = async (req, res) => {
+    try {
+        const { businessId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(businessId)) {
+            return res.status(400).json({ error: "Invalid business ID format" });
+        }
+        const products = await Product.find({ businessId })
+        .populate('categoryId', 'name') // only include category name
+        .populate('subcategoryId', 'name'); // optional: for subcategory name too
+      
+        if (!products.length) {
+            return res.status(404).json({ error: "No products found for this business" });
+        }
+
+        res.status(200).json(products);
+
+    } catch (error) {
+        console.error("Error fetching products by business:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
@@ -57,6 +120,11 @@ const getProductsBySubcategory = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(subcategoryId)) {
             return res.status(400).json({ error: "Invalid subcategory ID format" });
         }
+        // Optional: Check if subcategory belongs to category
+        
+        if (subcategory.categoryId.toString() !== categoryId) {
+        return res.status(400).json({ error: "Subcategory does not belong to given Category" });
+}
 
         // Find products by subcategory
         const products = await Product.find({ subcategoryId });
@@ -81,7 +149,9 @@ const getProductById = async (req, res) => {
             return res.status(400).json({ error: "Invalid product ID format" });
         }
 
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId)
+              .populate('categoryId', 'name') // only include category name
+        .populate('subcategoryId', 'name'); // optional: for subcategory name too
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
         }
@@ -102,7 +172,9 @@ const updateProduct = async (req, res) => {
             return res.status(400).json({ error: "Invalid product ID format" });
         }
 
-        const updatedProduct = await Product.findByIdAndUpdate(productId, req.body, { new: true });
+        const updatedProduct = await Product.findByIdAndUpdate(productId, req.body, { new: true })
+              .populate('categoryId', 'name') // only include category name
+        .populate('subcategoryId', 'name'); // optional: for subcategory name too
         if (!updatedProduct) {
             return res.status(404).json({ error: "Product not found" });
         }
@@ -140,4 +212,36 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports = { createProduct, getProductsBySubcategory, getProductById, updateProduct, deleteProduct };
+// ✅ Add this new controller function to productController.js
+const searchProductsByName = async (req, res) => {
+    try {
+        const { businessId, query } = req.query;
+
+        if (!businessId || !query) {
+            return res.status(400).json({ error: "Both businessId and query are required" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(businessId)) {
+            return res.status(400).json({ error: "Invalid business ID format" });
+        }
+
+        const products = await Product.find({
+            businessId,
+            name: { $regex: query, $options: "i" } // Case-insensitive partial match
+        })
+        .populate('categoryId', 'name')
+        .populate('subcategoryId', 'name');
+
+        if (!products.length) {
+            return res.status(404).json({ error: "No matching products found" });
+        }
+
+        res.status(200).json(products);
+
+    } catch (error) {
+        console.error("Error searching products by name:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+module.exports = { createProduct, getProductsBySubcategory, getProductById, updateProduct,
+     deleteProduct ,getProductsByBusiness,getProductByBarcode, searchProductsByName};

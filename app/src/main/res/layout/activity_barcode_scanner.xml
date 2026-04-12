@@ -5,6 +5,7 @@
 
     <data>
 
+
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -68,16 +69,42 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/showproductsRCV"
                     android:layout_width="match_parent"
+                    android:padding="7dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    tools:itemCount="10"
+                    tools:itemCount="2"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="13dp"
                     tools:listitem="@layout/product_items"
 
                     />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnnext"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="32dp"
+                    android:backgroundTint="@color/buttoncolor"
+                    android:elevation="4dp"
+                    android:letterSpacing="0.1"
+                    android:padding="12dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/rounded_box"
+                    android:text="Next"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    android:layout_marginBottom="100dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textStyle="bold"
+                    app:cornerRadius="8dp" />
+
 
             </LinearLayout>
         </ScrollView>
+
+
 
 
         <FrameLayout
@@ -98,10 +125,13 @@
                 android:background="@drawable/bg_circle"
                 android:backgroundTint="@color/white"
                 android:elevation="4dp"
+                android:layout_marginBottom="-20dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/arrow_down"
                 app:shapeAppearanceOverlay="@style/FABShape" />
         </FrameLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

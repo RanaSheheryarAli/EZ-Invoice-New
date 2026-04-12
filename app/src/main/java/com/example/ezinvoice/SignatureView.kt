@@ -125,4 +125,12 @@ class SignatureView @JvmOverloads constructor(
     companion object {
         private const val TOUCH_TOLERANCE = 4f
     }
+
+    fun getSignatureBitmap(): Bitmap {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        draw(canvas)
+        return bitmap
+    }
+
 }

@@ -62,33 +62,30 @@
                 android:textColor="#2D3E50" />
 
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
-            <ImageView
-                android:id="@+id/img_print"
-                android:layout_marginStart="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/print"
-                 />
-            <ImageView
-                android:id="@+id/img_share"
 
-                android:layout_marginStart="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/share_xml"
-                />
-            <ImageView
-                android:id="@+id/img_more"
-                android:layout_marginStart="2dp"
-                android:layout_width="25dp"
-                android:layout_height="20dp"
-                android:src="@drawable/more"
-                />
+<!--            <ImageView-->
+<!--                android:id="@+id/img_print"-->
+<!--                android:layout_marginStart="2dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/print"-->
+<!--                 />-->
+<!--            <ImageView-->
+<!--                android:id="@+id/img_share"-->
+
+<!--                android:layout_marginStart="5dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/share_xml"-->
+<!--                />-->
+<!--            <ImageView-->
+<!--                android:id="@+id/img_more"-->
+<!--                android:layout_marginStart="2dp"-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:src="@drawable/more"-->
+<!--                />-->
         </LinearLayout>
 
     </LinearLayout>

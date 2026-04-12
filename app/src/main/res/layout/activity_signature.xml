@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F6F9FC"
+        tools:context=".Signature">
+
+
+        <!-- Toolbar -->
+        <LinearLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#007F80"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/backarrow"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                app:tint="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Signature"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/done_button"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:text="Done"
+                android:background="@drawable/rounded_button_full"
+                android:textColor="#007F80"
+                android:backgroundTint="#A0CED7"
+                android:textSize="14sp"
+                android:layout_margin="10dp" />
+        </LinearLayout>
+
+        <!-- Signature List Label -->
+
+
+        <!-- Signature Item -->
+
+
+        <ImageView
+            android:id="@+id/signature_image"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_above="@+id/add_signature_button"
+            android:layout_below="@+id/toolbar"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="12dp"
+            android:layout_marginStart="399dp"
+            android:layout_marginTop="665dp"
+            android:layout_marginEnd="399dp"
+            android:layout_marginBottom="735dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/add_signature_button"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:backgroundTint="@color/buttoncolor"
+            android:letterSpacing="0.1"
+            android:padding="12dp"
+            android:background="@drawable/rounded_box_outline_edt"
+            android:text="Add New Signature"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/autographsmall"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"/>
+    </RelativeLayout>
+</layout>

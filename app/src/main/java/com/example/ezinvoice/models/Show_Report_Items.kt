@@ -1,7 +1,8 @@
 package com.example.ezinvoice.models
 
 data class Show_Report_Items(
-    val itemsName: String,
-    val itemsCount: Int,
-    val itemsAmount: String
+    val productId: String,
+    val productName: String,
+    val quantitySold: Int,
+    val totalSales: Int
 )

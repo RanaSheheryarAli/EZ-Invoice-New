@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.ezinvoice.apis.AuthApi
+import com.example.ezinvoice.apis.BusinessinfoApi
 import com.example.ezinvoice.models.LoginModel
 import com.example.ezinvoice.models.LoginResponse
 import com.example.ezinvoice.network.RetrofitClient
@@ -53,19 +54,19 @@ class SigninViewmodel(application: Application) : AndroidViewModel(application) 
             viewModelScope.launch {
                 try {
                     val LoginrequestModel = LoginModel(email, password)
-                    val response = api.signin1(LoginrequestModel)
-                    response.body()?.success=="Signin successful"
-                    if(response.body()?.success=="Signin successful"){
 
-                        sharedPreferences.edit().putString("business-id", response.body()?.user?.businessID).apply()
-                        sharedPreferences.edit().putString("auth_token", response.body()?.token).apply()
-                        sharedPreferences.edit().putString("user_id", response.body()?.user?.id).apply()
+                    val response = api.signin1(LoginrequestModel)
+                    response.body()?.success == "Signin successful"
+                    if (response.body()?.success == "Signin successful") {
+
+                        sharedPreferences.edit().putString("business_id", response.body()?.user?.businessID).apply()
+                        sharedPreferences.edit().putString("auth_id", response.body()?.token).apply()
 
                         _loginResponse.value = response.body()
                         _errorMessage.value = "Signin Successful"
                         _issuccessfull.value = true
                     }
-                    else{
+                    else {
                         _errorMessage.value = "Signin UnSuccessful"
                         _issuccessfull.value = false
                     }
@@ -90,4 +91,49 @@ class SigninViewmodel(application: Application) : AndroidViewModel(application) 
     fun clearError() {
         _errorMessage.value = null
     }
+
+    fun fetchBusinessInfo(context: Context, userId: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val api = RetrofitClient.createService(BusinessinfoApi::class.java)
+                Log.e("uidch",userId)
+                val response = api.getbusiness(userId)
+
+                if (response.isSuccessful) {
+                    response.body()?.let { business ->
+
+                    val prefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                        with(prefs.edit()) {
+                            putString("auth_id", business.userId)
+
+                            putString("business_id", business._id)
+                            putString("business_token", business._id)
+                            putString("business_name", business.name)
+                            putString("business_email", business.email)
+                            putString("business_logouri", business.logoUrl)
+                            putString("business_owner", business.ownername)
+                            putString("business_gstin", business.gstin)
+                            putString("business_adress", business.address)
+                            putString("business_phone", business.contact)
+                            putString("business_website", business.website)
+                            putString("business_country", business.country)
+                            putString("business_currency", business.currency)
+                            putString("business_numberformate", business.numberformate)
+                            putString("business_dateformate", business.dateformate)
+                            putString("business_signature", business.signature)
+                            putString("business_logouri", business.logoUrl)
+
+                            apply()
+                        }
+                        onSuccess()
+                    } ?: onError("Business data is empty")
+                } else {
+                    onError("Failed to get business info: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                onError("Network error: ${e.message}")
+            }
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,6 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="match_parent"
         tools:context=".Business_Info"
         >
@@ -68,10 +70,11 @@
                 <ImageView
                     android:id="@+id/img_add_logo"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="145dp"
                     android:contentDescription="Add Business Logo"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     android:gravity="bottom"
-                    android:scaleType="centerInside"
                     android:background="@android:color/transparent" />
 
                 <!-- TextView for the label -->
@@ -113,68 +116,105 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Business Name"
-                    android:text="@={businessinfoViewmodel.businessname}"
-                    android:background="@drawable/rounded_box_outline_edt"
-                    android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:hint="Business Name">
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Owner Name"
-                    android:text="@={businessinfoViewmodel.ownername}"
-                    android:background="@drawable/rounded_box_outline_edt"
-                    android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:inputType="text"
+                        android:text="@={businessinfoViewmodel.businessname}" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="GSTIN"
-                    android:text="@={businessinfoViewmodel.gstin}"
-                    android:background="@drawable/rounded_box_outline_edt"
-                    android:padding="10dp"
-                    android:layout_marginTop="8dp" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Address"
-                    android:text="@={businessinfoViewmodel.adress}"
-                    android:background="@drawable/rounded_box_outline_edt"
-                    android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:hint="Owner Name">
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@={businessinfoViewmodel.email}"
-                    android:hint="Email Address"
-                    android:background="@drawable/rounded_box_outline_edt"
-                    android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:inputType="text"
+                        android:text="@={businessinfoViewmodel.ownername}" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Phone Number"
-                    android:text="@={businessinfoViewmodel.phone}"
-                    android:background="@drawable/rounded_box_outline_edt"
-                    android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:hint="GSTIN">
 
-                <EditText
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:inputType="text"
+                        android:text="@={businessinfoViewmodel.gstin}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Website"
-                    android:text="@={businessinfoViewmodel.websitelink}"
-                    android:background="@drawable/rounded_box_outline_edt"
-                    android:padding="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:hint="Address">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:inputType="text"
+                        android:text="@={businessinfoViewmodel.adress}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:inputType="text"
+                        android:text="@={businessinfoViewmodel.email}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone Number">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:inputType="number"
+                        android:text="@={businessinfoViewmodel.phone}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Website">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/rounded_box_outline_edt"
+                        android:inputType="text"
+                        android:text="@={businessinfoViewmodel.websitelink}" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- General Settings -->
 
@@ -195,43 +235,76 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Currency (Rs)"
-                        android:text="@={businessinfoViewmodel.currency}"
-                        android:background="@drawable/rounded_box_outline_edt"
-                        android:padding="10dp"
-                        android:layout_marginTop="8dp" />
+                        android:hint="Currency"
+                        app:hintTextAppearance="@style/SmallHintStyle"
+                        android:layout_marginBottom="10dp"
+                        app:endIconMode="dropdown_menu">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoCurrency"
+                            android:layout_width="match_parent"
+                            android:padding="5dp"
+                            android:background="@drawable/rounded_box_outline_edt"
+                            android:layout_height="match_parent"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <EditText
+
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Country"
-                        android:text="@={businessinfoViewmodel.country}"
-                        android:background="@drawable/rounded_box_outline_edt"
-                        android:padding="10dp"
-                        android:layout_marginTop="8dp" />
+                        app:hintTextAppearance="@style/SmallHintStyle"
+                    android:layout_marginBottom="10dp"
+                        app:endIconMode="dropdown_menu">
 
+                        <AutoCompleteTextView
+                            android:id="@+id/autoCountry"
+                            android:layout_width="match_parent"
+                            android:padding="5dp"
+                            android:background="@drawable/rounded_box_outline_edt"
+                            android:layout_height="match_parent"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Number Format (1,000,000)"
-                        android:background="@drawable/rounded_box_outline_edt"
-                        android:padding="10dp"
-                        android:text="@={businessinfoViewmodel.numberformate}"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginBottom="10dp"
+                        android:hint="Number Formate"
+                        app:hintTextAppearance="@style/SmallHintStyle"
+                    app:endIconMode="dropdown_menu">
 
-                    <EditText
+                        <AutoCompleteTextView
+                            android:id="@+id/autoNumberFormat"
+                            android:layout_width="match_parent"
+                            android:padding="5dp"
+                            android:background="@drawable/rounded_box_outline_edt"
+                            android:layout_height="match_parent"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_box_outline_edt"
-                        android:padding="10dp"
-                        android:text="@={businessinfoViewmodel.dateformate}"
-                        android:hint="Date Formate (25,May,2025)"
-                        android:layout_marginTop="8dp" />
+                        android:hint="Date Formate"
+                        android:layout_marginBottom="10dp"
+                        app:hintTextAppearance="@style/SmallHintStyle"
+                        app:endIconMode="dropdown_menu">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoDateFormat"
+                            android:layout_width="match_parent"
+                            android:padding="5dp"
+                            android:background="@drawable/rounded_box_outline_edt"
+                            android:layout_height="match_parent"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
                     <TextView

@@ -6,75 +6,96 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.ezinvoice.adaptors.InvoiceAdapter
 import com.example.ezinvoice.databinding.FragmentHomeBinding
-import com.example.ezinvoice.databinding.FragmentItemsBinding
-import com.example.ezinvoice.models.Invoice
+import com.example.ezinvoice.viewmodels.HomeFragmentViewmodel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class HomeFragment : Fragment() {
 
-    lateinit var databinding: FragmentHomeBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var viewModel: HomeFragmentViewmodel
+    private lateinit var adapter: InvoiceAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        databinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-        // Inflate the layout for this fragment
-        return databinding.root
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        databinding.containerProduct.setOnClickListener{
-            val intent = Intent(requireContext(), Add_Items::class.java)
-            startActivity(intent)
+        val businessId = Scan_Barcode.SharedPrefManager.getBusinessId(requireContext())
+        adapter = InvoiceAdapter(emptyList())
+        binding.recentinvoiceRCV.layoutManager = LinearLayoutManager(requireContext())
+        binding.recentinvoiceRCV.adapter = adapter
+
+        viewModel = ViewModelProvider(this)[HomeFragmentViewmodel::class.java]
+        viewModel.fetchInvoices(businessId)
+
+        viewModel.visibleInvoices.observe(viewLifecycleOwner) { invoices ->
+            adapter.updateData(invoices)
+            // Show or hide See More based on remaining invoices
+            val totalCount = invoices.size
+//            val isMore = totalCount < (viewModel.invoices.value?.size ?: Int.MAX_VALUE)
+            binding.btnSeeMore.visibility = if (viewModel.hasMoreInvoices()) View.VISIBLE else View.GONE
+
         }
 
-        databinding.containerInvoice.setOnClickListener{
-            val intent = Intent(requireContext(), Sale::class.java)
-            startActivity(intent)
-        }
-        databinding.containerReports.setOnClickListener {
-
-
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            if (error != null) {
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                viewModel.clearError()
+            }
         }
 
-        databinding.containerInventory.setOnClickListener{
-            val intent = Intent(requireContext(), Add_Items::class.java)
-            startActivity(intent)
+        // Load more invoices when "See More" is clicked
+        binding.btnSeeMore.setOnClickListener {
+            viewModel.loadMoreInvoices()
         }
 
-        databinding.containerClient.setOnClickListener{
-            val intent = Intent(requireContext(), Client::class.java)
-            startActivity(intent)
+        // Navigation listeners
+        binding.containerReports.setOnClickListener {
+            val navController = findNavController()
+
+            // Programmatically select the second position (ReportFragment) in the BottomNavigationView
+            val bottomNavigationView: BottomNavigationView = activity?.findViewById(R.id.bottomnavigation)!!
+            bottomNavigationView.selectedItemId = R.id.reportFragment
+
+            // Navigate to the second fragment (ReportFragment)
+            navController.navigate(R.id.reportFragment)
         }
+        binding.containerProduct.setOnClickListener {
+            startActivity(Intent(requireContext(), Add_Items::class.java))
+        }
+        binding.containerEstimate.setOnClickListener {
+            startActivity(Intent(requireContext(), Sale::class.java))
+        }
+        binding.containerProduct.setOnClickListener {
+            val navController = findNavController()
 
+            // Programmatically select the second position (ReportFragment) in the BottomNavigationView
+            val bottomNavigationView: BottomNavigationView = activity?.findViewById(R.id.bottomnavigation)!!
+            bottomNavigationView.selectedItemId = R.id.itemsFragment
 
-
-        val recyclerView: RecyclerView = databinding.recentinvoiceRCV  // your RecyclerView ID
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        val invoices = listOf(
-            Invoice("001", "2025-03-01", "$200"),
-            Invoice("002", "2025-04-02", "$150"),
-            Invoice("003", "2025-04-03", "$2500"),
-            Invoice("004", "2025-04-02", "$150"),
-            Invoice("005", "2025-04-03", "$2500"),
-            Invoice("006", "2025-05-03", "$5500")
-        )
-
-        val adapter = InvoiceAdapter(invoices)
-        recyclerView.adapter = adapter
+            // Navigate to the second fragment (ReportFragment)
+            navController.navigate(R.id.itemsFragment)
+//            findNavController().navigate(R.id.action_homeFragment_to_itemsFragment)
+        }
+        binding.containerClient.setOnClickListener {
+            startActivity(Intent(requireContext(), Customer::class.java))
+        }
+        binding.containerInventory.setOnClickListener {
+            startActivity(Intent(requireContext(), Inventory::class.java))
+        }
     }
-
 }

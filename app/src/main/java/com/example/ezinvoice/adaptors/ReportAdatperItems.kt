@@ -7,11 +7,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ezinvoice.R
 import com.example.ezinvoice.models.Show_Report_Items
 
-class ReportAdatperItems(private val itemtList: List<Show_Report_Items>):RecyclerView.Adapter<ReportAdatperItems.ReportViewHolder>() {
+class ReportAdatperItems(private var itemtList: MutableList<Show_Report_Items>) :
+    RecyclerView.Adapter<ReportAdatperItems.ReportViewHolder>() {
+
+    fun updateData(newData: List<Show_Report_Items>) {
+        itemtList = newData.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun addMore(data: List<Show_Report_Items>) {
+        val oldSize = itemtList.size
+        itemtList.addAll(data)
+        notifyItemRangeInserted(oldSize, data.size)
+    }
+
     class ReportViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
-        val clientName: TextView = itemView.findViewById(R.id.tv_client_name)
+        val ProductName: TextView = itemView.findViewById(R.id.tv_client_name)
         val invoicesCount: TextView = itemView.findViewById(R.id.tv_invoices_count)
         val invoiceAmount: TextView = itemView.findViewById(R.id.tv_invoice_amount)
+        val invoiceCountttxt: TextView = itemView.findViewById(R.id.tv_invoices_counttxt)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
@@ -24,8 +38,9 @@ class ReportAdatperItems(private val itemtList: List<Show_Report_Items>):Recycle
 
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
         val reportItem = itemtList[position]
-        holder.clientName.text = reportItem.itemsName
-        holder.invoicesCount.text = "Invoices: ${reportItem.itemsCount}"
-        holder.invoiceAmount.text = reportItem.itemsAmount
+        holder.ProductName.text = reportItem.productName
+        holder.invoicesCount.text = reportItem.quantitySold.toString()
+        holder.invoiceAmount.text = "RS:${reportItem.totalSales}"
+        holder.invoiceCountttxt.text="QTY:"
     }
 }

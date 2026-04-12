@@ -12,7 +12,7 @@ const {
 router.post("/add-subcategory", createSubcategory);
 
 // Get all subcategories for a specific category
-router.get("/category/:categoryId", getSubcategoriesByCategory);
+router.get("/subcategory/:categoryId", getSubcategoriesByCategory);
 
 // Get a single subcategory by ID
 router.get("/get-subcategory/:subcategoryId", getSubcategoryById);

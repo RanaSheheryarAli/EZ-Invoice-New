@@ -9,15 +9,15 @@
         android:icon="@drawable/sync"
         android:title="Sync" />
     <item
-        android:id="@+id/nav_report"
+        android:id="@+id/reportFragment"
         android:icon="@drawable/booking"
         android:title="Report" />
     <item
-        android:id="@+id/nav_items"
+        android:id="@+id/itemsFragment"
         android:icon="@drawable/items"
         android:title="Items" />
     <item
-        android:id="@+id/nav_share"
+        android:id="@+id/nav_shareapp"
         android:icon="@drawable/share_xml"
         android:title="Share App" />
     <item
